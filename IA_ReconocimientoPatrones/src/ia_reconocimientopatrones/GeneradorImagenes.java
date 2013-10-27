@@ -86,9 +86,9 @@ public class GeneradorImagenes {
                 for (int u = 0; u < 28; u++) {
                     for (int v = 0; v < 28; v++) {
                         int p = this.UnsignedToBytes(imagen[k]);
-//                        if (p != 0) {
-//                            p = 255;
-//                        }
+                        if (p != 0) {
+                            p = 1;
+                        }
                         pixeles[u][v] = p;
                         k++;
                         //System.out.print(pixel[u][v] + " ");
@@ -96,7 +96,7 @@ public class GeneradorImagenes {
                     //System.out.println();
                 }
                 int[][] pixelesTrimeados = this.RemoverPadding4(pixeles);
-                String nombreArchivo = "img" + i + "_" + labelsArray.get(i);
+                String nombreArchivo = labelsArray.get(i) + "_img" + i;
                 BufferedImage image = this.ConvertRGBImage(pixelesTrimeados);
                 this.ExportImageToFile(this.ruta_guardado + nombreArchivo + ".jpg", image);
                 this.GenerarArchivo(pixelesTrimeados, labelsArray.get(i), nombreArchivo);
