@@ -40,7 +40,23 @@ public class AlgoritmoBayesiano {
         this.grupoNumero9=grupoNumero9;
      }
              
-             
+      public void Formula (){
+        try {
+            //calcular matriz de covarianza
+            //calcular la matriz de covarianza inversa
+            //
+            int d = 3; //dimension del vector de caracteristicas hasta ahora 3 caracteristicas
+            //interpretar bien el uso de la matriz de medias con el X, en la formula general
+            
+                    
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+      
+      
+      }
+     
+     
              
         public void ProcesarDatos(int nroImagenes,ArrayList<byte[]> imagenesArray, ArrayList<Integer> labelsArray) {
         try {                      
