@@ -18,7 +18,10 @@ public class Principal {
         ArrayList<Integer> labelsArray = lector.getLabelsArray();
         
         GeneradorImagenes generador = new GeneradorImagenes(imagenesArray, labelsArray, RUTA_DE_GUARDADO);
-        int NroImagenes = 10;
-        generador.GenerarImagenes(NroImagenes);
+        int nroImagenes = 1000;
+        //generador.GenerarImagenes(nroImagenes);
+        
+        AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
+        algoritmo.ProcesarDatos(nroImagenes, imagenesArray, labelsArray);
     }
 }

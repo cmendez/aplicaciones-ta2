@@ -81,25 +81,29 @@ public class GeneradorImagenes {
         try {
             for (int i = 0; i < nroImagenes; i++) {
                 byte[] imagen = imagenesArray.get(i);
-                int[][] pixeles = new int[28][28];
+                int[][] pixeles0y1 = new int[28][28];
+                int[][] pixeles255 = new int[28][28];
                 int k = 0;
                 for (int u = 0; u < 28; u++) {
                     for (int v = 0; v < 28; v++) {
                         int p = this.UnsignedToBytes(imagen[k]);
+                        pixeles255[u][v] = p;
                         if (p != 0) {
                             p = 1;
                         }
-                        pixeles[u][v] = p;
+                        pixeles0y1[u][v] = p;
                         k++;
                         //System.out.print(pixel[u][v] + " ");
                     }
                     //System.out.println();
                 }
-                int[][] pixelesTrimeados = this.RemoverPadding4(pixeles);
+                int[][] pixelesTrimeados0y1 = this.RemoverPadding4(pixeles0y1);
+                int[][] pixelesTrimeados255 = this.RemoverPadding4(pixeles255);
+                int[][] pixelesImagen = this.AgrandarPorFactor(pixelesTrimeados255, 6);
                 String nombreArchivo = labelsArray.get(i) + "_img" + i;
-                BufferedImage image = this.ConvertRGBImage(pixelesTrimeados);
+                BufferedImage image = this.ConvertRGBImage(pixelesImagen);
                 this.ExportImageToFile(this.ruta_guardado + nombreArchivo + ".jpg", image);
-                this.GenerarArchivo(pixelesTrimeados, labelsArray.get(i), nombreArchivo);
+                this.GenerarArchivo(pixelesTrimeados0y1, labelsArray.get(i), nombreArchivo);
             }
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -150,5 +154,22 @@ public class GeneradorImagenes {
             }
         }
         return pixelesTrimeados;
+    }
+
+    private int[][] AgrandarPorFactor(int[][] pixeles, int factor) {
+        int nfilas = pixeles.length;
+        int ncolumnas = pixeles[0].length;
+        int height = pixeles.length * factor;
+        int width = pixeles[0].length * factor;
+        int[][] nuevaMatriz = new int[height][width];
+
+        for (int fila = 0; fila < height; fila++) {
+            int i = fila / factor;
+            for (int col = 0; col < width; col++) {                
+                int j = col / factor;
+                nuevaMatriz[fila][col] = pixeles[i][j];
+            }
+        }
+        return nuevaMatriz;
     }
 }
