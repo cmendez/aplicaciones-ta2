@@ -10,6 +10,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+//import org.apache.commons.math3.stat.correlation.Covariance;
+
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.DecompositionSolver;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.SingularValueDecomposition;
+import org.apache.commons.math3.stat.correlation.Covariance;
+import org.apache.commons.math3.stat.descriptive.moment.VectorialMean;
+import org.apache.commons.math3.util.FastMath;
+import org.apache.commons.math3.linear.LUDecomposition ;
+
+import java.text.NumberFormat;
+
 
 /**
  *
@@ -75,6 +88,52 @@ public class AlgoritmoBayesiano {
             //calcular matriz de covarianza
             //calcular la matriz de covarianza inversa
             //
+            //utilizo el arreglo de medias, en este caso para el numero 0 grupoNumero0
+                       
+            double[][] matrixaux = new double[3][1];
+            
+            //double[][] matrixaux = new double[1][3];
+            
+            double[][]covMatrix;
+            RealMatrix rMatrix;
+            
+            
+            for (int i = 0; i < 3; i++) {
+                matrixaux[i][0]=grupoNumero0.get(i);
+            }
+            
+            //Covariance.computeCovarianceMatrix(double[][] data) 
+            
+            
+            
+            //rMatrix = new Covariance( matrixaux, false ) ;
+            
+            /*
+            for (int i = 0; i < 3; i++) {
+                matrixaux[0][i]=grupoNumero0.get(i);
+            }*/
+            
+            //double [][] matrix_
+            
+            
+            
+            
+           Covariance cov = new Covariance( matrixaux, false ) ;
+             
+           rMatrix = cov.getCovarianceMatrix() ;
+                                 
+           
+           covMatrix = rMatrix.getData();
+            
+           NumberFormat nf = NumberFormat.getInstance();
+           nf.setMaximumFractionDigits(2);
+
+           for(int i=0;i<covMatrix.length;i++)
+           {for(int k=0;k<covMatrix.length;k++)
+                   System.out.print(nf.format(covMatrix[i][k])+"  ");
+           System.out.println();
+           }             
+            
             int d = 3; //dimension del vector de caracteristicas hasta ahora 3 caracteristicas
             //interpretar bien el uso de la matriz de medias con el X, en la formula general
 
@@ -85,6 +144,8 @@ public class AlgoritmoBayesiano {
 
 
     }
+    
+   
 
     public void ProcesarDatos(int nroImagenes, ArrayList<byte[]> imagenesArray, ArrayList<Integer> labelsArray) {
         try {
@@ -122,7 +183,8 @@ public class AlgoritmoBayesiano {
                 //int car3 = CalcularCaracteristica3(pixelesTrimeados);
                 int car2p = SimetriaHorizontal(pixelesTrimeados);
                 int car3p = SimetriaVertical(pixelesTrimeados);
-                output.add("Label: " + num + " - 1s: " + car1 + " - SimV: " + car2p + " - SimH: " + car3p);
+                //output.add("Label: " + num + " - 1s: " + car1 + " - SimV: " + car2p + " - SimH: " + car3p);
+                output.add(num + "\t" + car1 + "\t" + car2p + "\t" + car3p);
                 //System.out.println("Label: " + num + " - 1s: " + car1 + " - SimV: " + car2p + " - SimH: " + car3p);
 
                 //ALMACENAMIENTO DE LAS NUEVAS MEDIAS
