@@ -19,10 +19,9 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.apache.commons.math3.stat.descriptive.moment.VectorialMean;
 import org.apache.commons.math3.util.FastMath;
-import org.apache.commons.math3.linear.LUDecomposition ;
+import org.apache.commons.math3.linear.LUDecomposition;
 
 import java.text.NumberFormat;
-
 
 /**
  *
@@ -40,6 +39,9 @@ public class AlgoritmoBayesiano {
     private ArrayList<Double> grupoNumero7;
     private ArrayList<Double> grupoNumero8;
     private ArrayList<Double> grupoNumero9;
+    private ArrayList<Double> grupoNumero0Aux;
+    private ArrayList<ArrayList<Double>> grupo0ArrayArray;
+    private ArrayList<Integer> cantidadNumeros;
 
     public AlgoritmoBayesiano() {
         this.grupoNumero0 = new ArrayList<>();
@@ -53,6 +55,10 @@ public class AlgoritmoBayesiano {
         this.grupoNumero8 = new ArrayList<>();
         this.grupoNumero9 = new ArrayList<>();
 
+        this.grupoNumero0Aux = new ArrayList<>();
+
+        this.cantidadNumeros = new ArrayList<>();
+
         for (int i = 0; i < 3; i++) {
             grupoNumero0.add(0.0);
             grupoNumero1.add(0.0);
@@ -64,24 +70,13 @@ public class AlgoritmoBayesiano {
             grupoNumero7.add(0.0);
             grupoNumero8.add(0.0);
             grupoNumero9.add(0.0);
+
+            //grupoNumero0Aux.add(0.0);           
         }
+        grupo0ArrayArray = new ArrayList<>();
+
     }
 
-    public AlgoritmoBayesiano(ArrayList<Double> grupoNumero0, ArrayList<Double> grupoNumero1, ArrayList<Double> grupoNumero2,
-            ArrayList<Double> grupoNumero3, ArrayList<Double> grupoNumero4, ArrayList<Double> grupoNumero5, ArrayList<Double> grupoNumero6,
-            ArrayList<Double> grupoNumero7, ArrayList<Double> grupoNumero8, ArrayList<Double> grupoNumero9) {
-
-        this.grupoNumero0 = grupoNumero0;
-        this.grupoNumero1 = grupoNumero1;
-        this.grupoNumero2 = grupoNumero2;
-        this.grupoNumero3 = grupoNumero3;
-        this.grupoNumero4 = grupoNumero4;
-        this.grupoNumero5 = grupoNumero5;
-        this.grupoNumero6 = grupoNumero6;
-        this.grupoNumero7 = grupoNumero7;
-        this.grupoNumero8 = grupoNumero8;
-        this.grupoNumero9 = grupoNumero9;
-    }
 
     public void Formula() {
         try {
@@ -89,51 +84,60 @@ public class AlgoritmoBayesiano {
             //calcular la matriz de covarianza inversa
             //
             //utilizo el arreglo de medias, en este caso para el numero 0 grupoNumero0
-                       
-            double[][] matrixaux = new double[3][1];
-            
-            //double[][] matrixaux = new double[1][3];
-            
-            double[][]covMatrix;
-            RealMatrix rMatrix;
-            
-            
-            for (int i = 0; i < 3; i++) {
-                matrixaux[i][0]=grupoNumero0.get(i);
-            }
-            
-            //Covariance.computeCovarianceMatrix(double[][] data) 
-            
-            
-            
-            //rMatrix = new Covariance( matrixaux, false ) ;
-            
-            /*
-            for (int i = 0; i < 3; i++) {
-                matrixaux[0][i]=grupoNumero0.get(i);
-            }*/
-            
-            //double [][] matrix_
-            
-            
-            
-            
-           Covariance cov = new Covariance( matrixaux, false ) ;
-             
-           rMatrix = cov.getCovarianceMatrix() ;
-                                 
-           
-           covMatrix = rMatrix.getData();
-            
-           NumberFormat nf = NumberFormat.getInstance();
-           nf.setMaximumFractionDigits(2);
 
-           for(int i=0;i<covMatrix.length;i++)
-           {for(int k=0;k<covMatrix.length;k++)
-                   System.out.print(nf.format(covMatrix[i][k])+"  ");
-           System.out.println();
-           }             
+            double[][] matrixaux = new double[grupo0ArrayArray.size()][grupo0ArrayArray.get(0).size()];
+
+            //double[][] matrixaux = new double[1][3];
+
+            double[][] covMatrix;
+            RealMatrix rMatrix;
+
+
+            for (int i = 0; i < 3; i++) {
+                matrixaux[i][0] = grupoNumero0.get(i);
+            }
+
+            //Covariance.computeCovarianceMatrix(double[][] data) 
+
+
+
+            //rMatrix = new Covariance( matrixaux, false ) ;
+
+            /*
+             for (int i = 0; i < 3; i++) {
+             matrixaux[0][i]=grupoNumero0.get(i);
+             }*/
+
+            //double [][] matrix_
+
+
+            //RealMatrix matrix = createRealMatrix(grupoNumero0Aux, (int)cantidadNumeros.get(0), 3);
+
+                        for (int u = 0; u < grupo0ArrayArray.size(); u++) {
+                            for (int v = 0; v < grupo0ArrayArray.get(u).size(); v++) {
+                                matrixaux[u][v] = grupo0ArrayArray.get(u).get(v);
+                            }
+                        }
             
+            Covariance cov = new Covariance(matrixaux, false);
+          
+            
+            
+            rMatrix = cov.getCovarianceMatrix();
+
+
+            covMatrix = rMatrix.getData();
+
+            NumberFormat nf = NumberFormat.getInstance();
+            nf.setMaximumFractionDigits(2);
+
+            for (int i = 0; i < covMatrix.length; i++) {
+                for (int k = 0; k < covMatrix.length; k++) {
+                    System.out.print(nf.format(covMatrix[i][k]) + "  ");
+                }
+                System.out.println();
+            }
+
             int d = 3; //dimension del vector de caracteristicas hasta ahora 3 caracteristicas
             //interpretar bien el uso de la matriz de medias con el X, en la formula general
 
@@ -144,13 +148,11 @@ public class AlgoritmoBayesiano {
 
 
     }
-    
-   
 
     public void ProcesarDatos(int nroImagenes, ArrayList<byte[]> imagenesArray, ArrayList<Integer> labelsArray) {
         try {
 
-            ArrayList<Integer> cantidadNumeros = new ArrayList<Integer>();
+            //ArrayList<Integer> cantidadNumeros = new ArrayList<Integer>();
             for (int i = 0; i < 10; i++) {
                 cantidadNumeros.add(0);
             }
@@ -197,6 +199,13 @@ public class AlgoritmoBayesiano {
                         grupoNumero0.set(1, (grupoNumero0.get(1) * (cantidadNumeros.get(0) - 1) + car2p) / cantidadNumeros.get(0));
                         //car3
                         grupoNumero0.set(2, (grupoNumero0.get(2) * (cantidadNumeros.get(0) - 1) + car3p) / cantidadNumeros.get(0));
+                        grupoNumero0Aux = new ArrayList<>();
+                        grupoNumero0Aux.add((double) car1);
+                        grupoNumero0Aux.add((double) car2p);
+                        grupoNumero0Aux.add((double) car3p);
+
+                        grupo0ArrayArray.add(grupoNumero0Aux);
+
                         break;
                     case 1:
                         cantidadNumeros.set(1, cantidadNumeros.get(1) + 1);
@@ -289,7 +298,7 @@ public class AlgoritmoBayesiano {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\t");
                 for (int i = 0; i < nroCaracteristicas; i++) {
-                    listaCaracteristicas.set(i, Double.valueOf(parts[i]));                    
+                    listaCaracteristicas.set(i, Double.valueOf(parts[i]));
                 }
                 String especie = parts[4];
 
