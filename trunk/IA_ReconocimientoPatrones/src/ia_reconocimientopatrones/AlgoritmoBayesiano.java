@@ -26,6 +26,29 @@ public class AlgoritmoBayesiano {
     private ArrayList<Double> grupoNumero9;
 
     public AlgoritmoBayesiano() {
+        this.grupoNumero0 = new ArrayList<>();
+        this.grupoNumero1 = new ArrayList<>();
+        this.grupoNumero2 = new ArrayList<>();
+        this.grupoNumero3 = new ArrayList<>();
+        this.grupoNumero4 = new ArrayList<>();
+        this.grupoNumero5 = new ArrayList<>();
+        this.grupoNumero6 = new ArrayList<>();
+        this.grupoNumero7 = new ArrayList<>();
+        this.grupoNumero8 = new ArrayList<>();
+        this.grupoNumero9 = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            grupoNumero0.add(0.0);
+            grupoNumero1.add(0.0);
+            grupoNumero2.add(0.0);
+            grupoNumero3.add(0.0);
+            grupoNumero4.add(0.0);
+            grupoNumero5.add(0.0);
+            grupoNumero6.add(0.0);
+            grupoNumero7.add(0.0);
+            grupoNumero8.add(0.0);
+            grupoNumero9.add(0.0);
+        }
     }
 
     public AlgoritmoBayesiano(ArrayList<Double> grupoNumero0, ArrayList<Double> grupoNumero1, ArrayList<Double> grupoNumero2,
@@ -64,6 +87,9 @@ public class AlgoritmoBayesiano {
         try {
 
             ArrayList<Integer> cantidadNumeros = new ArrayList<Integer>();
+            for (int i = 0; i < 10; i++) {
+                cantidadNumeros.add(0);
+            }
             ArrayList<String> output = new ArrayList<>();
 
             for (int i = 0; i < nroImagenes; i++) {
@@ -95,80 +121,83 @@ public class AlgoritmoBayesiano {
                 int car3p = SimetriaVertical(pixelesTrimeados);
                 output.add("Label: " + num + " - 1s: " + car1 + " - SimV: " + car2p + " - SimH: " + car3p);
                 //System.out.println("Label: " + num + " - 1s: " + car1 + " - SimV: " + car2p + " - SimH: " + car3p);
-/*
-                 switch (num) {
-                 case 0:
-                 cantidadNumeros.set(0, cantidadNumeros.get(0) + 1);
-                 //car1
-                 grupoNumero0.set(0, (grupoNumero0.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 //car2
-                 grupoNumero0.set(1, (grupoNumero0.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 //car3
-                 grupoNumero0.set(2, (grupoNumero0.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
 
-                 case 1:
-                 cantidadNumeros.set(1, cantidadNumeros.get(1) + 1);
+                //ALMACENAMIENTO DE LAS NUEVAS MEDIAS
+                switch (num) {
+                    case 0:
+                        cantidadNumeros.set(0, cantidadNumeros.get(0) + 1);
+                        //car1
+                        grupoNumero0.set(0, (grupoNumero0.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
+                        //car2
+                        grupoNumero0.set(1, (grupoNumero0.get(1) * (cantidadNumeros.get(0) - 1) + car2p) / cantidadNumeros.get(0));
+                        //car3
+                        grupoNumero0.set(2, (grupoNumero0.get(2) * (cantidadNumeros.get(0) - 1) + car3p) / cantidadNumeros.get(0));
+                        break;
+                    case 1:
+                        cantidadNumeros.set(1, cantidadNumeros.get(1) + 1);
 
-                 grupoNumero1.set(0, (grupoNumero1.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero1.set(1, (grupoNumero1.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero1.set(2, (grupoNumero1.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
+                        grupoNumero1.set(0, (grupoNumero1.get(0) * (cantidadNumeros.get(1) - 1) + car1) / cantidadNumeros.get(1));
+                        grupoNumero1.set(1, (grupoNumero1.get(1) * (cantidadNumeros.get(1) - 1) + car2p) / cantidadNumeros.get(1));
+                        grupoNumero1.set(2, (grupoNumero1.get(2) * (cantidadNumeros.get(1) - 1) + car3p) / cantidadNumeros.get(1));
+                        break;
+                    case 2:
+                        cantidadNumeros.set(2, cantidadNumeros.get(2) + 1);
 
-                 case 2:
-                 cantidadNumeros.set(2, cantidadNumeros.get(2) + 1);
+                        grupoNumero2.set(0, (grupoNumero2.get(0) * (cantidadNumeros.get(2) - 1) + car1) / cantidadNumeros.get(2));
+                        grupoNumero2.set(1, (grupoNumero2.get(1) * (cantidadNumeros.get(2) - 1) + car2p) / cantidadNumeros.get(2));
+                        grupoNumero2.set(2, (grupoNumero2.get(2) * (cantidadNumeros.get(2) - 1) + car3p) / cantidadNumeros.get(2));
+                        break;
+                    case 3:
+                        cantidadNumeros.set(3, cantidadNumeros.get(3) + 1);
 
-                 grupoNumero2.set(0, (grupoNumero2.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero2.set(1, (grupoNumero2.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero2.set(2, (grupoNumero2.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
+                        grupoNumero3.set(0, (grupoNumero3.get(0) * (cantidadNumeros.get(3) - 1) + car1) / cantidadNumeros.get(3));
+                        grupoNumero3.set(1, (grupoNumero3.get(1) * (cantidadNumeros.get(3) - 1) + car2p) / cantidadNumeros.get(3));
+                        grupoNumero3.set(2, (grupoNumero3.get(2) * (cantidadNumeros.get(3) - 1) + car3p) / cantidadNumeros.get(3));
+                        break;
+                    case 4:
+                        cantidadNumeros.set(4, cantidadNumeros.get(4) + 1);
 
-                 case 3:
-                 cantidadNumeros.set(3, cantidadNumeros.get(3) + 1);
+                        grupoNumero4.set(0, (grupoNumero4.get(0) * (cantidadNumeros.get(4) - 1) + car1) / cantidadNumeros.get(4));
+                        grupoNumero4.set(1, (grupoNumero4.get(1) * (cantidadNumeros.get(4) - 1) + car2p) / cantidadNumeros.get(4));
+                        grupoNumero4.set(2, (grupoNumero4.get(2) * (cantidadNumeros.get(4) - 1) + car3p) / cantidadNumeros.get(4));
+                        break;
+                    case 5:
+                        cantidadNumeros.set(5, cantidadNumeros.get(5) + 1);
 
-                 grupoNumero3.set(0, (grupoNumero3.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero3.set(1, (grupoNumero3.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero3.set(2, (grupoNumero3.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
+                        grupoNumero5.set(0, (grupoNumero5.get(0) * (cantidadNumeros.get(5) - 1) + car1) / cantidadNumeros.get(5));
+                        grupoNumero5.set(1, (grupoNumero5.get(1) * (cantidadNumeros.get(5) - 1) + car2p) / cantidadNumeros.get(5));
+                        grupoNumero5.set(2, (grupoNumero5.get(2) * (cantidadNumeros.get(5) - 1) + car3p) / cantidadNumeros.get(5));
+                        break;
+                    case 6:
+                        cantidadNumeros.set(6, cantidadNumeros.get(6) + 1);
 
-                 case 4:
-                 cantidadNumeros.set(4, cantidadNumeros.get(4) + 1);
+                        grupoNumero7.set(0, (grupoNumero7.get(0) * (cantidadNumeros.get(6) - 1) + car1) / cantidadNumeros.get(6));
+                        grupoNumero7.set(1, (grupoNumero7.get(1) * (cantidadNumeros.get(6) - 1) + car2p) / cantidadNumeros.get(6));
+                        grupoNumero7.set(2, (grupoNumero7.get(2) * (cantidadNumeros.get(6) - 1) + car3p) / cantidadNumeros.get(6));
+                        break;
+                    case 7:
+                        cantidadNumeros.set(7, cantidadNumeros.get(7) + 1);
 
-                 grupoNumero4.set(0, (grupoNumero4.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero4.set(1, (grupoNumero4.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero4.set(2, (grupoNumero4.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
+                        grupoNumero1.set(0, (grupoNumero1.get(0) * (cantidadNumeros.get(7) - 1) + car1) / cantidadNumeros.get(7));
+                        grupoNumero1.set(1, (grupoNumero1.get(1) * (cantidadNumeros.get(7) - 1) + car2p) / cantidadNumeros.get(7));
+                        grupoNumero1.set(2, (grupoNumero1.get(2) * (cantidadNumeros.get(7) - 1) + car3p) / cantidadNumeros.get(7));
+                        break;
+                    case 8:
+                        cantidadNumeros.set(8, cantidadNumeros.get(8) + 1);
 
-                 case 5:
-                 cantidadNumeros.set(5, cantidadNumeros.get(5) + 1);
+                        grupoNumero8.set(0, (grupoNumero8.get(0) * (cantidadNumeros.get(8) - 1) + car1) / cantidadNumeros.get(8));
+                        grupoNumero8.set(1, (grupoNumero8.get(1) * (cantidadNumeros.get(8) - 1) + car2p) / cantidadNumeros.get(8));
+                        grupoNumero8.set(2, (grupoNumero8.get(2) * (cantidadNumeros.get(8) - 1) + car3p) / cantidadNumeros.get(8));
+                        break;
+                    case 9:
+                        cantidadNumeros.set(9, cantidadNumeros.get(9) + 1);
 
-                 grupoNumero5.set(0, (grupoNumero5.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero5.set(1, (grupoNumero5.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero5.set(2, (grupoNumero5.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
+                        grupoNumero9.set(0, (grupoNumero9.get(0) * (cantidadNumeros.get(9) - 1) + car1) / cantidadNumeros.get(9));
+                        grupoNumero9.set(1, (grupoNumero9.get(1) * (cantidadNumeros.get(9) - 1) + car2p) / cantidadNumeros.get(9));
+                        grupoNumero9.set(2, (grupoNumero9.get(2) * (cantidadNumeros.get(9) - 1) + car3p) / cantidadNumeros.get(9));
+                        break;
+                }
 
-                 case 6:
-                 cantidadNumeros.set(6, cantidadNumeros.get(6) + 1);
-
-                 grupoNumero7.set(0, (grupoNumero7.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero7.set(1, (grupoNumero7.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero7.set(2, (grupoNumero7.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
-
-                 case 7:
-                 cantidadNumeros.set(7, cantidadNumeros.get(7) + 1);
-
-                 grupoNumero1.set(0, (grupoNumero1.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero1.set(1, (grupoNumero1.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero1.set(2, (grupoNumero1.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
-
-                 case 8:
-                 cantidadNumeros.set(8, cantidadNumeros.get(8) + 1);
-
-                 grupoNumero8.set(0, (grupoNumero8.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero8.set(1, (grupoNumero8.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero8.set(2, (grupoNumero8.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
-                 case 9:
-                 cantidadNumeros.set(9, cantidadNumeros.get(9) + 1);
-
-                 grupoNumero9.set(0, (grupoNumero9.get(0) * (cantidadNumeros.get(0) - 1) + car1) / cantidadNumeros.get(0));
-                 grupoNumero9.set(1, (grupoNumero9.get(1) * (cantidadNumeros.get(1) - 1) + car2) / cantidadNumeros.get(1));
-                 grupoNumero9.set(2, (grupoNumero9.get(2) * (cantidadNumeros.get(2) - 1) + car3) / cantidadNumeros.get(2));
-                 }
-                 */
             }
             Collections.sort(output);
             for (String s : output) {
