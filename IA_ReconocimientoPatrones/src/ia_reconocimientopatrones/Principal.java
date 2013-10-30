@@ -23,5 +23,6 @@ public class Principal {
         
         AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
         algoritmo.ProcesarDatos(nroImagenes, imagenesArray, labelsArray);
+        algoritmo.ProcesarIrisFlowersDataSet();
     }
 }

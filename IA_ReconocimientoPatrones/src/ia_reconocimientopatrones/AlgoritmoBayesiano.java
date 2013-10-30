@@ -4,6 +4,9 @@
  */
 package ia_reconocimientopatrones;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -135,63 +138,54 @@ public class AlgoritmoBayesiano {
                         break;
                     case 1:
                         cantidadNumeros.set(1, cantidadNumeros.get(1) + 1);
-
                         grupoNumero1.set(0, (grupoNumero1.get(0) * (cantidadNumeros.get(1) - 1) + car1) / cantidadNumeros.get(1));
                         grupoNumero1.set(1, (grupoNumero1.get(1) * (cantidadNumeros.get(1) - 1) + car2p) / cantidadNumeros.get(1));
                         grupoNumero1.set(2, (grupoNumero1.get(2) * (cantidadNumeros.get(1) - 1) + car3p) / cantidadNumeros.get(1));
                         break;
                     case 2:
                         cantidadNumeros.set(2, cantidadNumeros.get(2) + 1);
-
                         grupoNumero2.set(0, (grupoNumero2.get(0) * (cantidadNumeros.get(2) - 1) + car1) / cantidadNumeros.get(2));
                         grupoNumero2.set(1, (grupoNumero2.get(1) * (cantidadNumeros.get(2) - 1) + car2p) / cantidadNumeros.get(2));
                         grupoNumero2.set(2, (grupoNumero2.get(2) * (cantidadNumeros.get(2) - 1) + car3p) / cantidadNumeros.get(2));
                         break;
                     case 3:
                         cantidadNumeros.set(3, cantidadNumeros.get(3) + 1);
-
                         grupoNumero3.set(0, (grupoNumero3.get(0) * (cantidadNumeros.get(3) - 1) + car1) / cantidadNumeros.get(3));
                         grupoNumero3.set(1, (grupoNumero3.get(1) * (cantidadNumeros.get(3) - 1) + car2p) / cantidadNumeros.get(3));
                         grupoNumero3.set(2, (grupoNumero3.get(2) * (cantidadNumeros.get(3) - 1) + car3p) / cantidadNumeros.get(3));
                         break;
                     case 4:
                         cantidadNumeros.set(4, cantidadNumeros.get(4) + 1);
-
                         grupoNumero4.set(0, (grupoNumero4.get(0) * (cantidadNumeros.get(4) - 1) + car1) / cantidadNumeros.get(4));
                         grupoNumero4.set(1, (grupoNumero4.get(1) * (cantidadNumeros.get(4) - 1) + car2p) / cantidadNumeros.get(4));
                         grupoNumero4.set(2, (grupoNumero4.get(2) * (cantidadNumeros.get(4) - 1) + car3p) / cantidadNumeros.get(4));
                         break;
                     case 5:
                         cantidadNumeros.set(5, cantidadNumeros.get(5) + 1);
-
                         grupoNumero5.set(0, (grupoNumero5.get(0) * (cantidadNumeros.get(5) - 1) + car1) / cantidadNumeros.get(5));
                         grupoNumero5.set(1, (grupoNumero5.get(1) * (cantidadNumeros.get(5) - 1) + car2p) / cantidadNumeros.get(5));
                         grupoNumero5.set(2, (grupoNumero5.get(2) * (cantidadNumeros.get(5) - 1) + car3p) / cantidadNumeros.get(5));
                         break;
                     case 6:
                         cantidadNumeros.set(6, cantidadNumeros.get(6) + 1);
-
-                        grupoNumero7.set(0, (grupoNumero7.get(0) * (cantidadNumeros.get(6) - 1) + car1) / cantidadNumeros.get(6));
-                        grupoNumero7.set(1, (grupoNumero7.get(1) * (cantidadNumeros.get(6) - 1) + car2p) / cantidadNumeros.get(6));
-                        grupoNumero7.set(2, (grupoNumero7.get(2) * (cantidadNumeros.get(6) - 1) + car3p) / cantidadNumeros.get(6));
+                        grupoNumero6.set(0, (grupoNumero6.get(0) * (cantidadNumeros.get(6) - 1) + car1) / cantidadNumeros.get(6));
+                        grupoNumero6.set(1, (grupoNumero6.get(1) * (cantidadNumeros.get(6) - 1) + car2p) / cantidadNumeros.get(6));
+                        grupoNumero6.set(2, (grupoNumero6.get(2) * (cantidadNumeros.get(6) - 1) + car3p) / cantidadNumeros.get(6));
                         break;
                     case 7:
                         cantidadNumeros.set(7, cantidadNumeros.get(7) + 1);
-
-                        grupoNumero1.set(0, (grupoNumero1.get(0) * (cantidadNumeros.get(7) - 1) + car1) / cantidadNumeros.get(7));
-                        grupoNumero1.set(1, (grupoNumero1.get(1) * (cantidadNumeros.get(7) - 1) + car2p) / cantidadNumeros.get(7));
-                        grupoNumero1.set(2, (grupoNumero1.get(2) * (cantidadNumeros.get(7) - 1) + car3p) / cantidadNumeros.get(7));
+                        grupoNumero7.set(0, (grupoNumero7.get(0) * (cantidadNumeros.get(7) - 1) + car1) / cantidadNumeros.get(7));
+                        grupoNumero7.set(1, (grupoNumero7.get(1) * (cantidadNumeros.get(7) - 1) + car2p) / cantidadNumeros.get(7));
+                        grupoNumero7.set(2, (grupoNumero7.get(2) * (cantidadNumeros.get(7) - 1) + car3p) / cantidadNumeros.get(7));
                         break;
                     case 8:
                         cantidadNumeros.set(8, cantidadNumeros.get(8) + 1);
-
                         grupoNumero8.set(0, (grupoNumero8.get(0) * (cantidadNumeros.get(8) - 1) + car1) / cantidadNumeros.get(8));
                         grupoNumero8.set(1, (grupoNumero8.get(1) * (cantidadNumeros.get(8) - 1) + car2p) / cantidadNumeros.get(8));
                         grupoNumero8.set(2, (grupoNumero8.get(2) * (cantidadNumeros.get(8) - 1) + car3p) / cantidadNumeros.get(8));
                         break;
                     case 9:
                         cantidadNumeros.set(9, cantidadNumeros.get(9) + 1);
-
                         grupoNumero9.set(0, (grupoNumero9.get(0) * (cantidadNumeros.get(9) - 1) + car1) / cantidadNumeros.get(9));
                         grupoNumero9.set(1, (grupoNumero9.get(1) * (cantidadNumeros.get(9) - 1) + car2p) / cantidadNumeros.get(9));
                         grupoNumero9.set(2, (grupoNumero9.get(2) * (cantidadNumeros.get(9) - 1) + car3p) / cantidadNumeros.get(9));
@@ -207,6 +201,85 @@ public class AlgoritmoBayesiano {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+    }
+
+    public void ProcesarIrisFlowersDataSet() {
+        //Son 3 especies de flores
+        ArrayList<Double> mediasEspecie1 = new ArrayList<>();
+        ArrayList<Double> mediasEspecie2 = new ArrayList<>();
+        ArrayList<Double> mediasEspecie3 = new ArrayList<>();
+        ArrayList<Double> listaCaracteristicas = new ArrayList<>();
+        int nroCaracteristicas = 4;
+        for (int i = 0; i < nroCaracteristicas; i++) {
+            mediasEspecie1.add(0.0);
+            mediasEspecie2.add(0.0);
+            mediasEspecie3.add(0.0);
+            listaCaracteristicas.add(0.0);
+        }
+        ArrayList<Integer> cantidadFloresXTipo = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            cantidadFloresXTipo.add(0);
+        }
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("C:/Users/Christian/Documents/PUCP/2013-2/APLICACIONES DE CIENCIAS DE LA COMPUTACIÓN/Tarea Académica 2/iris flower data set.txt"));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\t");
+                for (int i = 0; i < nroCaracteristicas; i++) {
+                    listaCaracteristicas.set(i, Double.valueOf(parts[i]));                    
+                }
+                String especie = parts[4];
+
+                switch (especie) {
+                    case "I. setosa":
+                        cantidadFloresXTipo.set(0, cantidadFloresXTipo.get(0) + 1);
+                        // PARA N-CARACTERÍSTICAS
+                        for (int i = 0; i < nroCaracteristicas; i++) {
+                            double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+                            mediasEspecie1.set(i, (mediasEspecie1.get(i) * (cantidadFloresXTipo.get(0) - 1) + valorCar) / cantidadFloresXTipo.get(0));
+                        }
+                        break;
+                    case "I. versicolor":
+                        cantidadFloresXTipo.set(1, cantidadFloresXTipo.get(1) + 1);
+                        // PARA N-CARACTERÍSTICAS
+                        for (int i = 0; i < nroCaracteristicas; i++) {
+                            double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+                            mediasEspecie2.set(i, (mediasEspecie2.get(i) * (cantidadFloresXTipo.get(1) - 1) + valorCar) / cantidadFloresXTipo.get(1));
+                        }
+                        break;
+                    case "I. virginica":
+                        cantidadFloresXTipo.set(2, cantidadFloresXTipo.get(2) + 1);
+                        // PARA N-CARACTERÍSTICAS
+                        for (int i = 0; i < nroCaracteristicas; i++) {
+                            double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+                            mediasEspecie3.set(i, (mediasEspecie3.get(i) * (cantidadFloresXTipo.get(2) - 1) + valorCar) / cantidadFloresXTipo.get(2));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            System.out.print("Medias Especie 1");
+            for (Double media : mediasEspecie1) {
+                System.out.print(media + " ");
+            }
+            System.out.println();
+            System.out.print("Medias Especie 2");
+            for (Double media : mediasEspecie2) {
+                System.out.print(media + " ");
+            }
+            System.out.println();
+            System.out.print("Medias Especie 3");
+            for (Double media : mediasEspecie3) {
+                System.out.print(media + " ");
+            }
+            System.out.println();
+        } catch (IOException | NumberFormatException e) {
+            System.out.println(e.toString());
+        }
+
+
     }
 
     private int[][] RemoverPadding4(int[][] pixeles) {
