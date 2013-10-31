@@ -19,10 +19,11 @@ public class Principal {
         
         GeneradorImagenes generador = new GeneradorImagenes(imagenesArray, labelsArray, RUTA_DE_GUARDADO);
         int nroImagenes = 50; //para las primeras 50
-        generador.GenerarImagenes(nroImagenes);
+        //generador.GenerarImagenes(nroImagenes);
         
         AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
         algoritmo.ProcesarDatos(nroImagenes, imagenesArray, labelsArray);
-        algoritmo.ProcesarIrisFlowersDataSet();
+        //algoritmo.ProcesarIrisFlowersDataSet();
+        algoritmo.Formula();
     }
 }
