@@ -13,6 +13,7 @@ import org.apache.commons.math3.stat.correlation.Covariance;
 
 public class AlgoritmoBayesiano {
 
+    // <editor-fold defaultstate="collapsed" desc="ATRIBUTOS">                
     private ArrayList<Double> mediasGrupoNumero0;
     private ArrayList<Double> mediasGrupoNumero1;
     private ArrayList<Double> mediasGrupoNumero2;
@@ -46,6 +47,17 @@ public class AlgoritmoBayesiano {
     private ArrayList<Integer> cantidadNumeros;
     private int nroCaracteristicas;
     private ArrayList<Double> listaCaracteristicas;
+    double[][] covMatrix0;
+    double[][] covMatrix1;
+    double[][] covMatrix2;
+    double[][] covMatrix3;
+    double[][] covMatrix4;
+    double[][] covMatrix5;
+    double[][] covMatrix6;
+    double[][] covMatrix7;
+    double[][] covMatrix8;
+    double[][] covMatrix9;
+    // </editor-fold>
 
     public AlgoritmoBayesiano() {
         nroCaracteristicas = 3; //3 características: nros 1's, simetría horizontal, y simetría vertical
@@ -108,17 +120,6 @@ public class AlgoritmoBayesiano {
             double[][] matrixaux8 = new double[matrizValoresGrupo8.size()][matrizValoresGrupo8.get(0).size()];
             double[][] matrixaux9 = new double[matrizValoresGrupo9.size()][matrizValoresGrupo9.get(0).size()];
 
-            double[][] covMatrix0;
-            double[][] covMatrix1;
-            double[][] covMatrix2;
-            double[][] covMatrix3;
-            double[][] covMatrix4;
-            double[][] covMatrix5;
-            double[][] covMatrix6;
-            double[][] covMatrix7;
-            double[][] covMatrix8;
-            double[][] covMatrix9;
-
             RealMatrix rMatrix0;
             RealMatrix rMatrix1;
             RealMatrix rMatrix2;
@@ -131,24 +132,17 @@ public class AlgoritmoBayesiano {
             RealMatrix rMatrix9;
 
             //para el grupo 0
-
             for (int u = 0; u < matrizValoresGrupo0.size(); u++) {
                 for (int v = 0; v < matrizValoresGrupo0.get(u).size(); v++) {
                     matrixaux0[u][v] = matrizValoresGrupo0.get(u).get(v);
                 }
             }
-
             Covariance cov0 = new Covariance(matrixaux0, false);
-
             rMatrix0 = cov0.getCovarianceMatrix();
-
             covMatrix0 = rMatrix0.getData();
-
             NumberFormat nf0 = NumberFormat.getInstance();
             nf0.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 0" + "\n");
-
             for (int i = 0; i < covMatrix0.length; i++) {
                 for (int k = 0; k < covMatrix0.length; k++) {
                     System.out.print(nf0.format(covMatrix0[i][k]) + "  ");
@@ -162,18 +156,12 @@ public class AlgoritmoBayesiano {
                     matrixaux1[u][v] = matrizValoresGrupo1.get(u).get(v);
                 }
             }
-
             Covariance cov1 = new Covariance(matrixaux1, false);
-
             rMatrix1 = cov1.getCovarianceMatrix();
-
             covMatrix1 = rMatrix1.getData();
-
             NumberFormat nf1 = NumberFormat.getInstance();
             nf1.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 1" + "\n");
-
             for (int i = 0; i < covMatrix1.length; i++) {
                 for (int k = 0; k < covMatrix1.length; k++) {
                     System.out.print(nf1.format(covMatrix1[i][k]) + "  ");
@@ -187,18 +175,12 @@ public class AlgoritmoBayesiano {
                     matrixaux2[u][v] = matrizValoresGrupo2.get(u).get(v);
                 }
             }
-
             Covariance cov2 = new Covariance(matrixaux2, false);
-
             rMatrix2 = cov2.getCovarianceMatrix();
-
             covMatrix2 = rMatrix2.getData();
-
             NumberFormat nf2 = NumberFormat.getInstance();
             nf2.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 2" + "\n");
-
             for (int i = 0; i < covMatrix2.length; i++) {
                 for (int k = 0; k < covMatrix2.length; k++) {
                     System.out.print(nf2.format(covMatrix2[i][k]) + "  ");
@@ -212,18 +194,12 @@ public class AlgoritmoBayesiano {
                     matrixaux3[u][v] = matrizValoresGrupo3.get(u).get(v);
                 }
             }
-
             Covariance cov3 = new Covariance(matrixaux3, false);
-
             rMatrix3 = cov3.getCovarianceMatrix();
-
             covMatrix3 = rMatrix3.getData();
-
             NumberFormat nf3 = NumberFormat.getInstance();
             nf3.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 3" + "\n");
-
             for (int i = 0; i < covMatrix3.length; i++) {
                 for (int k = 0; k < covMatrix3.length; k++) {
                     System.out.print(nf3.format(covMatrix3[i][k]) + "  ");
@@ -237,18 +213,12 @@ public class AlgoritmoBayesiano {
                     matrixaux4[u][v] = matrizValoresGrupo4.get(u).get(v);
                 }
             }
-
             Covariance cov4 = new Covariance(matrixaux4, false);
-
             rMatrix4 = cov4.getCovarianceMatrix();
-
             covMatrix4 = rMatrix4.getData();
-
             NumberFormat nf4 = NumberFormat.getInstance();
             nf4.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 4" + "\n");
-
             for (int i = 0; i < covMatrix4.length; i++) {
                 for (int k = 0; k < covMatrix4.length; k++) {
                     System.out.print(nf4.format(covMatrix4[i][k]) + "  ");
@@ -256,25 +226,18 @@ public class AlgoritmoBayesiano {
                 System.out.println();
             }
 
-
             //para el numero 5
             for (int u = 0; u < matrizValoresGrupo5.size(); u++) {
                 for (int v = 0; v < matrizValoresGrupo5.get(u).size(); v++) {
                     matrixaux5[u][v] = matrizValoresGrupo5.get(u).get(v);
                 }
             }
-
             Covariance cov5 = new Covariance(matrixaux5, false);
-
             rMatrix5 = cov5.getCovarianceMatrix();
-
             covMatrix5 = rMatrix5.getData();
-
             NumberFormat nf5 = NumberFormat.getInstance();
             nf5.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 5" + "\n");
-
             for (int i = 0; i < covMatrix5.length; i++) {
                 for (int k = 0; k < covMatrix5.length; k++) {
                     System.out.print(nf5.format(covMatrix5[i][k]) + "  ");
@@ -288,18 +251,12 @@ public class AlgoritmoBayesiano {
                     matrixaux6[u][v] = matrizValoresGrupo6.get(u).get(v);
                 }
             }
-
             Covariance cov6 = new Covariance(matrixaux6, false);
-
             rMatrix6 = cov6.getCovarianceMatrix();
-
             covMatrix6 = rMatrix6.getData();
-
             NumberFormat nf6 = NumberFormat.getInstance();
             nf6.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 6" + "\n");
-
             for (int i = 0; i < covMatrix6.length; i++) {
                 for (int k = 0; k < covMatrix6.length; k++) {
                     System.out.print(nf6.format(covMatrix6[i][k]) + "  ");
@@ -313,18 +270,12 @@ public class AlgoritmoBayesiano {
                     matrixaux7[u][v] = matrizValoresGrupo7.get(u).get(v);
                 }
             }
-
             Covariance cov7 = new Covariance(matrixaux7, false);
-
             rMatrix7 = cov7.getCovarianceMatrix();
-
             covMatrix7 = rMatrix7.getData();
-
             NumberFormat nf7 = NumberFormat.getInstance();
             nf7.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 7" + "\n");
-
             for (int i = 0; i < covMatrix7.length; i++) {
                 for (int k = 0; k < covMatrix7.length; k++) {
                     System.out.print(nf7.format(covMatrix7[i][k]) + "  ");
@@ -338,18 +289,12 @@ public class AlgoritmoBayesiano {
                     matrixaux8[u][v] = matrizValoresGrupo8.get(u).get(v);
                 }
             }
-
             Covariance cov8 = new Covariance(matrixaux8, false);
-
             rMatrix8 = cov8.getCovarianceMatrix();
-
             covMatrix8 = rMatrix8.getData();
-
             NumberFormat nf8 = NumberFormat.getInstance();
             nf8.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 8" + "\n");
-
             for (int i = 0; i < covMatrix8.length; i++) {
                 for (int k = 0; k < covMatrix8.length; k++) {
                     System.out.print(nf8.format(covMatrix8[i][k]) + "  ");
@@ -363,18 +308,12 @@ public class AlgoritmoBayesiano {
                     matrixaux9[u][v] = matrizValoresGrupo9.get(u).get(v);
                 }
             }
-
             Covariance cov9 = new Covariance(matrixaux9, false);
-
             rMatrix9 = cov9.getCovarianceMatrix();
-
             covMatrix9 = rMatrix9.getData();
-
             NumberFormat nf9 = NumberFormat.getInstance();
             nf9.setMaximumFractionDigits(2);
-
             System.out.print("Grupo 9" + "\n");
-
             for (int i = 0; i < covMatrix9.length; i++) {
                 for (int k = 0; k < covMatrix9.length; k++) {
                     System.out.print(nf9.format(covMatrix9[i][k]) + "  ");
@@ -384,7 +323,6 @@ public class AlgoritmoBayesiano {
 
             int d = 3; //dimension del vector de caracteristicas hasta ahora 3 caracteristicas
             //interpretar bien el uso de la matriz de medias con el X, en la formula general
-
 
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -543,11 +481,11 @@ public class AlgoritmoBayesiano {
                 }
                 // </editor-fold>
             }
-            Collections.sort(output);
-            System.out.println("Label\t1's\tSimV\tSimH");
-            for (String s : output) {
-                System.out.println(s);
-            }
+//            Collections.sort(output);
+//            System.out.println("Label\t1's\tSimV\tSimH");
+//            for (String s : output) {
+//                System.out.println(s);
+//            }
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -632,6 +570,7 @@ public class AlgoritmoBayesiano {
 
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HELPERS">
     private int[][] RemoverPadding4(int[][] pixeles) {
         int[][] pixelesTrimeados = new int[20][20];
         int height = pixeles.length;
@@ -651,8 +590,9 @@ public class AlgoritmoBayesiano {
     public int UnsignedToBytes(byte b) {
         return b & 0xFF;
     }
+    // </editor-fold>
 
-    //Caracteristicas
+    // <editor-fold defaultstate="collapsed" desc="CARACTERISTICAS">
     //NUMERO DE 1's EN LA MATRIZ
     private int CalcularCaracteristica1(int[][] pixeles) {
         int height = pixeles.length;
@@ -767,4 +707,12 @@ public class AlgoritmoBayesiano {
         }
         return Math.abs(nro1sIzquierda - nro1sDerecha);
     }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="FUNCIONES DISCRIMINANTES g(x)">
+
+    public double FuncionDiscriminanteGrupo0() {
+        
+        return 0.0;
+    }
+    // </editor-fold>
 }
