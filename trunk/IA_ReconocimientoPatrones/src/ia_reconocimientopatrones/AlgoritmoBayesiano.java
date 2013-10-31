@@ -5,9 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
@@ -104,229 +101,47 @@ public class AlgoritmoBayesiano {
         matrizValoresGrupo9 = new ArrayList<>(6000);
     }
 
-    public void Formula() {
+    public void ExtraerMatricesCovarianzas() {
         try {
-            //calcular matriz de covarianza
-            //calcular la matriz de covarianza inversa
-            //utilizo el arreglo de medias, en este caso para el numero 0 mediasGrupoNumero0
-            double[][] matrixaux0 = new double[matrizValoresGrupo0.size()][matrizValoresGrupo0.get(0).size()];
-            double[][] matrixaux1 = new double[matrizValoresGrupo1.size()][matrizValoresGrupo1.get(0).size()];
-            double[][] matrixaux2 = new double[matrizValoresGrupo2.size()][matrizValoresGrupo2.get(0).size()];
-            double[][] matrixaux3 = new double[matrizValoresGrupo3.size()][matrizValoresGrupo3.get(0).size()];
-            double[][] matrixaux4 = new double[matrizValoresGrupo4.size()][matrizValoresGrupo4.get(0).size()];
-            double[][] matrixaux5 = new double[matrizValoresGrupo5.size()][matrizValoresGrupo5.get(0).size()];
-            double[][] matrixaux6 = new double[matrizValoresGrupo6.size()][matrizValoresGrupo6.get(0).size()];
-            double[][] matrixaux7 = new double[matrizValoresGrupo7.size()][matrizValoresGrupo7.get(0).size()];
-            double[][] matrixaux8 = new double[matrizValoresGrupo8.size()][matrizValoresGrupo8.get(0).size()];
-            double[][] matrixaux9 = new double[matrizValoresGrupo9.size()][matrizValoresGrupo9.get(0).size()];
-
-            RealMatrix rMatrix0;
-            RealMatrix rMatrix1;
-            RealMatrix rMatrix2;
-            RealMatrix rMatrix3;
-            RealMatrix rMatrix4;
-            RealMatrix rMatrix5;
-            RealMatrix rMatrix6;
-            RealMatrix rMatrix7;
-            RealMatrix rMatrix8;
-            RealMatrix rMatrix9;
-
-            //para el grupo 0
-            for (int u = 0; u < matrizValoresGrupo0.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo0.get(u).size(); v++) {
-                    matrixaux0[u][v] = matrizValoresGrupo0.get(u).get(v);
-                }
-            }
-            Covariance cov0 = new Covariance(matrixaux0, false);
-            rMatrix0 = cov0.getCovarianceMatrix();
-            covMatrix0 = rMatrix0.getData();
-            
-            rMatrix0.transpose();                        
-            
-            NumberFormat nf0 = NumberFormat.getInstance();
-            nf0.setMaximumFractionDigits(2);
+            covMatrix0 = MatrizCovarianza(matrizValoresGrupo0);
             System.out.print("Grupo 0" + "\n");
-            for (int i = 0; i < covMatrix0.length; i++) {
-                for (int k = 0; k < covMatrix0.length; k++) {
-                    System.out.print(nf0.format(covMatrix0[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix0);
 
-            //para el numero 1
-            for (int u = 0; u < matrizValoresGrupo1.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo1.get(u).size(); v++) {
-                    matrixaux1[u][v] = matrizValoresGrupo1.get(u).get(v);
-                }
-            }
-            Covariance cov1 = new Covariance(matrixaux1, false);
-            rMatrix1 = cov1.getCovarianceMatrix();
-            covMatrix1 = rMatrix1.getData();
-            NumberFormat nf1 = NumberFormat.getInstance();
-            nf1.setMaximumFractionDigits(2);
+            covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
             System.out.print("Grupo 1" + "\n");
-            for (int i = 0; i < covMatrix1.length; i++) {
-                for (int k = 0; k < covMatrix1.length; k++) {
-                    System.out.print(nf1.format(covMatrix1[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix1);
 
-            //para el numero 2
-            for (int u = 0; u < matrizValoresGrupo2.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo2.get(u).size(); v++) {
-                    matrixaux2[u][v] = matrizValoresGrupo2.get(u).get(v);
-                }
-            }
-            Covariance cov2 = new Covariance(matrixaux2, false);
-            rMatrix2 = cov2.getCovarianceMatrix();
-            covMatrix2 = rMatrix2.getData();
-            NumberFormat nf2 = NumberFormat.getInstance();
-            nf2.setMaximumFractionDigits(2);
+            covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
             System.out.print("Grupo 2" + "\n");
-            for (int i = 0; i < covMatrix2.length; i++) {
-                for (int k = 0; k < covMatrix2.length; k++) {
-                    System.out.print(nf2.format(covMatrix2[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix2);
 
-            //para el numero 3
-            for (int u = 0; u < matrizValoresGrupo3.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo3.get(u).size(); v++) {
-                    matrixaux3[u][v] = matrizValoresGrupo3.get(u).get(v);
-                }
-            }
-            Covariance cov3 = new Covariance(matrixaux3, false);
-            rMatrix3 = cov3.getCovarianceMatrix();
-            covMatrix3 = rMatrix3.getData();
-            NumberFormat nf3 = NumberFormat.getInstance();
-            nf3.setMaximumFractionDigits(2);
+            covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
             System.out.print("Grupo 3" + "\n");
-            for (int i = 0; i < covMatrix3.length; i++) {
-                for (int k = 0; k < covMatrix3.length; k++) {
-                    System.out.print(nf3.format(covMatrix3[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix3);
 
-            //para el numero 4
-            for (int u = 0; u < matrizValoresGrupo4.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo4.get(u).size(); v++) {
-                    matrixaux4[u][v] = matrizValoresGrupo4.get(u).get(v);
-                }
-            }
-            Covariance cov4 = new Covariance(matrixaux4, false);
-            rMatrix4 = cov4.getCovarianceMatrix();
-            covMatrix4 = rMatrix4.getData();
-            NumberFormat nf4 = NumberFormat.getInstance();
-            nf4.setMaximumFractionDigits(2);
+            covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
             System.out.print("Grupo 4" + "\n");
-            for (int i = 0; i < covMatrix4.length; i++) {
-                for (int k = 0; k < covMatrix4.length; k++) {
-                    System.out.print(nf4.format(covMatrix4[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix4);
 
-            //para el numero 5
-            for (int u = 0; u < matrizValoresGrupo5.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo5.get(u).size(); v++) {
-                    matrixaux5[u][v] = matrizValoresGrupo5.get(u).get(v);
-                }
-            }
-            Covariance cov5 = new Covariance(matrixaux5, false);
-            rMatrix5 = cov5.getCovarianceMatrix();
-            covMatrix5 = rMatrix5.getData();
-            NumberFormat nf5 = NumberFormat.getInstance();
-            nf5.setMaximumFractionDigits(2);
+            covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
             System.out.print("Grupo 5" + "\n");
-            for (int i = 0; i < covMatrix5.length; i++) {
-                for (int k = 0; k < covMatrix5.length; k++) {
-                    System.out.print(nf5.format(covMatrix5[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix5);
 
-            //para el numero 6
-            for (int u = 0; u < matrizValoresGrupo6.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo6.get(u).size(); v++) {
-                    matrixaux6[u][v] = matrizValoresGrupo6.get(u).get(v);
-                }
-            }
-            Covariance cov6 = new Covariance(matrixaux6, false);
-            rMatrix6 = cov6.getCovarianceMatrix();
-            covMatrix6 = rMatrix6.getData();
-            NumberFormat nf6 = NumberFormat.getInstance();
-            nf6.setMaximumFractionDigits(2);
+            covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
             System.out.print("Grupo 6" + "\n");
-            for (int i = 0; i < covMatrix6.length; i++) {
-                for (int k = 0; k < covMatrix6.length; k++) {
-                    System.out.print(nf6.format(covMatrix6[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix6);
 
-            //para el numero 7
-            for (int u = 0; u < matrizValoresGrupo7.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo7.get(u).size(); v++) {
-                    matrixaux7[u][v] = matrizValoresGrupo7.get(u).get(v);
-                }
-            }
-            Covariance cov7 = new Covariance(matrixaux7, false);
-            rMatrix7 = cov7.getCovarianceMatrix();
-            covMatrix7 = rMatrix7.getData();
-            NumberFormat nf7 = NumberFormat.getInstance();
-            nf7.setMaximumFractionDigits(2);
+            covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
             System.out.print("Grupo 7" + "\n");
-            for (int i = 0; i < covMatrix7.length; i++) {
-                for (int k = 0; k < covMatrix7.length; k++) {
-                    System.out.print(nf7.format(covMatrix7[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix7);
 
-            //para el numero 8
-            for (int u = 0; u < matrizValoresGrupo8.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo8.get(u).size(); v++) {
-                    matrixaux8[u][v] = matrizValoresGrupo8.get(u).get(v);
-                }
-            }
-            Covariance cov8 = new Covariance(matrixaux8, false);
-            rMatrix8 = cov8.getCovarianceMatrix();
-            covMatrix8 = rMatrix8.getData();
-            NumberFormat nf8 = NumberFormat.getInstance();
-            nf8.setMaximumFractionDigits(2);
+            covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
             System.out.print("Grupo 8" + "\n");
-            for (int i = 0; i < covMatrix8.length; i++) {
-                for (int k = 0; k < covMatrix8.length; k++) {
-                    System.out.print(nf8.format(covMatrix8[i][k]) + "  ");
-                }
-                System.out.println();
-            }
+            ImprimirMatrizCovarianza(covMatrix8);
 
-            //para el numero 9
-            for (int u = 0; u < matrizValoresGrupo9.size(); u++) {
-                for (int v = 0; v < matrizValoresGrupo9.get(u).size(); v++) {
-                    matrixaux9[u][v] = matrizValoresGrupo9.get(u).get(v);
-                }
-            }
-            Covariance cov9 = new Covariance(matrixaux9, false);
-            rMatrix9 = cov9.getCovarianceMatrix();
-            covMatrix9 = rMatrix9.getData();
-            NumberFormat nf9 = NumberFormat.getInstance();
-            nf9.setMaximumFractionDigits(2);
+            covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
             System.out.print("Grupo 9" + "\n");
-            for (int i = 0; i < covMatrix9.length; i++) {
-                for (int k = 0; k < covMatrix9.length; k++) {
-                    System.out.print(nf9.format(covMatrix9[i][k]) + "  ");
-                }
-                System.out.println();
-            }
-
-            int d = 3; //dimension del vector de caracteristicas hasta ahora 3 caracteristicas
-            //interpretar bien el uso de la matriz de medias con el X, en la formula general
-
+            ImprimirMatrizCovarianza(covMatrix9);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -369,7 +184,7 @@ public class AlgoritmoBayesiano {
                     output.add(num + "\t" + car1 + "\t" + car2 + "\t" + car3);
                 }
 
-                // <editor-fold defaultstate="collapsed" desc="ALMACENAMIENTO DE LAS NUEVAS MEDIAS">
+                // <editor-fold defaultstate="collapsed" desc="ALMACENAMIENTO DE LAS MEDIAS">
                 switch (num) {
                     case 0:
                         cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
@@ -496,10 +311,20 @@ public class AlgoritmoBayesiano {
 
     public void ProcesarIrisFlowersDataSet() {
         //Son 3 especies de flores
-        ArrayList<Double> mediasEspecie1 = new ArrayList<>();
-        ArrayList<Double> mediasEspecie2 = new ArrayList<>();
-        ArrayList<Double> mediasEspecie3 = new ArrayList<>();
-        ArrayList<Double> listaCaracteristicas = new ArrayList<>();
+        ArrayList<Double> mediasEspecie1 = new ArrayList<>(4);
+        ArrayList<Double> mediasEspecie2 = new ArrayList<>(4);
+        ArrayList<Double> mediasEspecie3 = new ArrayList<>(4);
+        ArrayList<Double> listaCaracteristicas = new ArrayList<>(4);
+        ArrayList<Double> valoresGrupoSetosa;
+        ArrayList<Double> valoresGrupoVersicolor;
+        ArrayList<Double> valoresGrupoVirginica;
+        ArrayList<ArrayList<Double>> matrizValoresGrupoSetosa = new ArrayList<>(50);
+        ArrayList<ArrayList<Double>> matrizValoresGrupoVersicolor = new ArrayList<>(50);
+        ArrayList<ArrayList<Double>> matrizValoresGrupoVirginica = new ArrayList<>(50);
+        double[][] matrizCovGrupoSetosa;
+        double[][] matrizCovGrupoVersicolor;
+        double[][] matrizCovGrupoVirginica;
+
         int nroCaracteristicas = 4;
         for (int i = 0; i < nroCaracteristicas; i++) {
             mediasEspecie1.add(0.0);
@@ -525,27 +350,36 @@ public class AlgoritmoBayesiano {
                 switch (especie) {
                     case "I. setosa":
                         cantidadFloresXTipo.set(0, cantidadFloresXTipo.get(0) + 1);
+                        valoresGrupoSetosa = new ArrayList<>(4);
                         // PARA N-CARACTERÍSTICAS
                         for (int i = 0; i < nroCaracteristicas; i++) {
                             double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
                             mediasEspecie1.set(i, (mediasEspecie1.get(i) * (cantidadFloresXTipo.get(0) - 1) + valorCar) / cantidadFloresXTipo.get(0));
+                            valoresGrupoSetosa.add((double) valorCar);
                         }
+                        matrizValoresGrupoSetosa.add(valoresGrupoSetosa);
                         break;
                     case "I. versicolor":
                         cantidadFloresXTipo.set(1, cantidadFloresXTipo.get(1) + 1);
+                        valoresGrupoVersicolor = new ArrayList<>(4);
                         // PARA N-CARACTERÍSTICAS
                         for (int i = 0; i < nroCaracteristicas; i++) {
                             double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
                             mediasEspecie2.set(i, (mediasEspecie2.get(i) * (cantidadFloresXTipo.get(1) - 1) + valorCar) / cantidadFloresXTipo.get(1));
+                            valoresGrupoVersicolor.add((double) valorCar);
                         }
+                        matrizValoresGrupoVersicolor.add(valoresGrupoVersicolor);
                         break;
                     case "I. virginica":
                         cantidadFloresXTipo.set(2, cantidadFloresXTipo.get(2) + 1);
+                        valoresGrupoVirginica = new ArrayList<>(4);
                         // PARA N-CARACTERÍSTICAS
                         for (int i = 0; i < nroCaracteristicas; i++) {
                             double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
                             mediasEspecie3.set(i, (mediasEspecie3.get(i) * (cantidadFloresXTipo.get(2) - 1) + valorCar) / cantidadFloresXTipo.get(2));
+                            valoresGrupoVirginica.add((double) valorCar);
                         }
+                        matrizValoresGrupoVirginica.add(valoresGrupoVirginica);
                         break;
                     default:
                         break;
@@ -566,6 +400,11 @@ public class AlgoritmoBayesiano {
                 System.out.print(media + " ");
             }
             System.out.println();
+
+            matrizCovGrupoSetosa = MatrizCovarianza(matrizValoresGrupoSetosa);
+            matrizCovGrupoVersicolor = MatrizCovarianza(matrizValoresGrupoVersicolor);
+            matrizCovGrupoVirginica = MatrizCovarianza(matrizValoresGrupoVirginica);
+
         } catch (IOException | NumberFormatException e) {
             System.out.println(e.toString());
         }
@@ -711,35 +550,56 @@ public class AlgoritmoBayesiano {
         return Math.abs(nro1sIzquierda - nro1sDerecha);
     }
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="FUNCIONES DISCRIMINANTES g(x)">
-
-    public double FuncionDiscriminante(ArrayList<ArrayList<Double>> matrizValores,
-            ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
-            ArrayList<Double> arregloIncognita) {
-        double[][] XmenosU = RestarMatrices(arregloIncognita, arregloMedias);
-        double[][] sigmaInversa = Inversa(matrizCovarianzas);
-        double[][] XmenosUtraspuesto = Traspuesta(XmenosU);
-        double d = Determinante(matrizCovarianzas);
-
-        double producto = CalcularProducto(XmenosUtraspuesto, sigmaInversa, XmenosU);
-        return (-0.5 * producto) - (d * 0.5 * Math.log(2 * Math.PI)) - (0.5 * Math.log(d * d));
-    }
+//    public double FuncionDiscriminante(ArrayList<ArrayList<Double>> matrizValores,
+//            ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
+//            ArrayList<Double> arregloIncognita) {
+//        double[][] XmenosU = RestarMatrices(arregloIncognita, arregloMedias);
+//        double[][] sigmaInversa = Inversa(matrizCovarianzas);
+//        double[][] XmenosUtraspuesto = Traspuesta(XmenosU);
+//        double d = Determinante(matrizCovarianzas);
+//
+//        double producto = CalcularProducto(XmenosUtraspuesto, sigmaInversa, XmenosU);
+//        return (-0.5 * producto) - (d * 0.5 * Math.log(2 * Math.PI)) - (0.5 * Math.log(Math.abs(d * d)));
+//    }
     // </editor-fold>
+    public static double[][] Cofactor(double[][] A) {
+        int m = A.length;
+        int n = A[0].length;
+        double[][] C = new double[m][n];
 
-    
-    public static double[][] cofactor(double[][] A)  {
-    int m = A.length;
-    int n = A[0].length;
-    double[][] C = new double[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                //C[i][j]= changeSign(i) * changeSign(j) * determinant(createSubMatrix(C, i, j));
+            }
+        }
 
-    for (int i=0;i<m;i++) {
-        for (int j=0; j<n;j++) {
-
-			//C[i][j]= changeSign(i) * changeSign(j) * determinant(createSubMatrix(C, i, j));
-		}
+        return C;
     }
-    
-    return C;
-	}
 
+    private double[][] MatrizCovarianza(ArrayList<ArrayList<Double>> matrizValores) {
+        double[][] matrixAux = new double[matrizValores.size()][matrizValores.get(0).size()];
+        RealMatrix realMatrix;
+
+        for (int u = 0; u < matrizValores.size(); u++) {
+            for (int v = 0; v < matrizValores.get(u).size(); v++) {
+                matrixAux[u][v] = matrizValores.get(u).get(v);
+            }
+        }
+        Covariance covariance = new Covariance(matrixAux, false);
+        realMatrix = covariance.getCovarianceMatrix();
+        return realMatrix.getData();
+    }
+
+    private void ImprimirMatrizCovarianza(double[][] matrizCovarianza) {
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(2);
+        for (int i = 0; i < matrizCovarianza.length; i++) {
+            for (int k = 0; k < matrizCovarianza.length; k++) {
+                System.out.print(nf.format(matrizCovarianza[i][k]) + "\t\t");
+            }
+            System.out.println();
+        }
+    }
 }
