@@ -39,8 +39,30 @@ public class AlgoritmoBayesiano {
     private ArrayList<Double> grupoNumero7;
     private ArrayList<Double> grupoNumero8;
     private ArrayList<Double> grupoNumero9;
+    
     private ArrayList<Double> grupoNumero0Aux;
+    private ArrayList<Double> grupoNumero1Aux;
+    private ArrayList<Double> grupoNumero2Aux;
+    private ArrayList<Double> grupoNumero3Aux;
+    private ArrayList<Double> grupoNumero4Aux;
+    private ArrayList<Double> grupoNumero5Aux;
+    private ArrayList<Double> grupoNumero6Aux;
+    private ArrayList<Double> grupoNumero7Aux;
+    private ArrayList<Double> grupoNumero8Aux;
+    private ArrayList<Double> grupoNumero9Aux;
+        
     private ArrayList<ArrayList<Double>> grupo0ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo1ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo2ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo3ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo4ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo5ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo6ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo7ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo8ArrayArray;
+    private ArrayList<ArrayList<Double>> grupo9ArrayArray;
+    
+    
     private ArrayList<Integer> cantidadNumeros;
 
     public AlgoritmoBayesiano() {
@@ -56,7 +78,16 @@ public class AlgoritmoBayesiano {
         this.grupoNumero9 = new ArrayList<>();
 
         this.grupoNumero0Aux = new ArrayList<>();
-
+        this.grupoNumero1Aux = new ArrayList<>();
+        this.grupoNumero2Aux = new ArrayList<>();
+        this.grupoNumero3Aux = new ArrayList<>();
+        this.grupoNumero4Aux = new ArrayList<>();
+        this.grupoNumero5Aux = new ArrayList<>();
+        this.grupoNumero6Aux = new ArrayList<>();
+        this.grupoNumero7Aux = new ArrayList<>();
+        this.grupoNumero8Aux = new ArrayList<>();
+        this.grupoNumero9Aux = new ArrayList<>();
+        
         this.cantidadNumeros = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
@@ -74,7 +105,16 @@ public class AlgoritmoBayesiano {
             //grupoNumero0Aux.add(0.0);           
         }
         grupo0ArrayArray = new ArrayList<>();
-
+        grupo1ArrayArray = new ArrayList<>();
+        grupo2ArrayArray = new ArrayList<>();
+        grupo3ArrayArray = new ArrayList<>();
+        grupo4ArrayArray = new ArrayList<>();
+        grupo5ArrayArray = new ArrayList<>();
+        grupo6ArrayArray = new ArrayList<>();
+        grupo7ArrayArray = new ArrayList<>();
+        grupo8ArrayArray = new ArrayList<>();
+        grupo9ArrayArray = new ArrayList<>();
+        
     }
 
 
@@ -85,58 +125,297 @@ public class AlgoritmoBayesiano {
             //
             //utilizo el arreglo de medias, en este caso para el numero 0 grupoNumero0
 
-            double[][] matrixaux = new double[grupo0ArrayArray.size()][grupo0ArrayArray.get(0).size()];
+            double[][] matrixaux0 = new double[grupo0ArrayArray.size()][grupo0ArrayArray.get(0).size()];
+            double[][] matrixaux1 = new double[grupo1ArrayArray.size()][grupo1ArrayArray.get(0).size()];
+            double[][] matrixaux2 = new double[grupo2ArrayArray.size()][grupo2ArrayArray.get(0).size()];
+            double[][] matrixaux3 = new double[grupo3ArrayArray.size()][grupo3ArrayArray.get(0).size()];
+            double[][] matrixaux4 = new double[grupo4ArrayArray.size()][grupo4ArrayArray.get(0).size()];
+            double[][] matrixaux5 = new double[grupo5ArrayArray.size()][grupo5ArrayArray.get(0).size()];
+            double[][] matrixaux6 = new double[grupo6ArrayArray.size()][grupo6ArrayArray.get(0).size()];
+            double[][] matrixaux7 = new double[grupo7ArrayArray.size()][grupo7ArrayArray.get(0).size()];
+            double[][] matrixaux8 = new double[grupo8ArrayArray.size()][grupo8ArrayArray.get(0).size()];
+            double[][] matrixaux9 = new double[grupo9ArrayArray.size()][grupo9ArrayArray.get(0).size()];                        
 
-            //double[][] matrixaux = new double[1][3];
-
-            double[][] covMatrix;
-            RealMatrix rMatrix;
-
-
-            for (int i = 0; i < 3; i++) {
-                matrixaux[i][0] = grupoNumero0.get(i);
+            double[][] covMatrix0;
+            double[][] covMatrix1;
+            double[][] covMatrix2;
+            double[][] covMatrix3;
+            double[][] covMatrix4;
+            double[][] covMatrix5;
+            double[][] covMatrix6;
+            double[][] covMatrix7;
+            double[][] covMatrix8;
+            double[][] covMatrix9;
+                                   
+            RealMatrix rMatrix0;
+            RealMatrix rMatrix1;
+            RealMatrix rMatrix2;
+            RealMatrix rMatrix3;
+            RealMatrix rMatrix4;
+            RealMatrix rMatrix5;
+            RealMatrix rMatrix6;
+            RealMatrix rMatrix7;
+            RealMatrix rMatrix8;
+            RealMatrix rMatrix9;
+            
+            
+            
+            //para el grupo 0
+            
+            for (int u = 0; u < grupo0ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo0ArrayArray.get(u).size(); v++) {
+                    matrixaux0[u][v] = grupo0ArrayArray.get(u).get(v);
+                }
             }
-
-            //Covariance.computeCovarianceMatrix(double[][] data) 
-
-
-
-            //rMatrix = new Covariance( matrixaux, false ) ;
-
-            /*
-             for (int i = 0; i < 3; i++) {
-             matrixaux[0][i]=grupoNumero0.get(i);
-             }*/
-
-            //double [][] matrix_
-
-
-            //RealMatrix matrix = createRealMatrix(grupoNumero0Aux, (int)cantidadNumeros.get(0), 3);
-
-                        for (int u = 0; u < grupo0ArrayArray.size(); u++) {
-                            for (int v = 0; v < grupo0ArrayArray.get(u).size(); v++) {
-                                matrixaux[u][v] = grupo0ArrayArray.get(u).get(v);
-                            }
-                        }
             
-            Covariance cov = new Covariance(matrixaux, false);
-          
+            Covariance cov0 = new Covariance(matrixaux0, false);
+                                  
+            rMatrix0 = cov0.getCovarianceMatrix();
+
+            covMatrix0 = rMatrix0.getData();
+
+            NumberFormat nf0 = NumberFormat.getInstance();
+            nf0.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 0" +"\n");
             
-            
-            rMatrix = cov.getCovarianceMatrix();
-
-
-            covMatrix = rMatrix.getData();
-
-            NumberFormat nf = NumberFormat.getInstance();
-            nf.setMaximumFractionDigits(2);
-
-            for (int i = 0; i < covMatrix.length; i++) {
-                for (int k = 0; k < covMatrix.length; k++) {
-                    System.out.print(nf.format(covMatrix[i][k]) + "  ");
+            for (int i = 0; i < covMatrix0.length; i++) {
+                for (int k = 0; k < covMatrix0.length; k++) {
+                    System.out.print(nf0.format(covMatrix0[i][k]) + "  ");
                 }
                 System.out.println();
             }
+            
+            //para el numero 1
+            for (int u = 0; u < grupo1ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo1ArrayArray.get(u).size(); v++) {
+                    matrixaux1[u][v] = grupo1ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov1 = new Covariance(matrixaux1, false);
+                                  
+            rMatrix1 = cov1.getCovarianceMatrix();
+
+            covMatrix1 = rMatrix1.getData();
+
+            NumberFormat nf1 = NumberFormat.getInstance();
+            nf1.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 1"+"\n");
+            
+            for (int i = 0; i < covMatrix1.length; i++) {
+                for (int k = 0; k < covMatrix1.length; k++) {
+                    System.out.print(nf1.format(covMatrix1[i][k]) + "  ");
+                }
+                System.out.println();
+            }
+            
+            //para el numero 2
+             for (int u = 0; u < grupo2ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo2ArrayArray.get(u).size(); v++) {
+                    matrixaux2[u][v] = grupo2ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov2 = new Covariance(matrixaux2, false);
+                                  
+            rMatrix2 = cov2.getCovarianceMatrix();
+
+            covMatrix2 = rMatrix2.getData();
+
+            NumberFormat nf2 = NumberFormat.getInstance();
+            nf2.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 2"+"\n");
+            
+            for (int i = 0; i < covMatrix2.length; i++) {
+                for (int k = 0; k < covMatrix2.length; k++) {
+                    System.out.print(nf2.format(covMatrix2[i][k]) + "  ");
+                }
+                System.out.println();
+            }
+            
+            //para el numero 3
+            for (int u = 0; u < grupo3ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo3ArrayArray.get(u).size(); v++) {
+                    matrixaux3[u][v] = grupo3ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov3 = new Covariance(matrixaux3, false);
+                                  
+            rMatrix3 = cov3.getCovarianceMatrix();
+
+            covMatrix3 = rMatrix3.getData();
+
+            NumberFormat nf3 = NumberFormat.getInstance();
+            nf3.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 3"+"\n");
+            
+            for (int i = 0; i < covMatrix3.length; i++) {
+                for (int k = 0; k < covMatrix3.length; k++) {
+                    System.out.print(nf3.format(covMatrix3[i][k]) + "  ");
+                }
+                System.out.println();
+            }            
+            
+            //para el numero 4
+            for (int u = 0; u < grupo4ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo4ArrayArray.get(u).size(); v++) {
+                    matrixaux4[u][v] = grupo4ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov4 = new Covariance(matrixaux4, false);
+                                  
+            rMatrix4 = cov4.getCovarianceMatrix();
+
+            covMatrix4 = rMatrix4.getData();
+
+            NumberFormat nf4 = NumberFormat.getInstance();
+            nf4.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 4"+"\n");
+            
+            for (int i = 0; i < covMatrix4.length; i++) {
+                for (int k = 0; k < covMatrix4.length; k++) {
+                    System.out.print(nf4.format(covMatrix4[i][k]) + "  ");
+                }
+                System.out.println();
+            }
+            
+            
+            //para el numero 5
+            for (int u = 0; u < grupo5ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo5ArrayArray.get(u).size(); v++) {
+                    matrixaux5[u][v] = grupo5ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov5 = new Covariance(matrixaux5, false);
+                                  
+            rMatrix5 = cov5.getCovarianceMatrix();
+
+            covMatrix5 = rMatrix5.getData();
+
+            NumberFormat nf5 = NumberFormat.getInstance();
+            nf5.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 5"+"\n");
+            
+            for (int i = 0; i < covMatrix5.length; i++) {
+                for (int k = 0; k < covMatrix5.length; k++) {
+                    System.out.print(nf5.format(covMatrix5[i][k]) + "  ");
+                }
+                System.out.println();
+            }            
+            
+            //para el numero 6
+            for (int u = 0; u < grupo6ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo6ArrayArray.get(u).size(); v++) {
+                    matrixaux6[u][v] = grupo6ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov6 = new Covariance(matrixaux6, false);
+                                  
+            rMatrix6 = cov6.getCovarianceMatrix();
+
+            covMatrix6 = rMatrix6.getData();
+
+            NumberFormat nf6 = NumberFormat.getInstance();
+            nf6.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 6"+"\n");
+            
+            for (int i = 0; i < covMatrix6.length; i++) {
+                for (int k = 0; k < covMatrix6.length; k++) {
+                    System.out.print(nf6.format(covMatrix6[i][k]) + "  ");
+                }
+                System.out.println();
+            }            
+            
+            //para el numero 7
+            for (int u = 0; u < grupo7ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo7ArrayArray.get(u).size(); v++) {
+                    matrixaux7[u][v] = grupo7ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov7 = new Covariance(matrixaux7, false);
+                                  
+            rMatrix7 = cov7.getCovarianceMatrix();
+
+            covMatrix7 = rMatrix7.getData();
+
+            NumberFormat nf7 = NumberFormat.getInstance();
+            nf7.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 7"+"\n");
+            
+            for (int i = 0; i < covMatrix7.length; i++) {
+                for (int k = 0; k < covMatrix7.length; k++) {
+                    System.out.print(nf7.format(covMatrix7[i][k]) + "  ");
+                }
+                System.out.println();
+            }
+            
+            //para el numero 8
+            for (int u = 0; u < grupo8ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo8ArrayArray.get(u).size(); v++) {
+                    matrixaux8[u][v] = grupo8ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov8 = new Covariance(matrixaux8, false);
+                                  
+            rMatrix8 = cov8.getCovarianceMatrix();
+
+            covMatrix8 = rMatrix8.getData();
+
+            NumberFormat nf8 = NumberFormat.getInstance();
+            nf8.setMaximumFractionDigits(2);
+
+            System.out.print("Grupo 8"+"\n");
+            
+            for (int i = 0; i < covMatrix8.length; i++) {
+                for (int k = 0; k < covMatrix8.length; k++) {
+                    System.out.print(nf8.format(covMatrix8[i][k]) + "  ");
+                }
+                System.out.println();
+            }            
+            
+            //para el numero 9
+            for (int u = 0; u < grupo9ArrayArray.size(); u++) {
+                for (int v = 0; v < grupo9ArrayArray.get(u).size(); v++) {
+                    matrixaux9[u][v] = grupo9ArrayArray.get(u).get(v);
+                }
+            }
+            
+            Covariance cov9 = new Covariance(matrixaux9, false);
+                                  
+            rMatrix9 = cov9.getCovarianceMatrix();
+
+            covMatrix9 = rMatrix9.getData();
+
+            NumberFormat nf9 = NumberFormat.getInstance();
+            nf9.setMaximumFractionDigits(2);
+            
+            System.out.print("Grupo 9"+"\n");
+
+            for (int i = 0; i < covMatrix9.length; i++) {
+                for (int k = 0; k < covMatrix9.length; k++) {
+                    System.out.print(nf9.format(covMatrix9[i][k]) + "  ");
+                }
+                System.out.println();
+            }            
+            
+            
+            
+            
+                                 
 
             int d = 3; //dimension del vector de caracteristicas hasta ahora 3 caracteristicas
             //interpretar bien el uso de la matriz de medias con el X, en la formula general
@@ -199,67 +478,146 @@ public class AlgoritmoBayesiano {
                         grupoNumero0.set(1, (grupoNumero0.get(1) * (cantidadNumeros.get(0) - 1) + car2p) / cantidadNumeros.get(0));
                         //car3
                         grupoNumero0.set(2, (grupoNumero0.get(2) * (cantidadNumeros.get(0) - 1) + car3p) / cantidadNumeros.get(0));
+                        
                         grupoNumero0Aux = new ArrayList<>();
                         grupoNumero0Aux.add((double) car1);
                         grupoNumero0Aux.add((double) car2p);
                         grupoNumero0Aux.add((double) car3p);
 
-                        grupo0ArrayArray.add(grupoNumero0Aux);
-
+                        grupo0ArrayArray.add(grupoNumero0Aux);                       
                         break;
                     case 1:
                         cantidadNumeros.set(1, cantidadNumeros.get(1) + 1);
+                        
                         grupoNumero1.set(0, (grupoNumero1.get(0) * (cantidadNumeros.get(1) - 1) + car1) / cantidadNumeros.get(1));
                         grupoNumero1.set(1, (grupoNumero1.get(1) * (cantidadNumeros.get(1) - 1) + car2p) / cantidadNumeros.get(1));
                         grupoNumero1.set(2, (grupoNumero1.get(2) * (cantidadNumeros.get(1) - 1) + car3p) / cantidadNumeros.get(1));
+                        
+                        grupoNumero1Aux = new ArrayList<>();
+                        grupoNumero1Aux.add((double) car1);
+                        grupoNumero1Aux.add((double) car2p);
+                        grupoNumero1Aux.add((double) car3p);
+
+                        grupo1ArrayArray.add(grupoNumero1Aux);   
+                        
                         break;
                     case 2:
                         cantidadNumeros.set(2, cantidadNumeros.get(2) + 1);
+                        
                         grupoNumero2.set(0, (grupoNumero2.get(0) * (cantidadNumeros.get(2) - 1) + car1) / cantidadNumeros.get(2));
                         grupoNumero2.set(1, (grupoNumero2.get(1) * (cantidadNumeros.get(2) - 1) + car2p) / cantidadNumeros.get(2));
                         grupoNumero2.set(2, (grupoNumero2.get(2) * (cantidadNumeros.get(2) - 1) + car3p) / cantidadNumeros.get(2));
+                        
+                        grupoNumero2Aux = new ArrayList<>();
+                        grupoNumero2Aux.add((double) car1);
+                        grupoNumero2Aux.add((double) car2p);
+                        grupoNumero2Aux.add((double) car3p);
+
+                        grupo2ArrayArray.add(grupoNumero2Aux);   
+                        
                         break;
                     case 3:
                         cantidadNumeros.set(3, cantidadNumeros.get(3) + 1);
+                        
                         grupoNumero3.set(0, (grupoNumero3.get(0) * (cantidadNumeros.get(3) - 1) + car1) / cantidadNumeros.get(3));
                         grupoNumero3.set(1, (grupoNumero3.get(1) * (cantidadNumeros.get(3) - 1) + car2p) / cantidadNumeros.get(3));
                         grupoNumero3.set(2, (grupoNumero3.get(2) * (cantidadNumeros.get(3) - 1) + car3p) / cantidadNumeros.get(3));
+                        
+                        grupoNumero3Aux = new ArrayList<>();
+                        grupoNumero3Aux.add((double) car1);
+                        grupoNumero3Aux.add((double) car2p);
+                        grupoNumero3Aux.add((double) car3p);
+
+                        grupo3ArrayArray.add(grupoNumero3Aux);   
                         break;
                     case 4:
                         cantidadNumeros.set(4, cantidadNumeros.get(4) + 1);
+                        
                         grupoNumero4.set(0, (grupoNumero4.get(0) * (cantidadNumeros.get(4) - 1) + car1) / cantidadNumeros.get(4));
                         grupoNumero4.set(1, (grupoNumero4.get(1) * (cantidadNumeros.get(4) - 1) + car2p) / cantidadNumeros.get(4));
                         grupoNumero4.set(2, (grupoNumero4.get(2) * (cantidadNumeros.get(4) - 1) + car3p) / cantidadNumeros.get(4));
+                        
+                        grupoNumero4Aux = new ArrayList<>();
+                        grupoNumero4Aux.add((double) car1);
+                        grupoNumero4Aux.add((double) car2p);
+                        grupoNumero4Aux.add((double) car3p);
+
+                        grupo4ArrayArray.add(grupoNumero4Aux);                           
+                        
                         break;
                     case 5:
                         cantidadNumeros.set(5, cantidadNumeros.get(5) + 1);
+                        
                         grupoNumero5.set(0, (grupoNumero5.get(0) * (cantidadNumeros.get(5) - 1) + car1) / cantidadNumeros.get(5));
                         grupoNumero5.set(1, (grupoNumero5.get(1) * (cantidadNumeros.get(5) - 1) + car2p) / cantidadNumeros.get(5));
                         grupoNumero5.set(2, (grupoNumero5.get(2) * (cantidadNumeros.get(5) - 1) + car3p) / cantidadNumeros.get(5));
+                        
+                        grupoNumero5Aux = new ArrayList<>();
+                        grupoNumero5Aux.add((double) car1);
+                        grupoNumero5Aux.add((double) car2p);
+                        grupoNumero5Aux.add((double) car3p);
+
+                        grupo5ArrayArray.add(grupoNumero5Aux);                           
+                        
                         break;
                     case 6:
                         cantidadNumeros.set(6, cantidadNumeros.get(6) + 1);
+                        
                         grupoNumero6.set(0, (grupoNumero6.get(0) * (cantidadNumeros.get(6) - 1) + car1) / cantidadNumeros.get(6));
                         grupoNumero6.set(1, (grupoNumero6.get(1) * (cantidadNumeros.get(6) - 1) + car2p) / cantidadNumeros.get(6));
                         grupoNumero6.set(2, (grupoNumero6.get(2) * (cantidadNumeros.get(6) - 1) + car3p) / cantidadNumeros.get(6));
+                        
+                        grupoNumero6Aux = new ArrayList<>();
+                        grupoNumero6Aux.add((double) car1);
+                        grupoNumero6Aux.add((double) car2p);
+                        grupoNumero6Aux.add((double) car3p);
+
+                        grupo6ArrayArray.add(grupoNumero6Aux);   
+                        
                         break;
                     case 7:
                         cantidadNumeros.set(7, cantidadNumeros.get(7) + 1);
+                        
                         grupoNumero7.set(0, (grupoNumero7.get(0) * (cantidadNumeros.get(7) - 1) + car1) / cantidadNumeros.get(7));
                         grupoNumero7.set(1, (grupoNumero7.get(1) * (cantidadNumeros.get(7) - 1) + car2p) / cantidadNumeros.get(7));
                         grupoNumero7.set(2, (grupoNumero7.get(2) * (cantidadNumeros.get(7) - 1) + car3p) / cantidadNumeros.get(7));
+                        
+                        grupoNumero7Aux = new ArrayList<>();
+                        grupoNumero7Aux.add((double) car1);
+                        grupoNumero7Aux.add((double) car2p);
+                        grupoNumero7Aux.add((double) car3p);
+
+                        grupo7ArrayArray.add(grupoNumero7Aux);                           
                         break;
                     case 8:
                         cantidadNumeros.set(8, cantidadNumeros.get(8) + 1);
+                        
                         grupoNumero8.set(0, (grupoNumero8.get(0) * (cantidadNumeros.get(8) - 1) + car1) / cantidadNumeros.get(8));
                         grupoNumero8.set(1, (grupoNumero8.get(1) * (cantidadNumeros.get(8) - 1) + car2p) / cantidadNumeros.get(8));
                         grupoNumero8.set(2, (grupoNumero8.get(2) * (cantidadNumeros.get(8) - 1) + car3p) / cantidadNumeros.get(8));
+                        
+                        grupoNumero8Aux = new ArrayList<>();
+                        grupoNumero8Aux.add((double) car1);
+                        grupoNumero8Aux.add((double) car2p);
+                        grupoNumero8Aux.add((double) car3p);
+
+                        grupo8ArrayArray.add(grupoNumero8Aux);   
+                        
                         break;
                     case 9:
                         cantidadNumeros.set(9, cantidadNumeros.get(9) + 1);
+                        
                         grupoNumero9.set(0, (grupoNumero9.get(0) * (cantidadNumeros.get(9) - 1) + car1) / cantidadNumeros.get(9));
                         grupoNumero9.set(1, (grupoNumero9.get(1) * (cantidadNumeros.get(9) - 1) + car2p) / cantidadNumeros.get(9));
                         grupoNumero9.set(2, (grupoNumero9.get(2) * (cantidadNumeros.get(9) - 1) + car3p) / cantidadNumeros.get(9));
+                        
+                        grupoNumero9Aux = new ArrayList<>();
+                        grupoNumero9Aux.add((double) car1);
+                        grupoNumero9Aux.add((double) car2p);
+                        grupoNumero9Aux.add((double) car3p);
+
+                        grupo9ArrayArray.add(grupoNumero9Aux);   
+                        
                         break;
                 }
 
