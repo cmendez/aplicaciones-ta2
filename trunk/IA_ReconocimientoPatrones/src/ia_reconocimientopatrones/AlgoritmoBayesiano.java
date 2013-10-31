@@ -140,6 +140,9 @@ public class AlgoritmoBayesiano {
             Covariance cov0 = new Covariance(matrixaux0, false);
             rMatrix0 = cov0.getCovarianceMatrix();
             covMatrix0 = rMatrix0.getData();
+            
+            rMatrix0.transpose();                        
+            
             NumberFormat nf0 = NumberFormat.getInstance();
             nf0.setMaximumFractionDigits(2);
             System.out.print("Grupo 0" + "\n");
@@ -722,4 +725,21 @@ public class AlgoritmoBayesiano {
         return (-0.5 * producto) - (d * 0.5 * Math.log(2 * Math.PI)) - (0.5 * Math.log(d * d));
     }
     // </editor-fold>
+
+    
+    public static double[][] cofactor(double[][] A)  {
+    int m = A.length;
+    int n = A[0].length;
+    double[][] C = new double[m][n];
+
+    for (int i=0;i<m;i++) {
+        for (int j=0; j<n;j++) {
+
+			//C[i][j]= changeSign(i) * changeSign(j) * determinant(createSubMatrix(C, i, j));
+		}
+    }
+    
+    return C;
+	}
+
 }
