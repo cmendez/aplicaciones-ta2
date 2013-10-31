@@ -710,9 +710,16 @@ public class AlgoritmoBayesiano {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="FUNCIONES DISCRIMINANTES g(x)">
 
-    public double FuncionDiscriminanteGrupo0() {
-        
-        return 0.0;
+    public double FuncionDiscriminante(ArrayList<ArrayList<Double>> matrizValores,
+            ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
+            ArrayList<Double> arregloIncognita) {
+        double[][] XmenosU = RestarMatrices(arregloIncognita, arregloMedias);
+        double[][] sigmaInversa = Inversa(matrizCovarianzas);
+        double[][] XmenosUtraspuesto = Traspuesta(XmenosU);
+        double d = Determinante(matrizCovarianzas);
+
+        double producto = CalcularProducto(XmenosUtraspuesto, sigmaInversa, XmenosU);
+        return (-0.5 * producto) - (d * 0.5 * Math.log(2 * Math.PI)) - (0.5 * Math.log(d * d));
     }
     // </editor-fold>
 }

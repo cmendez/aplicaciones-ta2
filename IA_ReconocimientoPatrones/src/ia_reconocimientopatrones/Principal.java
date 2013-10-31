@@ -22,8 +22,8 @@ public class Principal {
         //generador.GenerarImagenes(nroImagenes);
         
         AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
-        algoritmo.ProcesarDatos(nroImagenes, imagenesArray, labelsArray);
-        //algoritmo.ProcesarIrisFlowersDataSet();
-        algoritmo.Formula();
+        //algoritmo.ProcesarDatos(nroImagenes, imagenesArray, labelsArray);
+        //algoritmo.Formula();
+        algoritmo.ProcesarIrisFlowersDataSet();        
     }
 }
