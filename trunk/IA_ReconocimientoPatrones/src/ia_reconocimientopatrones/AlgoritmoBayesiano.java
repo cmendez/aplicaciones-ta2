@@ -571,13 +571,83 @@ public class AlgoritmoBayesiano {
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                //C[i][j]= changeSign(i) * changeSign(j) * determinant(createSubMatrix(C, i, j));
+                int aux1=0;
+                int aux2=0;
+                aux1=-i;
+                aux2=-j;
+                //le cambio el signo al i, j
+                C[i][j]= aux1 * aux2 * determinant(createSubMatrix(C, i, j));
             }
         }
 
         return C;
     }
 
+   public static double[][] createSubMatrix(double[][] C, int excluding_row, int excluding_col) {
+    
+        int m = C.length;
+        int n = C[0].length;
+    
+        double[][] D = new double[m-1][n-1];
+
+        int r = -1;
+        
+        for (int i=0;i<m;i++) {
+            if (i==excluding_row)
+                continue;
+                r++;
+                int c = -1;
+            for (int j=0;j<n;j++) {
+                if (j==excluding_col)
+                    continue;            
+                            D[r][++c]= C[i][j];
+            }
+        }
+        return D;
+    } 	
+
+    public static double[][] transpose(double[][] C) {
+    
+	int m = C.length;
+        int n = C[0].length;
+	
+	double[][] D = new double[n][m];
+	
+        for (int i=0;i<m;i++) {
+            for (int j=0;j<n;j++) {            
+                            D[j][i]=C[i][j];
+            }
+        }
+        return D;
+    }    
+   
+   public static double determinant(double[][] C) {
+       int m = C.length;
+       int n = C[0].length;
+	
+    //if (!matrix.isSquare())
+    //    throw new NoSquareException("matrix need to be square.");	
+	
+        if ((m== 1)&&(n== 1)) {
+            return C[0][0];
+        }
+        if ((m== 2)&&(n== 2)) {
+            return (C[0][0] * C[1][1]) - (C[0][1]* C[1][0]);		
+        }
+        double sum = 0.0;
+        for (int i=0; i<n; i++) {
+            int aux=0;
+            aux=-i;//le cambio el signo al i
+
+            sum += aux * C[0][i] * determinant(createSubMatrix(C, 0, i));
+        }
+        return sum;
+   } 	
+    
+    public static double[][] inverse(double[][] C){
+    return (transpose(Cofactor(C)).multiplyByConstant(1.0/determinant(C)));
+    }
+   
     private double[][] MatrizCovarianza(ArrayList<ArrayList<Double>> matrizValores) {
         double[][] matrixAux = new double[matrizValores.size()][matrizValores.get(0).size()];
         RealMatrix realMatrix;
