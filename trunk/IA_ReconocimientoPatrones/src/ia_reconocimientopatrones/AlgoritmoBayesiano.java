@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
+
 public class AlgoritmoBayesiano {
 
     // <editor-fold defaultstate="collapsed" desc="ATRIBUTOS">                
@@ -573,10 +574,31 @@ public class AlgoritmoBayesiano {
             for (int j = 0; j < n; j++) {
                 int aux1=0;
                 int aux2=0;
-                aux1=-i;
-                aux2=-j;
+                //aux1=1;
+                aux2=1;
+                
+                 if (i % 2 == 0) {
+                  // even
+                    aux2=1;
+                } else {
+                    aux2=-1;
+                  // odd
+                }    
+                
+                if (j % 2 == 0) {
+                  // even
+                    aux1=1;
+                } else {
+                    aux1=-1;
+                  // odd
+                }      
+                
                 //le cambio el signo al i, j
-                C[i][j]= aux1 * aux2 * determinant(createSubMatrix(C, i, j));
+                 double[][] D=createSubMatrix(A, i, j);
+                
+                double F=determinant(createSubMatrix(A, i, j));
+                
+                C[i][j]= aux1 * aux2 * determinant(createSubMatrix(A, i, j));
             }
         }
 
@@ -600,7 +622,7 @@ public class AlgoritmoBayesiano {
             for (int j=0;j<n;j++) {
                 if (j==excluding_col)
                     continue;            
-                            D[r][++c]= C[i][j];
+                 D[r][++c]= C[i][j];
             }
         }
         return D;
@@ -616,11 +638,14 @@ public class AlgoritmoBayesiano {
         for (int i=0;i<m;i++) {
             for (int j=0;j<n;j++) {            
                             D[j][i]=C[i][j];
+                            //D[i][j]=C[j][i];
             }
         }
         return D;
     }    
-   
+    
+    
+    
    public static double determinant(double[][] C) {
        int m = C.length;
        int n = C[0].length;
@@ -637,17 +662,49 @@ public class AlgoritmoBayesiano {
         double sum = 0.0;
         for (int i=0; i<n; i++) {
             int aux=0;
-            aux=-i;//le cambio el signo al i
+            //le cambio el signo al i
+            
+            if (i % 2 == 0) {
+              // even
+                aux=1;
+            } else {
+                aux=-1;
+              // odd
+            }                        
 
             sum += aux * C[0][i] * determinant(createSubMatrix(C, 0, i));
         }
         return sum;
    } 	
     
+       public static double[][] multiplyByConstant(double[][] C, double A) {
+    
+	int m = C.length;
+        int n = C[0].length;
+	
+	double[][] D = new double[m][n];
+	
+        for (int i=0;i<m;i++) {
+            for (int j=0;j<n;j++) {            
+                            D[i][j]=C[i][j]*A;
+            }
+        }
+        return D;
+    }  
+   
+   
     public static double[][] inverse(double[][] C){
-    return (transpose(Cofactor(C)).multiplyByConstant(1.0/determinant(C)));
+    //return (transpose(Cofactor(C)).multiplyByConstant(1.0/determinant(C)));
+    //return (transpose(Cofactor(C)).multiplyByConstant(1.0/determinant(C)));
+    return multiplyByConstant(transpose(Cofactor(C)),(1.0/determinant(C)));
+    
+   
+    
+    
     }
    
+    
+    
     private double[][] MatrizCovarianza(ArrayList<ArrayList<Double>> matrizValores) {
         double[][] matrixAux = new double[matrizValores.size()][matrizValores.get(0).size()];
         RealMatrix realMatrix;
@@ -672,4 +729,47 @@ public class AlgoritmoBayesiano {
             System.out.println();
         }
     }
+    
+    public void algoritmo() {
+        
+        double[][] matrixAux1=transpose(covMatrix0);
+        
+        //double[][] matrixAux3=Cofactor(matrixAux1);
+        //ImprimirMatrizCovarianza(covMatrix0);
+        
+        //ImprimirMatrizCovarianza(matrixAux1);
+        
+        double[][] matrixAux3= new double[3][3];
+        matrixAux3[0][0]=1;
+        matrixAux3[0][1]=2;
+        matrixAux3[0][2]=3;
+        matrixAux3[1][0]=0;
+        matrixAux3[1][1]=4;
+        matrixAux3[1][2]=5;
+        matrixAux3[2][0]=1;
+        matrixAux3[2][1]=0;
+        matrixAux3[2][2]=6;
+        
+        double[][] matrixAux4= new double[2][2];
+        matrixAux4[0][0]=4;
+        matrixAux4[0][1]=3;
+        matrixAux4[1][0]=3;
+        matrixAux4[1][1]=2;
+
+                ImprimirMatrizCovarianza(matrixAux4);
+        
+        //ImprimirMatrizCovarianza(matrixAux3);
+        
+        //double[][] matrixAux2=Cofactor(matrixAux1);
+        double[][] matrixAux2=Cofactor(matrixAux3);
+        
+       // ImprimirMatrizCovarianza(matrixAux2);
+        
+
+        
+        double[][] matrixAux=inverse(matrixAux4);
+        
+        ImprimirMatrizCovarianza(matrixAux);
+    }
+    
 }
