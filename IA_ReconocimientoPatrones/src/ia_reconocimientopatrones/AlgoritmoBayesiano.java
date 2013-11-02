@@ -730,16 +730,135 @@ public class AlgoritmoBayesiano {
         }
     }
     
-    public void algoritmo() {
+    public static double[][] subtract(double[][] A, double[][] B) {
+        int m = A.length;
+        int n = A[0].length;
+        double[][] C = new double[m][n];
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                C[i][j] = A[i][j] - B[i][j];
+        return C;
+    }
+    
+      public static double[][] multiply(double[][] A, double[][] B) {
+        int mA = A.length;
+        int nA = A[0].length;
+        int mB = B.length;
+        int nB = A[0].length;
+        if (nA != mB) throw new RuntimeException("Illegal matrix dimensions.");
+        double[][] C = new double[mA][nB];
+        for (int i = 0; i < mA; i++)
+            for (int j = 0; j < nB; j++)
+                for (int k = 0; k < nA; k++)
+                    C[i][j] += (A[i][k] * B[k][j]);
+        return C;
+      }
         
-        double[][] matrixAux1=transpose(covMatrix0);
+     public static double[] multiply2(double[][] A, double[] x) {
+        int m = A.length;
+        int n = A[0].length;
+        if (x.length != n) throw new RuntimeException("Illegal matrix dimensions.");
+        double[] y = new double[m];
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                y[i] += (A[i][j] * x[j]);
+        return y;
+      }  
+      
+      
+    public void Formula() {
         
-        //double[][] matrixAux3=Cofactor(matrixAux1);
-        //ImprimirMatrizCovarianza(covMatrix0);
+        ArrayList<Double> auxgruponumero0 =mediasGrupoNumero0;
+        //tengo el arreglo con las mediasdel grupo 0
         
-        //ImprimirMatrizCovarianza(matrixAux1);
+        double[][] matrixAux = new double[auxgruponumero0.size()][auxgruponumero0.size()];
+
+        /*
+        for (int v = 0; v < auxgruponumero0.size(); v++) {
+            matrixAux[0][v] = auxgruponumero0.get(v);
+        }*/
         
-        double[][] matrixAux3= new double[3][3];
+        for (int u = 0; u < auxgruponumero0.size(); u++) {
+            for (int v = 0; v < auxgruponumero0.size(); v++) {
+                if (v==0){                
+                matrixAux[u][v] = auxgruponumero0.get(u);}
+                else {matrixAux[u][v]=0;}
+            }
+        }
+        
+        
+        //en matrixaux tengo una matrix con los valores de la media del grupo 0
+
+        //ImprimirMatrizCovarianza(matrixAux);
+        
+        double[][] matrixAuxInput = new double[3][3];
+        
+        matrixAuxInput[0][0]=100;
+        matrixAuxInput[1][0]=100;
+        matrixAuxInput[2][0]=100;
+        
+        for (int u = 0; u < auxgruponumero0.size(); u++) {
+            for (int v = 0; v < auxgruponumero0.size(); v++) {
+                if (v!=0){                
+                matrixAuxInput[u][v] = 0;}               
+            }
+        }
+        
+        //en matrixAuxInput tengo las caracteristicas que saco de la imagen que ingresa
+        
+        
+        double[][] matrixResta=subtract (matrixAuxInput,matrixAux);
+        
+        double[][] matrixTranspuesta=transpose(matrixResta);
+        
+        double [] arreglo=new double[3];
+        
+        for (int v = 0; v < 3; v++) {
+            arreglo[v] = matrixTranspuesta[0][v];
+        }
+        
+        double[][] matrixCovarianza=covMatrix0;
+        
+        double[][] matrixCovarianzaInvertida=inverse(matrixCovarianza);        
+        
+        double[][] matrixAux1=transpose(covMatrix0);       
+        
+        double parteEntera=0.0;
+        
+        double phi=3.1415;
+        
+        int d=3;
+        
+        double partEnt1=Math.pow(2*phi, d/2);
+        
+        double partEnt2=Math.pow(9, 1/2);
+        
+        parteEntera=(1/(partEnt1*partEnt2));
+        
+        //double[][] primMultVect= multiply(matrixTranspuesta,matrixCovarianzaInvertida);//   matrixResta
+        
+        double[] arreglo2=multiply2(matrixCovarianzaInvertida,arreglo);
+        
+        
+        double[][] primMultVect= new double [3][3];
+        
+        for (int u = 0; u < auxgruponumero0.size(); u++) {
+            for (int v = 0; v < auxgruponumero0.size(); v++) {
+                if (u==0){                
+                primMultVect[u][v] = arreglo2[u];}
+                else {primMultVect[u][v]=0;}
+            }
+        }
+        
+        double[][] segMultVect= multiply(primMultVect,matrixResta);//   matrixResta
+        
+        //el valor de la parte superior en segMultVect[0][0]
+        
+        double final1 = parteEntera*(Math.exp((-1)*(1/2)*segMultVect[0][0]));
+        
+        
+        
+        /*double[][] matrixAux3= new double[3][3];
         matrixAux3[0][0]=1;
         matrixAux3[0][1]=2;
         matrixAux3[0][2]=3;
@@ -756,20 +875,13 @@ public class AlgoritmoBayesiano {
         matrixAux4[1][0]=3;
         matrixAux4[1][1]=2;
 
-                ImprimirMatrizCovarianza(matrixAux4);
-        
-        //ImprimirMatrizCovarianza(matrixAux3);
-        
-        //double[][] matrixAux2=Cofactor(matrixAux1);
-        double[][] matrixAux2=Cofactor(matrixAux3);
-        
-       // ImprimirMatrizCovarianza(matrixAux2);
-        
+        ImprimirMatrizCovarianza(matrixAux4);        
 
+        double[][] matrixAux2=Cofactor(matrixAux3);        
         
-        double[][] matrixAux=inverse(matrixAux4);
+        //double[][] matrixAux=inverse(matrixAux4);
         
-        ImprimirMatrizCovarianza(matrixAux);
+        ImprimirMatrizCovarianza(matrixAux);*/
     }
     
 }
