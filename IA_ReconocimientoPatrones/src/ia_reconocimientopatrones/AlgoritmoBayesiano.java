@@ -694,13 +694,7 @@ public class AlgoritmoBayesiano {
    
    
     public static double[][] inverse(double[][] C){
-    //return (transpose(Cofactor(C)).multiplyByConstant(1.0/determinant(C)));
-    //return (transpose(Cofactor(C)).multiplyByConstant(1.0/determinant(C)));
-    return multiplyByConstant(transpose(Cofactor(C)),(1.0/determinant(C)));
-    
-   
-    
-    
+    return multiplyByConstant(transpose(Cofactor(C)),(1.0/determinant(C)));               
     }
    
     
@@ -769,119 +763,148 @@ public class AlgoritmoBayesiano {
     public void Formula() {
         
         ArrayList<Double> auxgruponumero0 =mediasGrupoNumero0;
-        //tengo el arreglo con las mediasdel grupo 0
+        ArrayList<Double> auxgruponumero1 =mediasGrupoNumero1;
+        //tengo el arreglo con las medias del grupo 0
+        double parteEntera=0.0;        
+        double phi=3.1415;        
+        int d=3;
+                
+        double[][] matrixAuxnum0 = new double[auxgruponumero0.size()][auxgruponumero0.size()];        
+        double[][] matrixAuxnum1 = new double[auxgruponumero1.size()][auxgruponumero1.size()];  
         
-        double[][] matrixAux = new double[auxgruponumero0.size()][auxgruponumero0.size()];
+        
+        double[][] matrixDataInput = new double[auxgruponumero0.size()][auxgruponumero0.size()];
+        
+        //en matrixAuxInput tengo las caracteristicas que saco de la imagen que ingresa
+        //esta se usara en la formula para cada subgrupo.
 
         /*
-        for (int v = 0; v < auxgruponumero0.size(); v++) {
-            matrixAux[0][v] = auxgruponumero0.get(v);
-        }*/
+        matrixDataInput[0][0]=100;
+        matrixDataInput[1][0]=100;
+        matrixDataInput[2][0]=100;*/
         
-        for (int u = 0; u < auxgruponumero0.size(); u++) {
-            for (int v = 0; v < auxgruponumero0.size(); v++) {
-                if (v==0){                
-                matrixAux[u][v] = auxgruponumero0.get(u);}
-                else {matrixAux[u][v]=0;}
-            }
-        }
+        //medias de grupo 0, 188.0, 10.5, 25.0
+        matrixDataInput[0][0]=180.0;
+        matrixDataInput[1][0]=9.5;
+        matrixDataInput[2][0]=24;
         
         
-        //en matrixaux tengo una matrix con los valores de la media del grupo 0
-
-        //ImprimirMatrizCovarianza(matrixAux);
-        
-        double[][] matrixAuxInput = new double[3][3];
-        
-        matrixAuxInput[0][0]=100;
-        matrixAuxInput[1][0]=100;
-        matrixAuxInput[2][0]=100;
-        
+        //medias del grupo 1 , 89.85, 2.71,19.0
         for (int u = 0; u < auxgruponumero0.size(); u++) {
             for (int v = 0; v < auxgruponumero0.size(); v++) {
                 if (v!=0){                
-                matrixAuxInput[u][v] = 0;}               
+                matrixDataInput[u][v] = 0;}               
             }
-        }
+        }               
         
-        //en matrixAuxInput tengo las caracteristicas que saco de la imagen que ingresa
-        
-        
-        double[][] matrixResta=subtract (matrixAuxInput,matrixAux);
-        
-        double[][] matrixTranspuesta=transpose(matrixResta);
-        
-        double [] arreglo=new double[3];
-        
-        for (int v = 0; v < 3; v++) {
-            arreglo[v] = matrixTranspuesta[0][v];
-        }
-        
-        double[][] matrixCovarianza=covMatrix0;
-        
-        double[][] matrixCovarianzaInvertida=inverse(matrixCovarianza);        
-        
-        double[][] matrixAux1=transpose(covMatrix0);       
-        
-        double parteEntera=0.0;
-        
-        double phi=3.1415;
-        
-        int d=3;
-        
+        //primera exponencial en parte entera
         double partEnt1=Math.pow(2*phi, d/2);
         
+        //segunda exponencial en parte entera
         double partEnt2=Math.pow(9, 1/2);
         
-        parteEntera=(1/(partEnt1*partEnt2));
+        //se mantiene para todas las ecuaciones, es la misma
+        parteEntera=(1/(partEnt1*partEnt2));  
+                       
+        //Para el numero 0, el grupo 0        
         
-        //double[][] primMultVect= multiply(matrixTranspuesta,matrixCovarianzaInvertida);//   matrixResta
+        //paso los datos del arreglo en una matrix
+        //en matrixaux tengo una matrix con los valores de la media del grupo 0
+        for (int u = 0; u < auxgruponumero0.size(); u++) {
+            for (int v = 0; v < auxgruponumero0.size(); v++) {
+                if (v==0){                
+                matrixAuxnum0[u][v] = auxgruponumero0.get(u);}
+                else {matrixAuxnum0[u][v]=0;}
+            }
+        }                               
+                
+        double[][] matrixRestaNum0=subtract (matrixDataInput,matrixAuxnum0);        
+        double[][] matrixTranspuestaNum0=transpose(matrixRestaNum0);        
+        double [] arregloMultMatrixNum0=new double[auxgruponumero0.size()];
         
-        double[] arreglo2=multiply2(matrixCovarianzaInvertida,arreglo);
+        //los valores de la matrixtranspuesta los paso a un array, para poder hacer la multiplicacion de matrices
+        for (int v = 0; v < auxgruponumero0.size(); v++) {
+            arregloMultMatrixNum0[v] = matrixTranspuestaNum0[0][v];
+        }
+                
+        //asigno la matrix de covarianza
+        double[][] matrixCovarianzaNum0=covMatrix0;
+        //le hago la inversa a la matriz de covarianza
+        double[][] matrixCovarianzaInvertidaNum0=inverse(matrixCovarianzaNum0);                        
         
+                     
+        double[] arregloNum0=multiply2(matrixCovarianzaInvertidaNum0,arregloMultMatrixNum0);                
+        double[][] primMultVectNum0= new double [auxgruponumero0.size()][auxgruponumero0.size()];
         
-        double[][] primMultVect= new double [3][3];
-        
+        //convierto el arreglo en una matriz para multiplicar matrizes
         for (int u = 0; u < auxgruponumero0.size(); u++) {
             for (int v = 0; v < auxgruponumero0.size(); v++) {
                 if (u==0){                
-                primMultVect[u][v] = arreglo2[u];}
-                else {primMultVect[u][v]=0;}
+                primMultVectNum0[u][v] = arregloNum0[u];}
+                else {primMultVectNum0[u][v]=0;}
             }
         }
         
-        double[][] segMultVect= multiply(primMultVect,matrixResta);//   matrixResta
+        double[][] segMultVectNum0= multiply(primMultVectNum0,matrixRestaNum0);//   matrixResta
+        //al multiplicar las matrizes la multiplicacion se coloca en segMultVect[0][0]        
         
-        //el valor de la parte superior en segMultVect[0][0]
+        double partexponencial0= Math.exp((-0.5)*segMultVectNum0[0][0]);
         
-        double final1 = parteEntera*(Math.exp((-1)*(1/2)*segMultVect[0][0]));
+        double ValorFormulaNum0 = parteEntera*(Math.exp((-0.5)*segMultVectNum0[0][0]));
+                      
+        System.out.println(segMultVectNum0[0][0]+"\n");   
         
+        System.out.println(partexponencial0+"\n");   
         
+        System.out.println(ValorFormulaNum0+"\n");        
         
-        /*double[][] matrixAux3= new double[3][3];
-        matrixAux3[0][0]=1;
-        matrixAux3[0][1]=2;
-        matrixAux3[0][2]=3;
-        matrixAux3[1][0]=0;
-        matrixAux3[1][1]=4;
-        matrixAux3[1][2]=5;
-        matrixAux3[2][0]=1;
-        matrixAux3[2][1]=0;
-        matrixAux3[2][2]=6;
+        //Para el numero 1, grupo 1
         
-        double[][] matrixAux4= new double[2][2];
-        matrixAux4[0][0]=4;
-        matrixAux4[0][1]=3;
-        matrixAux4[1][0]=3;
-        matrixAux4[1][1]=2;
-
-        ImprimirMatrizCovarianza(matrixAux4);        
-
-        double[][] matrixAux2=Cofactor(matrixAux3);        
+        for (int u = 0; u < auxgruponumero1.size(); u++) {
+            for (int v = 0; v < auxgruponumero1.size(); v++) {
+                if (v==0){                
+                matrixAuxnum1[u][v] = auxgruponumero1.get(u);}
+                else {matrixAuxnum1[u][v]=0;}
+            }
+        }                               
+                
+        double[][] matrixRestaNum1=subtract (matrixDataInput,matrixAuxnum1);        
+        double[][] matrixTranspuestaNum1=transpose(matrixRestaNum1);        
+        double [] arregloMultMatrixNum1=new double[auxgruponumero1.size()];
+                
+        for (int v = 0; v < auxgruponumero1.size(); v++) {
+            arregloMultMatrixNum1[v] = matrixTranspuestaNum1[0][v];
+        }
+                
+        //asigno la matrix de covarianza
+        double[][] matrixCovarianzaNum1=covMatrix1;
+        //le hago la inversa a la matriz de covarianza
+        double[][] matrixCovarianzaInvertidaNum1=inverse(matrixCovarianzaNum1);                        
+                             
+        double[] arregloNum1=multiply2(matrixCovarianzaInvertidaNum1,arregloMultMatrixNum1);                
+        double[][] primMultVectNum1= new double [auxgruponumero1.size()][auxgruponumero1.size()];
         
-        //double[][] matrixAux=inverse(matrixAux4);
+        //convierto el arreglo en una matriz para multiplicar matrizes
+        for (int u = 0; u < auxgruponumero1.size(); u++) {
+            for (int v = 0; v < auxgruponumero1.size(); v++) {
+                if (u==0){                
+                primMultVectNum1[u][v] = arregloNum1[u];}
+                else {primMultVectNum1[u][v]=0;}
+            }
+        }
         
-        ImprimirMatrizCovarianza(matrixAux);*/
+        double[][] segMultVectNum1= multiply(primMultVectNum1,matrixRestaNum1);//   matrixResta
+        //al multiplicar las matrizes la multiplicacion se coloca en segMultVect[0][0]        
+        
+        double partexponencial1= Math.exp((-0.5)*segMultVectNum1[0][0]);       
+        
+        System.out.println(segMultVectNum1[0][0]+"\n");   
+        
+        System.out.println(partexponencial1+"\n");   
+        
+        double ValorFormulaNum1 = parteEntera*(Math.exp((-0.5)*segMultVectNum1[0][0]));
+        
+         System.out.println(ValorFormulaNum1+"\n");        
     }
     
 }
