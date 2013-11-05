@@ -5,9 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
-
 
 public class AlgoritmoBayesiano {
 
@@ -45,19 +46,21 @@ public class AlgoritmoBayesiano {
     private ArrayList<Integer> cantidadNumeros;
     private int nroCaracteristicas;
     private ArrayList<Double> listaCaracteristicas;
-    double[][] covMatrix0;
-    double[][] covMatrix1;
-    double[][] covMatrix2;
-    double[][] covMatrix3;
-    double[][] covMatrix4;
-    double[][] covMatrix5;
-    double[][] covMatrix6;
-    double[][] covMatrix7;
-    double[][] covMatrix8;
-    double[][] covMatrix9;
+    private double[][] covMatrix0;
+    private double[][] covMatrix1;
+    private double[][] covMatrix2;
+    private double[][] covMatrix3;
+    private double[][] covMatrix4;
+    private double[][] covMatrix5;
+    private double[][] covMatrix6;
+    private double[][] covMatrix7;
+    private double[][] covMatrix8;
+    private double[][] covMatrix9;
+    private Helpers helper;
     // </editor-fold>
 
     public AlgoritmoBayesiano() {
+        helper = new Helpers();
         nroCaracteristicas = 3; //3 características: nros 1's, simetría horizontal, y simetría vertical
         listaCaracteristicas = new ArrayList<>(nroCaracteristicas);
 
@@ -105,44 +108,34 @@ public class AlgoritmoBayesiano {
     public void ExtraerMatricesCovarianzas() {
         try {
             covMatrix0 = MatrizCovarianza(matrizValoresGrupo0);
-            System.out.print("Grupo 0" + "\n");
-            ImprimirMatrizCovarianza(covMatrix0);
+            helper.ImprimirMatriz(covMatrix0, "Grupo 0");
 
             covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
-            System.out.print("Grupo 1" + "\n");
-            ImprimirMatrizCovarianza(covMatrix1);
+            helper.ImprimirMatriz(covMatrix1, "Grupo 1");
 
             covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
-            System.out.print("Grupo 2" + "\n");
-            ImprimirMatrizCovarianza(covMatrix2);
+            helper.ImprimirMatriz(covMatrix2, "Grupo 2");
 
             covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
-            System.out.print("Grupo 3" + "\n");
-            ImprimirMatrizCovarianza(covMatrix3);
+            helper.ImprimirMatriz(covMatrix3, "Grupo 3");
 
             covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
-            System.out.print("Grupo 4" + "\n");
-            ImprimirMatrizCovarianza(covMatrix4);
+            helper.ImprimirMatriz(covMatrix4, "Grupo 4");
 
             covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
-            System.out.print("Grupo 5" + "\n");
-            ImprimirMatrizCovarianza(covMatrix5);
+            helper.ImprimirMatriz(covMatrix5, "Grupo 5");
 
             covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
-            System.out.print("Grupo 6" + "\n");
-            ImprimirMatrizCovarianza(covMatrix6);
+            helper.ImprimirMatriz(covMatrix6, "Grupo 6");
 
             covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
-            System.out.print("Grupo 7" + "\n");
-            ImprimirMatrizCovarianza(covMatrix7);
+            helper.ImprimirMatriz(covMatrix7, "Grupo 7");
 
             covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
-            System.out.print("Grupo 8" + "\n");
-            ImprimirMatrizCovarianza(covMatrix8);
+            helper.ImprimirMatriz(covMatrix8, "Grupo 8");
 
             covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
-            System.out.print("Grupo 9" + "\n");
-            ImprimirMatrizCovarianza(covMatrix9);
+            helper.ImprimirMatriz(covMatrix9, "Grupo 9");
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -160,7 +153,7 @@ public class AlgoritmoBayesiano {
 
                 for (int u = 0; u < 28; u++) {
                     for (int v = 0; v < 28; v++) {
-                        int p = this.UnsignedToBytes(imagen[t]);
+                        int p = helper.UnsignedToBytes(imagen[t]);
                         if (p != 0) {
                             p = 1;
                         }
@@ -168,7 +161,7 @@ public class AlgoritmoBayesiano {
                         t++;
                     }
                 }
-                int[][] pixelesTrimeados = this.RemoverPadding4(pixeles);
+                int[][] pixelesTrimeados = helper.RemoverPadding4(pixeles);
 
                 // <editor-fold defaultstate="collapsed" desc="EXTRAEMOS LAS CARACTERÍSTICAS DE LA IMÁGEN">
                 listaCaracteristicas.clear();
@@ -386,25 +379,27 @@ public class AlgoritmoBayesiano {
                         break;
                 }
             }
-            System.out.print("Medias Especie 1");
-            for (Double media : mediasEspecie1) {
-                System.out.print(media + " ");
-            }
-            System.out.println();
-            System.out.print("Medias Especie 2");
-            for (Double media : mediasEspecie2) {
-                System.out.print(media + " ");
-            }
-            System.out.println();
-            System.out.print("Medias Especie 3");
-            for (Double media : mediasEspecie3) {
-                System.out.print(media + " ");
-            }
-            System.out.println();
+//            System.out.print("Medias Especie 1");
+//            for (Double media : mediasEspecie1) {
+//                System.out.print(media + " ");
+//            }
+//            System.out.println();
+//            System.out.print("Medias Especie 2");
+//            for (Double media : mediasEspecie2) {
+//                System.out.print(media + " ");
+//            }
+//            System.out.println();
+//            System.out.print("Medias Especie 3");
+//            for (Double media : mediasEspecie3) {
+//                System.out.print(media + " ");
+//            }
+//            System.out.println();
 
             matrizCovGrupoSetosa = MatrizCovarianza(matrizValoresGrupoSetosa);
             matrizCovGrupoVersicolor = MatrizCovarianza(matrizValoresGrupoVersicolor);
             matrizCovGrupoVirginica = MatrizCovarianza(matrizValoresGrupoVirginica);
+
+            double g3 = FuncionDiscriminante(matrizValoresGrupoVirginica, mediasEspecie3, matrizCovGrupoVirginica, listaCaracteristicas);
 
         } catch (IOException | NumberFormatException e) {
             System.out.println(e.toString());
@@ -412,28 +407,6 @@ public class AlgoritmoBayesiano {
 
 
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HELPERS">
-    private int[][] RemoverPadding4(int[][] pixeles) {
-        int[][] pixelesTrimeados = new int[20][20];
-        int height = pixeles.length;
-        int width = pixeles[0].length;
-        for (int fila = 0; fila < height; fila++) {
-            if ((fila > 3) && (fila < 24)) {
-                for (int col = 0; col < width; col++) {
-                    if ((col > 3) && (col < 24)) {
-                        pixelesTrimeados[fila - 4][col - 4] = pixeles[fila][col];
-                    }
-                }
-            }
-        }
-        return pixelesTrimeados;
-    }
-
-    public int UnsignedToBytes(byte b) {
-        return b & 0xFF;
-    }
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="CARACTERISTICAS">
     //NUMERO DE 1's EN LA MATRIZ
@@ -553,152 +526,162 @@ public class AlgoritmoBayesiano {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="FUNCIONES DISCRIMINANTES g(x)">
-//    public double FuncionDiscriminante(ArrayList<ArrayList<Double>> matrizValores,
-//            ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
-//            ArrayList<Double> arregloIncognita) {
-//        double[][] XmenosU = RestarMatrices(arregloIncognita, arregloMedias);
-//        double[][] sigmaInversa = Inversa(matrizCovarianzas);
-//        double[][] XmenosUtraspuesto = Traspuesta(XmenosU);
-//        double d = Determinante(matrizCovarianzas);
-//
-//        double producto = CalcularProducto(XmenosUtraspuesto, sigmaInversa, XmenosU);
-//        return (-0.5 * producto) - (d * 0.5 * Math.log(2 * Math.PI)) - (0.5 * Math.log(Math.abs(d * d)));
-//    }
+    public double FuncionDiscriminante(ArrayList<ArrayList<Double>> matrizValores,
+        ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
+        ArrayList<Double> arregloIncognita) {
+        double g = -1;
+        try {
+            double[][] XmenosU = RestarMatrices(arregloIncognita, arregloMedias);
+            double[][] sigmaInversa = Inversa(matrizCovarianzas);
+            double[][] XmenosUtraspuesto = Traspuesta(XmenosU);
+            double determinante = Determinante(matrizCovarianzas);
+            double d = arregloMedias.size();
+//            helper.ImprimirVector_ArrayList(arregloIncognita, "arregloIncognita");
+//            helper.ImprimirVector_ArrayList(arregloMedias, "arregloMedias");
+//            helper.ImprimirMatriz(matrizCovarianzas, "matrizCovarianzas");
+//            helper.ImprimirMatriz(sigmaInversa, "sigmaInversa");
+//            helper.ImprimirMatriz(XmenosU, "XmenosU");
+//            helper.ImprimirMatriz(XmenosUtraspuesto, "XmenosUtraspuesto");
+//            System.out.println("Determinante: " + sigmaModulo);
+            double[][] producto = CalcularProducto(XmenosU, sigmaInversa, XmenosUtraspuesto);
+            double prod = producto[0][0];            
+            g = (-0.5 * prod) - (d * 0.5 * Math.log(2 * Math.PI)) - (0.5 * Math.log(determinante));
+            System.out.println("g(x): "+g);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return g;
+    }
     // </editor-fold>
-    public static double[][] Cofactor(double[][] A) {
+
+    public double[][] Cofactor(double[][] A) throws Exception {
         int m = A.length;
         int n = A[0].length;
         double[][] C = new double[m][n];
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                int aux1=0;
-                int aux2=0;
+                int aux1 = 0;
+                int aux2 = 0;
                 //aux1=1;
-                aux2=1;
-                
-                 if (i % 2 == 0) {
-                  // even
-                    aux2=1;
+                aux2 = 1;
+
+                if (i % 2 == 0) {
+                    // even
+                    aux2 = 1;
                 } else {
-                    aux2=-1;
-                  // odd
-                }    
-                
+                    aux2 = -1;
+                    // odd
+                }
+
                 if (j % 2 == 0) {
-                  // even
-                    aux1=1;
+                    // even
+                    aux1 = 1;
                 } else {
-                    aux1=-1;
-                  // odd
-                }      
-                
+                    aux1 = -1;
+                    // odd
+                }
+
                 //le cambio el signo al i, j
-                 double[][] D=createSubMatrix(A, i, j);
-                
-                double F=determinant(createSubMatrix(A, i, j));
-                
-                C[i][j]= aux1 * aux2 * determinant(createSubMatrix(A, i, j));
+                double[][] D = createSubMatrix(A, i, j);
+
+                double F = Determinante(createSubMatrix(A, i, j));
+
+                C[i][j] = aux1 * aux2 * Determinante(createSubMatrix(A, i, j));
             }
         }
 
         return C;
     }
 
-   public static double[][] createSubMatrix(double[][] C, int excluding_row, int excluding_col) {
-    
+    public double[][] createSubMatrix(double[][] C, int excluding_row, int excluding_col) {
+
         int m = C.length;
         int n = C[0].length;
-    
-        double[][] D = new double[m-1][n-1];
+
+        double[][] D = new double[m - 1][n - 1];
 
         int r = -1;
-        
-        for (int i=0;i<m;i++) {
-            if (i==excluding_row)
-                continue;
-                r++;
-                int c = -1;
-            for (int j=0;j<n;j++) {
-                if (j==excluding_col)
-                    continue;            
-                 D[r][++c]= C[i][j];
-            }
-        }
-        return D;
-    } 	
 
-    public static double[][] transpose(double[][] C) {
-    
-	int m = C.length;
-        int n = C[0].length;
-	
-	double[][] D = new double[n][m];
-	
-        for (int i=0;i<m;i++) {
-            for (int j=0;j<n;j++) {            
-                            D[j][i]=C[i][j];
-                            //D[i][j]=C[j][i];
+        for (int i = 0; i < m; i++) {
+            if (i == excluding_row) { //revisar si las llaves abarcan solo continue o r++ y c=-1
+                continue;
+            }
+            r++;
+            int c = -1;
+            for (int j = 0; j < n; j++) {
+                if (j == excluding_col) {
+                    continue;
+                }
+                D[r][++c] = C[i][j];
             }
         }
         return D;
-    }    
-    
-    
-    
-   public static double determinant(double[][] C) {
-       int m = C.length;
-       int n = C[0].length;
-	
-    //if (!matrix.isSquare())
-    //    throw new NoSquareException("matrix need to be square.");	
-	
-        if ((m== 1)&&(n== 1)) {
+    }
+
+    public double[][] Traspuesta(double[][] C) {
+        int m = C.length;
+        int n = C[0].length;
+        double[][] D = new double[n][m];
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                D[j][i] = C[i][j];
+                //D[i][j]=C[j][i];
+            }
+        }
+        return D;
+    }
+
+    public double Determinante(double[][] C) throws Exception {
+        int m = C.length;
+        int n = C[0].length;
+
+        if (m != n) {
+            throw new Exception("matrix need to be square.");
+        }
+
+        if ((m == 1) && (n == 1)) {
             return C[0][0];
         }
-        if ((m== 2)&&(n== 2)) {
-            return (C[0][0] * C[1][1]) - (C[0][1]* C[1][0]);		
+        if ((m == 2) && (n == 2)) {
+            return (C[0][0] * C[1][1]) - (C[0][1] * C[1][0]);
         }
         double sum = 0.0;
-        for (int i=0; i<n; i++) {
-            int aux=0;
+        for (int i = 0; i < n; i++) {
+            int aux = 0;
             //le cambio el signo al i
-            
-            if (i % 2 == 0) {
-              // even
-                aux=1;
-            } else {
-                aux=-1;
-              // odd
-            }                        
 
-            sum += aux * C[0][i] * determinant(createSubMatrix(C, 0, i));
+            if (i % 2 == 0) {
+                // even
+                aux = 1;
+            } else {
+                aux = -1;
+                // odd
+            }
+
+            sum += aux * C[0][i] * Determinante(createSubMatrix(C, 0, i));
         }
         return sum;
-   } 	
-    
-       public static double[][] multiplyByConstant(double[][] C, double A) {
-    
-	int m = C.length;
+    }
+
+    public double[][] multiplyByConstant(double[][] C, double A) {
+        int m = C.length;
         int n = C[0].length;
-	
-	double[][] D = new double[m][n];
-	
-        for (int i=0;i<m;i++) {
-            for (int j=0;j<n;j++) {            
-                            D[i][j]=C[i][j]*A;
+        double[][] D = new double[m][n];
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                D[i][j] = C[i][j] * A;
             }
         }
         return D;
-    }  
-   
-   
-    public static double[][] inverse(double[][] C){
-    return multiplyByConstant(transpose(Cofactor(C)),(1.0/determinant(C)));               
     }
-   
-    
-    
+
+    public double[][] Inversa(double[][] C) throws Exception {
+        return multiplyByConstant(Traspuesta(Cofactor(C)), (1.0 / Determinante(C)));
+    }
+
     private double[][] MatrizCovarianza(ArrayList<ArrayList<Double>> matrizValores) {
         double[][] matrixAux = new double[matrizValores.size()][matrizValores.get(0).size()];
         RealMatrix realMatrix;
@@ -713,198 +696,254 @@ public class AlgoritmoBayesiano {
         return realMatrix.getData();
     }
 
-    private void ImprimirMatrizCovarianza(double[][] matrizCovarianza) {
-        NumberFormat nf = NumberFormat.getInstance();
-        nf.setMaximumFractionDigits(2);
-        for (int i = 0; i < matrizCovarianza.length; i++) {
-            for (int k = 0; k < matrizCovarianza.length; k++) {
-                System.out.print(nf.format(matrizCovarianza[i][k]) + "\t\t");
-            }
-            System.out.println();
+    public double[][] RestarMatrices(ArrayList<Double> A, ArrayList<Double> B) {
+        int m = A.size();
+        double[][] resta = new double[1][m]; //[][][]
+
+        for (int i = 0; i < m; i++) {
+            resta[0][i] = A.get(i) - B.get(i);
         }
+        return resta;
     }
-    
-    public static double[][] subtract(double[][] A, double[][] B) {
+
+    public double[][] subtract(double[][] A, double[][] B) {
         int m = A.length;
         int n = A[0].length;
         double[][] C = new double[m][n];
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 C[i][j] = A[i][j] - B[i][j];
+            }
+        }
         return C;
     }
-    
-      public static double[][] multiply(double[][] A, double[][] B) {
+
+    public double[][] multiply(double[][] A, double[][] B) {
         int mA = A.length;
         int nA = A[0].length;
         int mB = B.length;
-        int nB = A[0].length;
-        if (nA != mB) throw new RuntimeException("Illegal matrix dimensions.");
+        int nB = B[0].length;
+        if (nA != mB) {
+            throw new RuntimeException("Illegal matrix dimensions.");
+        }
         double[][] C = new double[mA][nB];
-        for (int i = 0; i < mA; i++)
-            for (int j = 0; j < nB; j++)
-                for (int k = 0; k < nA; k++)
+        for (int i = 0; i < mA; i++) {
+            for (int j = 0; j < nB; j++) {
+                for (int k = 0; k < nA; k++) {
                     C[i][j] += (A[i][k] * B[k][j]);
+                }
+            }
+        }
         return C;
-      }
-        
-     public static double[] multiply2(double[][] A, double[] x) {
+    }
+
+    public double[][] CalcularProducto(double[][] A, double[][] B, double[][] C) {
+        int mA = A.length;
+        int nA = A[0].length;
+        int mB = B.length;
+        int nB = B[0].length;
+        if (nA != mB) {
+            throw new RuntimeException("Illegal matrix dimensions.");
+        }
+        double[][] D = new double[mA][nB];
+        for (int i = 0; i < mA; i++) {
+            for (int j = 0; j < nB; j++) {
+                for (int k = 0; k < nA; k++) {
+                    D[i][j] += (A[i][k] * B[k][j]);
+                }
+            }
+        }
+
+        //helper.ImprimirMatriz(D, "D");
+        A = D;
+        B = C;
+        mA = A.length;
+        nA = A[0].length;
+        mB = B.length;
+        nB = B[0].length;
+        if (nA != mB) {
+            throw new RuntimeException("Illegal matrix dimensions.");
+        }
+        D = new double[mA][nB];
+        for (int i = 0; i < mA; i++) {
+            for (int j = 0; j < nB; j++) {
+                for (int k = 0; k < nA; k++) {
+                    D[i][j] += (A[i][k] * B[k][j]);
+                }
+            }
+        }
+        //helper.ImprimirMatriz(D, "D");
+        return D;
+    }
+
+    public double[] multiply2(double[][] A, double[] x) {
         int m = A.length;
         int n = A[0].length;
-        if (x.length != n) throw new RuntimeException("Illegal matrix dimensions.");
+        if (x.length != n) {
+            throw new RuntimeException("Illegal matrix dimensions.");
+        }
         double[] y = new double[m];
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 y[i] += (A[i][j] * x[j]);
+            }
+        }
         return y;
-      }  
-      
-      
-    public void Formula() {
-        
-        ArrayList<Double> auxgruponumero0 =mediasGrupoNumero0;
-        ArrayList<Double> auxgruponumero1 =mediasGrupoNumero1;
+    }
+
+    public void Formula() throws Exception {
+
+        ArrayList<Double> auxgruponumero0 = mediasGrupoNumero0;
+        ArrayList<Double> auxgruponumero1 = mediasGrupoNumero1;
         //tengo el arreglo con las medias del grupo 0
-        double parteEntera=0.0;        
-        double phi=3.1415;        
-        int d=3;
-                
-        double[][] matrixAuxnum0 = new double[auxgruponumero0.size()][auxgruponumero0.size()];        
-        double[][] matrixAuxnum1 = new double[auxgruponumero1.size()][auxgruponumero1.size()];  
-        
-        
+        double parteEntera = 0.0;
+        double phi = 3.1415;
+        int d = 3;
+
+        double[][] matrixAuxnum0 = new double[auxgruponumero0.size()][auxgruponumero0.size()];
+        double[][] matrixAuxnum1 = new double[auxgruponumero1.size()][auxgruponumero1.size()];
+
+
         double[][] matrixDataInput = new double[auxgruponumero0.size()][auxgruponumero0.size()];
-        
+
         //en matrixAuxInput tengo las caracteristicas que saco de la imagen que ingresa
         //esta se usara en la formula para cada subgrupo.
 
         /*
-        matrixDataInput[0][0]=100;
-        matrixDataInput[1][0]=100;
-        matrixDataInput[2][0]=100;*/
-        
+         matrixDataInput[0][0]=100;
+         matrixDataInput[1][0]=100;
+         matrixDataInput[2][0]=100;*/
+
         //medias de grupo 0, 188.0, 10.5, 25.0
-        matrixDataInput[0][0]=180.0;
-        matrixDataInput[1][0]=9.5;
-        matrixDataInput[2][0]=24;
-        
-        
+        matrixDataInput[0][0] = 180.0;
+        matrixDataInput[1][0] = 9.5;
+        matrixDataInput[2][0] = 24;
+
+
         //medias del grupo 1 , 89.85, 2.71,19.0
         for (int u = 0; u < auxgruponumero0.size(); u++) {
             for (int v = 0; v < auxgruponumero0.size(); v++) {
-                if (v!=0){                
-                matrixDataInput[u][v] = 0;}               
+                if (v != 0) {
+                    matrixDataInput[u][v] = 0;
+                }
             }
-        }               
-        
+        }
+
         //primera exponencial en parte entera
-        double partEnt1=Math.pow(2*phi, d/2);
-        
+        double partEnt1 = Math.pow(2 * phi, d / 2);
+
         //segunda exponencial en parte entera
-        double partEnt2=Math.pow(9, 1/2);
-        
+        double partEnt2 = Math.pow(9, 1 / 2);
+
         //se mantiene para todas las ecuaciones, es la misma
-        parteEntera=(1/(partEnt1*partEnt2));  
-                       
+        parteEntera = (1 / (partEnt1 * partEnt2));
+
         //Para el numero 0, el grupo 0        
-        
+
         //paso los datos del arreglo en una matrix
         //en matrixaux tengo una matrix con los valores de la media del grupo 0
         for (int u = 0; u < auxgruponumero0.size(); u++) {
             for (int v = 0; v < auxgruponumero0.size(); v++) {
-                if (v==0){                
-                matrixAuxnum0[u][v] = auxgruponumero0.get(u);}
-                else {matrixAuxnum0[u][v]=0;}
+                if (v == 0) {
+                    matrixAuxnum0[u][v] = auxgruponumero0.get(u);
+                } else {
+                    matrixAuxnum0[u][v] = 0;
+                }
             }
-        }                               
-                
-        double[][] matrixRestaNum0=subtract (matrixDataInput,matrixAuxnum0);        
-        double[][] matrixTranspuestaNum0=transpose(matrixRestaNum0);        
-        double [] arregloMultMatrixNum0=new double[auxgruponumero0.size()];
-        
+        }
+
+        double[][] matrixRestaNum0 = subtract(matrixDataInput, matrixAuxnum0);
+        double[][] matrixTranspuestaNum0 = Traspuesta(matrixRestaNum0);
+        double[] arregloMultMatrixNum0 = new double[auxgruponumero0.size()];
+
         //los valores de la matrixtranspuesta los paso a un array, para poder hacer la multiplicacion de matrices
         for (int v = 0; v < auxgruponumero0.size(); v++) {
             arregloMultMatrixNum0[v] = matrixTranspuestaNum0[0][v];
         }
-                
+
         //asigno la matrix de covarianza
-        double[][] matrixCovarianzaNum0=covMatrix0;
+        double[][] matrixCovarianzaNum0 = covMatrix0;
         //le hago la inversa a la matriz de covarianza
-        double[][] matrixCovarianzaInvertidaNum0=inverse(matrixCovarianzaNum0);                        
-        
-                     
-        double[] arregloNum0=multiply2(matrixCovarianzaInvertidaNum0,arregloMultMatrixNum0);                
-        double[][] primMultVectNum0= new double [auxgruponumero0.size()][auxgruponumero0.size()];
-        
+        double[][] matrixCovarianzaInvertidaNum0 = Inversa(matrixCovarianzaNum0);
+
+
+        double[] arregloNum0 = multiply2(matrixCovarianzaInvertidaNum0, arregloMultMatrixNum0);
+        double[][] primMultVectNum0 = new double[auxgruponumero0.size()][auxgruponumero0.size()];
+
         //convierto el arreglo en una matriz para multiplicar matrizes
         for (int u = 0; u < auxgruponumero0.size(); u++) {
             for (int v = 0; v < auxgruponumero0.size(); v++) {
-                if (u==0){                
-                primMultVectNum0[u][v] = arregloNum0[u];}
-                else {primMultVectNum0[u][v]=0;}
+                if (u == 0) {
+                    primMultVectNum0[u][v] = arregloNum0[u];
+                } else {
+                    primMultVectNum0[u][v] = 0;
+                }
             }
         }
-        
-        double[][] segMultVectNum0= multiply(primMultVectNum0,matrixRestaNum0);//   matrixResta
+
+        double[][] segMultVectNum0 = multiply(primMultVectNum0, matrixRestaNum0);//   matrixResta
         //al multiplicar las matrizes la multiplicacion se coloca en segMultVect[0][0]        
-        
-        double partexponencial0= Math.exp((-0.5)*segMultVectNum0[0][0]);
-        
-        double ValorFormulaNum0 = parteEntera*(Math.exp((-0.5)*segMultVectNum0[0][0]));
-                      
-        System.out.println(segMultVectNum0[0][0]+"\n");   
-        
-        System.out.println(partexponencial0+"\n");   
-        
-        System.out.println(ValorFormulaNum0+"\n");        
-        
+
+        double partexponencial0 = Math.exp((-0.5) * segMultVectNum0[0][0]);
+
+        double ValorFormulaNum0 = parteEntera * (Math.exp((-0.5) * segMultVectNum0[0][0]));
+
+        System.out.println(segMultVectNum0[0][0] + "\n");
+
+        System.out.println(partexponencial0 + "\n");
+
+        System.out.println(ValorFormulaNum0 + "\n");
+
         //Para el numero 1, grupo 1
-        
+
         for (int u = 0; u < auxgruponumero1.size(); u++) {
             for (int v = 0; v < auxgruponumero1.size(); v++) {
-                if (v==0){                
-                matrixAuxnum1[u][v] = auxgruponumero1.get(u);}
-                else {matrixAuxnum1[u][v]=0;}
+                if (v == 0) {
+                    matrixAuxnum1[u][v] = auxgruponumero1.get(u);
+                } else {
+                    matrixAuxnum1[u][v] = 0;
+                }
             }
-        }                               
-                
-        double[][] matrixRestaNum1=subtract (matrixDataInput,matrixAuxnum1);        
-        double[][] matrixTranspuestaNum1=transpose(matrixRestaNum1);        
-        double [] arregloMultMatrixNum1=new double[auxgruponumero1.size()];
-                
+        }
+
+        double[][] matrixRestaNum1 = subtract(matrixDataInput, matrixAuxnum1);
+        double[][] matrixTranspuestaNum1 = Traspuesta(matrixRestaNum1);
+        double[] arregloMultMatrixNum1 = new double[auxgruponumero1.size()];
+
         for (int v = 0; v < auxgruponumero1.size(); v++) {
             arregloMultMatrixNum1[v] = matrixTranspuestaNum1[0][v];
         }
-                
+
         //asigno la matrix de covarianza
-        double[][] matrixCovarianzaNum1=covMatrix1;
+        double[][] matrixCovarianzaNum1 = covMatrix1;
         //le hago la inversa a la matriz de covarianza
-        double[][] matrixCovarianzaInvertidaNum1=inverse(matrixCovarianzaNum1);                        
-                             
-        double[] arregloNum1=multiply2(matrixCovarianzaInvertidaNum1,arregloMultMatrixNum1);                
-        double[][] primMultVectNum1= new double [auxgruponumero1.size()][auxgruponumero1.size()];
-        
+        double[][] matrixCovarianzaInvertidaNum1 = Inversa(matrixCovarianzaNum1);
+
+        double[] arregloNum1 = multiply2(matrixCovarianzaInvertidaNum1, arregloMultMatrixNum1);
+        double[][] primMultVectNum1 = new double[auxgruponumero1.size()][auxgruponumero1.size()];
+
         //convierto el arreglo en una matriz para multiplicar matrizes
         for (int u = 0; u < auxgruponumero1.size(); u++) {
             for (int v = 0; v < auxgruponumero1.size(); v++) {
-                if (u==0){                
-                primMultVectNum1[u][v] = arregloNum1[u];}
-                else {primMultVectNum1[u][v]=0;}
+                if (u == 0) {
+                    primMultVectNum1[u][v] = arregloNum1[u];
+                } else {
+                    primMultVectNum1[u][v] = 0;
+                }
             }
         }
-        
-        double[][] segMultVectNum1= multiply(primMultVectNum1,matrixRestaNum1);//   matrixResta
+
+        double[][] segMultVectNum1 = multiply(primMultVectNum1, matrixRestaNum1);//   matrixResta
         //al multiplicar las matrizes la multiplicacion se coloca en segMultVect[0][0]        
-        
-        double partexponencial1= Math.exp((-0.5)*segMultVectNum1[0][0]);       
-        
-        System.out.println(segMultVectNum1[0][0]+"\n");   
-        
-        System.out.println(partexponencial1+"\n");   
-        
-        double ValorFormulaNum1 = parteEntera*(Math.exp((-0.5)*segMultVectNum1[0][0]));
-        
-         System.out.println(ValorFormulaNum1+"\n");        
+
+        double partexponencial1 = Math.exp((-0.5) * segMultVectNum1[0][0]);
+
+        System.out.println(segMultVectNum1[0][0] + "\n");
+
+        System.out.println(partexponencial1 + "\n");
+
+        double ValorFormulaNum1 = parteEntera * (Math.exp((-0.5) * segMultVectNum1[0][0]));
+
+        System.out.println(ValorFormulaNum1 + "\n");
     }
-    
 }
