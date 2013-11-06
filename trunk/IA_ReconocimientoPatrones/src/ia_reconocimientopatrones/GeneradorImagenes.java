@@ -103,7 +103,7 @@ public class GeneradorImagenes {
                 String nombreArchivo = labelsArray.get(i) + "_img" + i;
                 BufferedImage image = this.ConvertRGBImage(pixelesImagen);
                 this.ExportImageToFile(this.ruta_guardado + nombreArchivo + ".jpg", image);
-                this.GenerarArchivo(pixelesTrimeados0y1, labelsArray.get(i), nombreArchivo);
+                this.GenerarArchivo(pixelesTrimeados255, labelsArray.get(i), nombreArchivo);
             }
         } catch (Exception e) {
             System.out.println(e.toString());
