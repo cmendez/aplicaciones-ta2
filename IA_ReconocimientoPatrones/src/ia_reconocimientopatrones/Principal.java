@@ -27,7 +27,8 @@ public class Principal {
             AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
             //algoritmo.ProcesarDatos(nroImagenes, imagenesArray, labelsArray);
             //algoritmo.ExtraerMatricesCovarianzas();
-            algoritmo.ProcesarIrisFlowersDataSet();
+            //algoritmo.ProcesarIrisFlowersDataSet();
+            algoritmo.Entrenamiento_IrisDataSet();
             //algoritmo.Formula();
             
         } catch (Exception ex) {

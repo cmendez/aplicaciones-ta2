@@ -57,6 +57,9 @@ public class AlgoritmoBayesiano {
     private double[][] covMatrix8;
     private double[][] covMatrix9;
     private Helpers helper;
+    ArrayList<ArrayList<Double>> matrizValoresGrupoSetosa;
+    ArrayList<ArrayList<Double>> matrizValoresGrupoVersicolor;
+    ArrayList<ArrayList<Double>> matrizValoresGrupoVirginica;
     // </editor-fold>
 
     public AlgoritmoBayesiano() {
@@ -312,9 +315,9 @@ public class AlgoritmoBayesiano {
         ArrayList<Double> valoresGrupoSetosa;
         ArrayList<Double> valoresGrupoVersicolor;
         ArrayList<Double> valoresGrupoVirginica;
-        ArrayList<ArrayList<Double>> matrizValoresGrupoSetosa = new ArrayList<>(50);
-        ArrayList<ArrayList<Double>> matrizValoresGrupoVersicolor = new ArrayList<>(50);
-        ArrayList<ArrayList<Double>> matrizValoresGrupoVirginica = new ArrayList<>(50);
+        matrizValoresGrupoSetosa = new ArrayList<>(50);
+        matrizValoresGrupoVersicolor = new ArrayList<>(50);
+        matrizValoresGrupoVirginica = new ArrayList<>(50);
         double[][] matrizCovGrupoSetosa;
         double[][] matrizCovGrupoVersicolor;
         double[][] matrizCovGrupoVirginica;
@@ -404,8 +407,129 @@ public class AlgoritmoBayesiano {
         } catch (IOException | NumberFormatException e) {
             System.out.println(e.toString());
         }
+    }
+
+    public void Entrenamiento_IrisDataSet() {
+        ProcesarIrisFlowersDataSet();
+
+        //Son 3 especies de flores
+        ArrayList<Double> mediasEspecie1 = new ArrayList<>(4);
+        ArrayList<Double> mediasEspecie2 = new ArrayList<>(4);
+        ArrayList<Double> mediasEspecie3 = new ArrayList<>(4);
+        ArrayList<Double> listaCaracteristicas = new ArrayList<>(4);
+        ArrayList<ArrayList<Double>> valoresGrupoSetosa = new ArrayList<>(45);
+        ArrayList<ArrayList<Double>> valoresGrupoVersicolor = new ArrayList<>(45);
+        ArrayList<ArrayList<Double>> valoresGrupoVirginica = new ArrayList<>(45);
+        ArrayList<ArrayList<Double>> matrizValoresRandomSetosa;
+        ArrayList<ArrayList<Double>> matrizValoresRandomVersicolor;
+        ArrayList<ArrayList<Double>> matrizValoresRandomVirginica;
+        double[][] matrizCovGrupoSetosa;
+        double[][] matrizCovGrupoVersicolor;
+        double[][] matrizCovGrupoVirginica;
+        int kfolder = 0;
+        int kfolderMax = 10;
+        for (int i = 0; i < 4; i++) {
+            mediasEspecie1.add(0.0);
+            mediasEspecie2.add(0.0);
+            mediasEspecie3.add(0.0);
+        }
+        try {
+            while (kfolder < kfolderMax) {
+                System.out.println("******************************* K-FOLDER NRO: " + kfolder + "*****************************");
+                matrizValoresRandomSetosa = ObtenerMatrizValoresRandom(matrizValoresGrupoSetosa);
+                matrizValoresRandomVersicolor = ObtenerMatrizValoresRandom(matrizValoresGrupoVersicolor);
+                matrizValoresRandomVirginica = ObtenerMatrizValoresRandom(matrizValoresGrupoVirginica);
+
+                //PARA GRUPO SETOSA
+                //Llenamos el modelo 
+                for (int i = 0; i < matrizValoresRandomSetosa.size() - 5; i++) {
+                    //Los primeros 45 son los de entrenamiento
+                    ArrayList<Double> valoresIteracion = new ArrayList<>(4);
+                    for (int j = 0; j < matrizValoresRandomSetosa.get(i).size(); j++) {
+                        double valor = matrizValoresRandomSetosa.get(i).get(j);
+                        valoresIteracion.add(valor);
+                        mediasEspecie1.set(j, (mediasEspecie1.get(j) * i + valor) / (i + 1));
+                    }
+                    valoresGrupoSetosa.add(valoresIteracion);
+                }
+                matrizCovGrupoSetosa = MatrizCovarianza(valoresGrupoSetosa);
+//                helper.ImprimirMatriz_ArrayList(valoresGrupoSetosa, "valoresGrupoSetosa");
+//                //helper.ImprimirVector_ArrayList(mediasEspecie1, "mediasEspecie1");
+//                helper.ImprimirMatriz(matrizCovGrupoSetosa, "matrizCovGrupoSetosa");
+                
+                
+                //PARA GRUPO Versicolor
+                //Llenamos el modelo 
+                for (int i = 0; i < matrizValoresRandomVersicolor.size() - 5; i++) {
+                    //Los primeros 45 son los de entrenamiento
+                    ArrayList<Double> valoresIteracion = new ArrayList<>(4);
+                    for (int j = 0; j < matrizValoresRandomVersicolor.get(i).size(); j++) {
+                        double valor = matrizValoresRandomVersicolor.get(i).get(j);
+                        valoresIteracion.add(valor);
+                        mediasEspecie2.set(j, (mediasEspecie2.get(j) * i + valor) / (i + 1));
+                    }
+                    valoresGrupoVersicolor.add(valoresIteracion);
+                }
+                matrizCovGrupoVersicolor = MatrizCovarianza(valoresGrupoVersicolor);
+
+                //PARA GRUPO Virginica
+                //Llenamos el modelo 
+                for (int i = 0; i < matrizValoresRandomVirginica.size() - 5; i++) {
+                    //Los primeros 45 son los de entrenamiento
+                    ArrayList<Double> valoresIteracion = new ArrayList<>(4);
+                    for (int j = 0; j < matrizValoresRandomVirginica.get(i).size(); j++) {
+                        double valor = matrizValoresRandomVirginica.get(i).get(j);
+                        valoresIteracion.add(valor);
+                        mediasEspecie3.set(j, (mediasEspecie3.get(j) * i + valor) / (i + 1));
+                    }
+                    valoresGrupoVirginica.add(valoresIteracion);
+                }
+                matrizCovGrupoVirginica = MatrizCovarianza(valoresGrupoVirginica);
 
 
+                //Ahora llamamos a la funcion discriminante para las pruebas
+                //Grupo Setosa
+                for (int i = 45; i < 50; i++) {
+                    ArrayList<Double> arregloIncognita = matrizValoresRandomSetosa.get(i);
+                    double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
+                            matrizCovGrupoSetosa, arregloIncognita);
+                    double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
+                            matrizCovGrupoVersicolor, arregloIncognita);
+                    double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
+                            matrizCovGrupoVirginica, arregloIncognita);
+                    System.out.println("Setosa g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
+                }
+                System.out.println();
+                //Grupo Versicolor
+                for (int i = 45; i < 50; i++) {
+                    ArrayList<Double> arregloIncognita = matrizValoresRandomVersicolor.get(i);
+                    double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
+                            matrizCovGrupoSetosa, arregloIncognita);
+                    double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
+                            matrizCovGrupoVersicolor, arregloIncognita);
+                    double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
+                            matrizCovGrupoVirginica, arregloIncognita);
+                    System.out.println("Versicolor g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
+                }
+                System.out.println();
+                //Grupo Virginica
+                for (int i = 45; i < 50; i++) {
+                    ArrayList<Double> arregloIncognita = matrizValoresRandomVirginica.get(i);
+                    double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
+                            matrizCovGrupoSetosa, arregloIncognita);
+                    double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
+                            matrizCovGrupoVersicolor, arregloIncognita);
+                    double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
+                            matrizCovGrupoVirginica, arregloIncognita);
+                    System.out.println("Virginica g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
+                }
+
+                kfolder++;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="CARACTERISTICAS">
@@ -525,10 +649,10 @@ public class AlgoritmoBayesiano {
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="FUNCIONES DISCRIMINANTES g(x)">
+    // <editor-fold defaultstate="collapsed" desc="FUNCION DISCRIMINANTE g(x)">
     public double FuncionDiscriminante(ArrayList<ArrayList<Double>> matrizValores,
-        ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
-        ArrayList<Double> arregloIncognita) {
+            ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
+            ArrayList<Double> arregloIncognita) {
         double g = -1;
         try {
             double[][] XmenosU = RestarMatrices(arregloIncognita, arregloMedias);
@@ -542,18 +666,19 @@ public class AlgoritmoBayesiano {
 //            helper.ImprimirMatriz(sigmaInversa, "sigmaInversa");
 //            helper.ImprimirMatriz(XmenosU, "XmenosU");
 //            helper.ImprimirMatriz(XmenosUtraspuesto, "XmenosUtraspuesto");
-//            System.out.println("Determinante: " + sigmaModulo);
+//            System.out.println("Determinante: " + determinante);
             double[][] producto = CalcularProducto(XmenosU, sigmaInversa, XmenosUtraspuesto);
-            double prod = producto[0][0];            
+            double prod = producto[0][0];
             g = (-0.5 * prod) - (d * 0.5 * Math.log(2 * Math.PI)) - (0.5 * Math.log(determinante));
-            System.out.println("g(x): "+g);
+            //System.out.println("g(x): " + g);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
         return g;
     }
-    // </editor-fold>
+    // </editor-fold>    
 
+    // <editor-fold defaultstate="collapsed" desc="FUNCIONES AUXILIARES DE MATRICES">
     public double[][] Cofactor(double[][] A) throws Exception {
         int m = A.length;
         int n = A[0].length;
@@ -790,6 +915,29 @@ public class AlgoritmoBayesiano {
         }
         return y;
     }
+
+    private ArrayList<ArrayList<Double>> ObtenerMatrizValoresRandom(ArrayList<ArrayList<Double>> matriz) {
+        ArrayList<ArrayList<Double>> matrizCombinada = new ArrayList<>(50);
+        ArrayList<Integer> auxiliar = new ArrayList<>(50);
+        int DESDE = 0;
+        int HASTA = 49;
+
+        //int finicial=(int)(Math.random()*(HASTA-DESDE+1)+DESDE); 
+        //int ffinal=(int)(Math.random()*(HASTA-DESDE+1)+DESDE); 
+
+        do {
+            int finicial = (int) (Math.random() * (HASTA - DESDE + 1) + DESDE);
+
+            if (!auxiliar.contains(finicial)) {
+                auxiliar.add(finicial);
+                matrizCombinada.add(matriz.get(finicial));//=matriz.get(finicial);
+            }
+
+        } while (auxiliar.size() < 50);
+
+        return matrizCombinada;
+    }
+    // </editor-fold>
 
     public void Formula() throws Exception {
 
