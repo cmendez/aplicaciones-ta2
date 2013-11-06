@@ -3,10 +3,7 @@ package ia_reconocimientopatrones;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
@@ -23,29 +20,29 @@ public class AlgoritmoBayesiano {
     private ArrayList<Double> mediasGrupoNumero7;
     private ArrayList<Double> mediasGrupoNumero8;
     private ArrayList<Double> mediasGrupoNumero9;
-    private ArrayList<Double> valoresGrupoNumero0;
-    private ArrayList<Double> valoresGrupoNumero1;
-    private ArrayList<Double> valoresGrupoNumero2;
-    private ArrayList<Double> valoresGrupoNumero3;
-    private ArrayList<Double> valoresGrupoNumero4;
-    private ArrayList<Double> valoresGrupoNumero5;
-    private ArrayList<Double> valoresGrupoNumero6;
-    private ArrayList<Double> valoresGrupoNumero7;
-    private ArrayList<Double> valoresGrupoNumero8;
-    private ArrayList<Double> valoresGrupoNumero9;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo0;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo1;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo2;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo3;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo4;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo5;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo6;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo7;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo8;
-    private ArrayList<ArrayList<Double>> matrizValoresGrupo9;
+//    private ArrayList<Integer> valoresGrupoNumero0;
+//    private ArrayList<Integer> valoresGrupoNumero1;
+//    private ArrayList<Integer> valoresGrupoNumero2;
+//    private ArrayList<Integer> valoresGrupoNumero3;
+//    private ArrayList<Integer> valoresGrupoNumero4;
+//    private ArrayList<Integer> valoresGrupoNumero5;
+//    private ArrayList<Integer> valoresGrupoNumero6;
+//    private ArrayList<Integer> valoresGrupoNumero7;
+//    private ArrayList<Integer> valoresGrupoNumero8;
+//    private ArrayList<Integer> valoresGrupoNumero9;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo0;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo1;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo2;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo3;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo4;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo5;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo6;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo7;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo8;
+    private ArrayList<ArrayList<Integer>> matrizValoresGrupo9;
     private ArrayList<Integer> cantidadNumeros;
     private int nroCaracteristicas;
-    private ArrayList<Double> listaCaracteristicas;
+    private ArrayList<Integer> listaCaracteristicas;
     private double[][] covMatrix0;
     private double[][] covMatrix1;
     private double[][] covMatrix2;
@@ -64,7 +61,7 @@ public class AlgoritmoBayesiano {
 
     public AlgoritmoBayesiano() {
         helper = new Helpers();
-        nroCaracteristicas = 3; //3 características: nros 1's, simetría horizontal, y simetría vertical
+        nroCaracteristicas = 400; //3 características: nros 1's, simetría horizontal, y simetría vertical
         listaCaracteristicas = new ArrayList<>(nroCaracteristicas);
 
         mediasGrupoNumero0 = new ArrayList<>(nroCaracteristicas);
@@ -88,7 +85,7 @@ public class AlgoritmoBayesiano {
             mediasGrupoNumero7.add(0.0);
             mediasGrupoNumero8.add(0.0);
             mediasGrupoNumero9.add(0.0);
-            listaCaracteristicas.add(0.0);
+            listaCaracteristicas.add(0);
         }
 
         cantidadNumeros = new ArrayList<>(10);
@@ -96,16 +93,102 @@ public class AlgoritmoBayesiano {
             cantidadNumeros.add(0);
         }
 
-        matrizValoresGrupo0 = new ArrayList<>(6000);
-        matrizValoresGrupo1 = new ArrayList<>(6000);
-        matrizValoresGrupo2 = new ArrayList<>(6000);
-        matrizValoresGrupo3 = new ArrayList<>(6000);
-        matrizValoresGrupo4 = new ArrayList<>(6000);
-        matrizValoresGrupo5 = new ArrayList<>(6000);
-        matrizValoresGrupo6 = new ArrayList<>(6000);
-        matrizValoresGrupo7 = new ArrayList<>(6000);
-        matrizValoresGrupo8 = new ArrayList<>(6000);
-        matrizValoresGrupo9 = new ArrayList<>(6000);
+        matrizValoresGrupo9 = new ArrayList<>(5949);
+        matrizValoresGrupo8 = new ArrayList<>(5851);
+        matrizValoresGrupo7 = new ArrayList<>(6265);
+        matrizValoresGrupo6 = new ArrayList<>(5918);
+        matrizValoresGrupo5 = new ArrayList<>(5421);
+        matrizValoresGrupo4 = new ArrayList<>(5842);
+        matrizValoresGrupo3 = new ArrayList<>(6131);
+        matrizValoresGrupo2 = new ArrayList<>(5958);
+        matrizValoresGrupo1 = new ArrayList<>(6742);
+        matrizValoresGrupo0 = new ArrayList<>(5923);
+
+        for (int i = 0; i < 5923; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo0.add(lista);
+        }
+        
+        for (int i = 0; i < 6742; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo1.add(lista);
+        }      
+
+        for (int i = 0; i < 5958; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo2.add(lista);
+        }   
+
+        for (int i = 0; i < 6131; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo3.add(lista);
+        }   
+        
+        for (int i = 0; i < 5842; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo4.add(lista);
+        }           
+        
+        for (int i = 0; i < 5421; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo5.add(lista);
+        }           
+        
+        for (int i = 0; i < 5918; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo6.add(lista);
+        }           
+        
+        for (int i = 0; i < 6265; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo7.add(lista);
+        }                   
+        
+        for (int i = 0; i < 5851; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo8.add(lista);
+        }        
+
+        for (int i = 0; i < 5949; i++) {
+            ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
+            for (int j = 0; j < nroCaracteristicas; j++) {
+                lista.add(0);
+            }
+            matrizValoresGrupo9.add(lista);
+        }                
+        
+
+        
+//        for (int i = 0; i < 6000; i++) {
+//            matrizValoresGrupo0.get(i);
+//        }
     }
 
     public void ExtraerMatricesCovarianzas() {
@@ -145,168 +228,215 @@ public class AlgoritmoBayesiano {
     }
 
     public void ProcesarDatos(int nroImagenes, ArrayList<byte[]> imagenesArray, ArrayList<Integer> labelsArray) {
-        try {
+        //try {
             ArrayList<String> output = new ArrayList<>(50);
 
-            for (int i = 0; i < nroImagenes; i++) {
-                byte[] imagen = imagenesArray.get(i);
-                int[][] pixeles = new int[28][28];
-                int t = 0;
-                int num = labelsArray.get(i);
+            for (int M = 0; M < 3; M++) {
+                int INICIO = nroImagenes / 3 * M;
+                int FIN = INICIO + ((nroImagenes / 3) - 1);
+                for (int i = INICIO; i <= FIN; i++) { //0..19999 - 20k..39999 - 40k..59999
+                    byte[] imagen = imagenesArray.get(i);
+                    //int[][] pixeles = new int[20][20];
+                    int t = 0;
+                    int num = labelsArray.get(i);
 
-                for (int u = 0; u < 28; u++) {
-                    for (int v = 0; v < 28; v++) {
-                        int p = helper.UnsignedToBytes(imagen[t]);
-                        if (p != 0) {
-                            p = 1;
+                    for (int u = 0; u < 28; u++) {
+                        if ((u > 3) && (u < 24)) {
+                            for (int v = 0; v < 28; v++) {
+                                if ((v > 3) && (v < 24)) {
+                                    int p = helper.UnsignedToBytes(imagen[t]);
+//                        if (p != 0) {
+//                            p = 1;
+//                        }
+                                    //pixeles[u - 4][v - 4] = p;
+                                    listaCaracteristicas.set(t, p);
+                                    t++;
+                                }
+                            }
                         }
-                        pixeles[u][v] = p;
-                        t++;
                     }
-                }
-                int[][] pixelesTrimeados = helper.RemoverPadding4(pixeles);
+                    //int[][] pixelesTrimeados = helper.RemoverPadding4(pixeles);
 
-                // <editor-fold defaultstate="collapsed" desc="EXTRAEMOS LAS CARACTERÍSTICAS DE LA IMÁGEN">
-                listaCaracteristicas.clear();
-                int car1 = CalcularCaracteristica1(pixelesTrimeados);
-                listaCaracteristicas.add((double) car1);
-                int car2 = SimetriaHorizontal(pixelesTrimeados);
-                listaCaracteristicas.add((double) car2);
-                int car3 = SimetriaVertical(pixelesTrimeados);
-                listaCaracteristicas.add((double) car3);
-                // </editor-fold>
 
-                if (i < 50) {
+                    // <editor-fold defaultstate="collapsed" desc="EXTRAEMOS LAS CARACTERÍSTICAS DE LA IMÁGEN">
+//                listaCaracteristicas.clear();
+//                int car1 = CalcularCaracteristica1(pixelesTrimeados);
+//                listaCaracteristicas.add((double) car1);
+//                int car2 = SimetriaHorizontal(pixelesTrimeados);
+//                listaCaracteristicas.add((double) car2);
+//                int car3 = SimetriaVertical(pixelesTrimeados);
+//                listaCaracteristicas.add((double) car3);
+                    // </editor-fold>
+
+
+                    //if (i < 50) {
                     //output.add("Label: " + num + " - 1s: " + car1 + " - SimV: " + car2 + " - SimH: " + car3);
-                    output.add(num + "\t" + car1 + "\t" + car2 + "\t" + car3);
-                }
+                    //output.add(num + "\t" + car1 + "\t" + car2 + "\t" + car3);
+                    //}
 
-                // <editor-fold defaultstate="collapsed" desc="ALMACENAMIENTO DE LAS MEDIAS">
-                switch (num) {
-                    case 0:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero0 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero0.set(k, (mediasGrupoNumero0.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero0.add((double) valorCar);
-                        }
-                        matrizValoresGrupo0.add(valoresGrupoNumero0);
-                        break;
-                    case 1:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero1 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero1.set(k, (mediasGrupoNumero1.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero1.add((double) valorCar);
-                        }
-                        matrizValoresGrupo1.add(valoresGrupoNumero1);
-                        break;
-                    case 2:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero2 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero2.set(k, (mediasGrupoNumero2.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero2.add((double) valorCar);
-                        }
-                        matrizValoresGrupo2.add(valoresGrupoNumero2);
-                        break;
-                    case 3:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero3 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero3.set(k, (mediasGrupoNumero3.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero3.add((double) valorCar);
-                        }
-                        matrizValoresGrupo3.add(valoresGrupoNumero3);
-                        break;
-                    case 4:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero4 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero4.set(k, (mediasGrupoNumero4.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero4.add((double) valorCar);
-                        }
-                        matrizValoresGrupo4.add(valoresGrupoNumero4);
-                        break;
-                    case 5:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero5 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero5.set(k, (mediasGrupoNumero5.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero5.add((double) valorCar);
-                        }
-                        matrizValoresGrupo5.add(valoresGrupoNumero5);
-                        break;
-                    case 6:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero6 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero6.set(k, (mediasGrupoNumero6.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero6.add((double) valorCar);
-                        }
-                        matrizValoresGrupo6.add(valoresGrupoNumero6);
-                        break;
-                    case 7:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero7 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero7.set(k, (mediasGrupoNumero7.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero7.add((double) valorCar);
-                        }
-                        matrizValoresGrupo7.add(valoresGrupoNumero7);
-                        break;
-                    case 8:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero8 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero8.set(k, (mediasGrupoNumero8.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero8.add((double) valorCar);
-                        }
-                        matrizValoresGrupo8.add(valoresGrupoNumero8);
-                        break;
-                    case 9:
-                        cantidadNumeros.set(num, cantidadNumeros.get(num) + 1);
-                        valoresGrupoNumero9 = new ArrayList<>(nroCaracteristicas);
-                        // PARA N-CARACTERÍSTICAS
-                        for (int k = 0; k < nroCaracteristicas; k++) {
-                            double valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
-                            mediasGrupoNumero9.set(k, (mediasGrupoNumero9.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
-                            valoresGrupoNumero9.add((double) valorCar);
-                        }
-                        matrizValoresGrupo9.add(valoresGrupoNumero9);
-                        break;
+                    // <editor-fold defaultstate="collapsed" desc="ALMACENAMIENTO DE LAS MEDIAS">
+                    switch (num) {
+                        case 0:
+                            //matrizValoresGrupo0.add(null);
+                            int n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero0 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero0.set(k, (mediasGrupoNumero0.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero0.add((double) valorCar);
+                                matrizValoresGrupo0.get(n).set(k, valorCar);
+                            }
+                            //matrizValoresGrupo0.add(valoresGrupoNumero0);
+                            //valoresGrupoNumero0.clear();
+                            break;
+                        case 1:
+                            n = cantidadNumeros.get(num);
+                            //System.out.println(n);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero1 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero1.set(k, (mediasGrupoNumero1.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero1.add((double) valorCar);
+                                matrizValoresGrupo1.get(n).set(k, valorCar);
+                            }
+                            //matrizValoresGrupo1.add(valoresGrupoNumero1);
+                            //valoresGrupoNumero1.clear();
+                            break;
+                        case 2:
+                            n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero2 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero2.set(k, (mediasGrupoNumero2.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero2.add((double) valorCar);
+                                matrizValoresGrupo2.get(n).set(k, valorCar);
+                            }
+                            //matrizValoresGrupo2.add(valoresGrupoNumero2);
+                            //valoresGrupoNumero2.clear();
+                            break;
+                        case 3:
+                            n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero3 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero3.set(k, (mediasGrupoNumero3.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero3.add((double) valorCar);
+                                matrizValoresGrupo3.get(n).set(k, valorCar);
+                            }
+                            //matrizValoresGrupo3.add(valoresGrupoNumero3);
+                            //valoresGrupoNumero3.clear();
+                            break;
+                        case 4:
+                            n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero4 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero4.set(k, (mediasGrupoNumero4.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero4.add((double) valorCar);
+                                matrizValoresGrupo4.get(n).set(k, valorCar);
+                            }
+                            //matrizValoresGrupo4.add(valoresGrupoNumero4);
+                            //valoresGrupoNumero4.clear();
+                            break;
+                        case 5:
+                            n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero5 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero5.set(k, (mediasGrupoNumero5.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero5.add((double) valorCar);
+                                matrizValoresGrupo5.get(n).set(k, valorCar);
+                            }
+                            //matrizValoresGrupo5.add(valoresGrupoNumero5);
+                            //valoresGrupoNumero5.clear();
+                            break;
+                        case 6:
+                            n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero6 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero6.set(k, (mediasGrupoNumero6.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero6.add((double) valorCar);
+                                matrizValoresGrupo6.get(n).set(k, valorCar);
+                            }
+                            //matrizValoresGrupo6.add(valoresGrupoNumero6);
+                            //valoresGrupoNumero6.clear();
+                            break;
+                        case 7:
+                            n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero7 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero7.set(k, (mediasGrupoNumero7.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero7.add((double) valorCar);
+                                matrizValoresGrupo7.get(n).set(k, valorCar);
+                            }
+                            // matrizValoresGrupo7.add(valoresGrupoNumero7);
+                            // valoresGrupoNumero7.clear();
+                            break;
+                        case 8:
+                            n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero8 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero8.set(k, (mediasGrupoNumero8.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero8.add((double) valorCar);
+                                matrizValoresGrupo8.get(n).set(k, valorCar);
+                            }
+                            //  matrizValoresGrupo8.add(valoresGrupoNumero8);
+                            //  valoresGrupoNumero8.clear();
+                            break;
+                        case 9:
+                            n = cantidadNumeros.get(num);
+                            cantidadNumeros.set(num, n + 1);
+                            //valoresGrupoNumero9 = new ArrayList<>(nroCaracteristicas);
+                            // PARA N-CARACTERÍSTICAS
+                            for (int k = 0; k < nroCaracteristicas; k++) {
+                                int valorCar= listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                                mediasGrupoNumero9.set(k, (mediasGrupoNumero9.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
+                                //valoresGrupoNumero9.add((double) valorCar);
+                                matrizValoresGrupo9.get(n).set(k, valorCar);
+                            }
+                            // matrizValoresGrupo9.add(valoresGrupoNumero9);
+                            // valoresGrupoNumero9.clear();
+                            break;
+                    }
+                    // </editor-fold>
                 }
-                // </editor-fold>
             }
+            System.out.println("Label\t1's\tSimV\tSimH");
+            ExtraerMatricesCovarianzas();
+            
 //            Collections.sort(output);
 //            System.out.println("Label\t1's\tSimV\tSimH");
 //            for (String s : output) {
 //                System.out.println(s);
 //            }
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
+//        } catch (Exception e) {
+//            System.out.println(e.toString());
+//        }
     }
 
-    public void ProcesarIrisFlowersDataSet() {
+    // <editor-fold defaultstate="collapsed" desc="IRIS FLOWERS DATA SET">
+    /*public void ProcesarIrisFlowersDataSet() {
         //Son 3 especies de flores
         ArrayList<Double> mediasEspecie1 = new ArrayList<>(4);
         ArrayList<Double> mediasEspecie2 = new ArrayList<>(4);
@@ -350,7 +480,7 @@ public class AlgoritmoBayesiano {
                         valoresGrupoSetosa = new ArrayList<>(4);
                         // PARA N-CARACTERÍSTICAS
                         for (int i = 0; i < nroCaracteristicas; i++) {
-                            double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+                            int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
                             mediasEspecie1.set(i, (mediasEspecie1.get(i) * (cantidadFloresXTipo.get(0) - 1) + valorCar) / cantidadFloresXTipo.get(0));
                             valoresGrupoSetosa.add((double) valorCar);
                         }
@@ -361,7 +491,7 @@ public class AlgoritmoBayesiano {
                         valoresGrupoVersicolor = new ArrayList<>(4);
                         // PARA N-CARACTERÍSTICAS
                         for (int i = 0; i < nroCaracteristicas; i++) {
-                            double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+                            int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
                             mediasEspecie2.set(i, (mediasEspecie2.get(i) * (cantidadFloresXTipo.get(1) - 1) + valorCar) / cantidadFloresXTipo.get(1));
                             valoresGrupoVersicolor.add((double) valorCar);
                         }
@@ -372,7 +502,7 @@ public class AlgoritmoBayesiano {
                         valoresGrupoVirginica = new ArrayList<>(4);
                         // PARA N-CARACTERÍSTICAS
                         for (int i = 0; i < nroCaracteristicas; i++) {
-                            double valorCar = listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+                            int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
                             mediasEspecie3.set(i, (mediasEspecie3.get(i) * (cantidadFloresXTipo.get(2) - 1) + valorCar) / cantidadFloresXTipo.get(2));
                             valoresGrupoVirginica.add((double) valorCar);
                         }
@@ -456,8 +586,8 @@ public class AlgoritmoBayesiano {
 //                helper.ImprimirMatriz_ArrayList(valoresGrupoSetosa, "valoresGrupoSetosa");
 //                //helper.ImprimirVector_ArrayList(mediasEspecie1, "mediasEspecie1");
 //                helper.ImprimirMatriz(matrizCovGrupoSetosa, "matrizCovGrupoSetosa");
-                
-                
+
+
                 //PARA GRUPO Versicolor
                 //Llenamos el modelo 
                 for (int i = 0; i < matrizValoresRandomVersicolor.size() - 5; i++) {
@@ -530,7 +660,8 @@ public class AlgoritmoBayesiano {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-    }
+    }*/
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="CARACTERISTICAS">
     //NUMERO DE 1's EN LA MATRIZ
@@ -807,7 +938,7 @@ public class AlgoritmoBayesiano {
         return multiplyByConstant(Traspuesta(Cofactor(C)), (1.0 / Determinante(C)));
     }
 
-    private double[][] MatrizCovarianza(ArrayList<ArrayList<Double>> matrizValores) {
+    private double[][] MatrizCovarianza(ArrayList<ArrayList<Integer>> matrizValores) {
         double[][] matrixAux = new double[matrizValores.size()][matrizValores.get(0).size()];
         RealMatrix realMatrix;
 
