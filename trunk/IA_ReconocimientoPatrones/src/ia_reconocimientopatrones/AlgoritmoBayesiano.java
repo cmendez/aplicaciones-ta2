@@ -1105,11 +1105,49 @@ public class AlgoritmoBayesiano {
     
     public double[][] CombinarMatricesValores(){
         
-        
+        double[][] Matriz2 = new double[60000][400];
         ArrayList<ArrayList<Integer>> matriz = new ArrayList<>(60000);
         for (int i = 0; i < matrizValoresGrupo0.size(); i++) {
             matriz.add(matrizValoresGrupo0.get(i));
         }
-        return null;
+        for (int i = 0; i < matrizValoresGrupo1.size(); i++) {
+            matriz.add(matrizValoresGrupo1.get(i));
+        }
+        for (int i = 0; i < matrizValoresGrupo2.size(); i++) {
+            matriz.add(matrizValoresGrupo2.get(i));
+        }
+        for (int i = 0; i < matrizValoresGrupo3.size(); i++) {
+            matriz.add(matrizValoresGrupo3.get(i));
+        }
+        for (int i = 0; i < matrizValoresGrupo4.size(); i++) {
+            matriz.add(matrizValoresGrupo4.get(i));
+        }
+        for (int i = 0; i < matrizValoresGrupo5.size(); i++) {
+            matriz.add(matrizValoresGrupo5.get(i));
+        }
+        for (int i = 0; i < matrizValoresGrupo6.size(); i++) {
+            matriz.add(matrizValoresGrupo6.get(i));
+        }
+        for (int i = 0; i < matrizValoresGrupo7.size(); i++) {
+            matriz.add(matrizValoresGrupo7.get(i));
+        }
+        for (int i = 0; i < matrizValoresGrupo8.size(); i++) {
+            matriz.add(matrizValoresGrupo8.get(i));
+        }        
+        for (int i = 0; i < matrizValoresGrupo9.size(); i++) {
+            matriz.add(matrizValoresGrupo9.get(i));
+        }        
+        
+        for (int i = 0; i < matriz.size(); i++) {
+            //matriz.get(i);
+            for (int j = 0; i <  matriz.get(i).size(); j++) {
+            //matriz.get(i).get(j);
+            Matriz2[i][j]=matriz.get(i).get(j);
+            
+            }
+            
+        }     
+        
+        return Matriz2;
     }
 }
