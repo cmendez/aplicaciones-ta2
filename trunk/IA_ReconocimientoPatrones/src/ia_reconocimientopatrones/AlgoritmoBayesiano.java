@@ -1225,4 +1225,32 @@ public class AlgoritmoBayesiano {
 
         System.out.println(ValorFormulaNum1 + "\n");
     }
+    
+    
+    
+    	public void random(ArrayList<ArrayList<Double>> matriz) {
+	
+	ArrayList<ArrayList<Double>> matrizCombinada = new ArrayList<>(50);
+	
+        ArrayList<Integer> auxiliar = new ArrayList<>(50);
+        
+	int DESDE=1;
+	int HASTA=50;
+	
+	//int finicial=(int)(Math.random()*(HASTA-DESDE+1)+DESDE); 
+	//int ffinal=(int)(Math.random()*(HASTA-DESDE+1)+DESDE); 
+	
+        do{
+            int finicial=(int)(Math.random()*(HASTA-DESDE+1)+DESDE);                 
+
+            if (!auxiliar.contains(finicial)){
+                auxiliar.add(finicial);
+                matrizCombinada.add(auxiliar.size(),matriz.get(finicial));//=matriz.get(finicial);
+                }            
+
+            }            
+         while (auxiliar.size()<50);                
+	
+	}
+    
 }
