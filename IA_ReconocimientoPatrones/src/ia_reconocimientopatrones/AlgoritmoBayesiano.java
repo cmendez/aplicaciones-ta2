@@ -1103,56 +1103,56 @@ public class AlgoritmoBayesiano {
         RealMatrix R = p.computeCorrelationMatrix(todosValores);        
     }
     
-    public double[][] CombinarMatricesValores(){
-        
+    public double[][] CombinarMatricesValores(){        
+        int i=0;        
         double[][] Matriz2 = new double[60000][400];
         //ArrayList<ArrayList<Integer>> matriz = new ArrayList<>(60000);
-        for (int i = 0; i < matrizValoresGrupo0.size(); i++) {           
-            for (int j = 0; j < matrizValoresGrupo0.get(i).size(); j++) {                
+        for (; i < matrizValoresGrupo0.size(); i++) {           
+            for (int j=0; j < matrizValoresGrupo0.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo0.get(i).get(j);
             }            
         }
-        for (int i = 0; i < matrizValoresGrupo1.size(); i++) {
-            for (int j = 0; j < matrizValoresGrupo1.get(i).size(); j++) {                
+        for (; i < matrizValoresGrupo1.size(); i++) {
+            for (int j=0; j < matrizValoresGrupo1.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo1.get(i).get(j);
             }              
         }
-        for (int i = 0; i < matrizValoresGrupo2.size(); i++) {
+        for (; i < matrizValoresGrupo2.size(); i++) {
             for (int j = 0; j < matrizValoresGrupo2.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo2.get(i).get(j);
             }              
         }
-        for (int i = 0; i < matrizValoresGrupo3.size(); i++) {
+        for (; i < matrizValoresGrupo3.size(); i++) {
             for (int j = 0; j < matrizValoresGrupo3.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo3.get(i).get(j);
             }              
         }
-        for (int i = 0; i < matrizValoresGrupo4.size(); i++) {
+        for (; i < matrizValoresGrupo4.size(); i++) {
             for (int j = 0; j < matrizValoresGrupo4.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo4.get(i).get(j);
             }              
         }
-        for (int i = 0; i < matrizValoresGrupo5.size(); i++) {
+        for (; i < matrizValoresGrupo5.size(); i++) {
             for (int j = 0; j < matrizValoresGrupo5.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo5.get(i).get(j);
             }              
         }
-        for (int i = 0; i < matrizValoresGrupo6.size(); i++) {
+        for (; i < matrizValoresGrupo6.size(); i++) {
             for (int j = 0; j < matrizValoresGrupo6.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo6.get(i).get(j);
             }              
         }
-        for (int i = 0; i < matrizValoresGrupo7.size(); i++) {
+        for (; i < matrizValoresGrupo7.size(); i++) {
             for (int j = 0; j < matrizValoresGrupo7.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo7.get(i).get(j);
             }              
         }
-        for (int i = 0; i < matrizValoresGrupo8.size(); i++) {
+        for (; i < matrizValoresGrupo8.size(); i++) {
             for (int j = 0; j < matrizValoresGrupo8.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo8.get(i).get(j);
             }              
         }        
-        for (int i = 0; i < matrizValoresGrupo9.size(); i++) {
+        for (; i < matrizValoresGrupo9.size(); i++) {
             for (int j = 0; j < matrizValoresGrupo9.get(i).size(); j++) {                
                 Matriz2[i][j]=matrizValoresGrupo9.get(i).get(j);
             }              
