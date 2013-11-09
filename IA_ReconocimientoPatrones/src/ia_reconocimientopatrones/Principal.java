@@ -28,8 +28,7 @@ public class Principal {
             algoritmo.ProcesarDatos(nroImagenes, imagenesArray, labelsArray);
             //algoritmo.ExtraerMatricesCovarianzas();
             //algoritmo.ProcesarIrisFlowersDataSet();
-            //algoritmo.Entrenamiento_IrisDataSet();
-            //algoritmo.Formula();
+            //algoritmo.Entrenamiento_IrisDataSet();            
             
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
