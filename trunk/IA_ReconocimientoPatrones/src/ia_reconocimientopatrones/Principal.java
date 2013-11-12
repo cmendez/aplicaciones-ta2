@@ -25,7 +25,7 @@ public class Principal {
             //generador.GenerarImagenes(50);
 
             AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
-            algoritmo.ProcesarDatos(nroImagenes, imagenesArray, labelsArray);
+            algoritmo.Entrenar_Modelo(nroImagenes, imagenesArray, labelsArray);
             //algoritmo.ExtraerMatricesCovarianzas();
             //algoritmo.ProcesarIrisFlowersDataSet();
             //algoritmo.Entrenamiento_IrisDataSet();            
