@@ -53,11 +53,32 @@ public class AlgoritmoBayesiano {
     private double[][] covMatrix7;
     private double[][] covMatrix8;
     private double[][] covMatrix9;
+    private double[][] sigmaInversaGrupo0;
+    private double[][] sigmaInversaGrupo1;
+    private double[][] sigmaInversaGrupo2;
+    private double[][] sigmaInversaGrupo3;
+    private double[][] sigmaInversaGrupo4;
+    private double[][] sigmaInversaGrupo5;
+    private double[][] sigmaInversaGrupo6;
+    private double[][] sigmaInversaGrupo7;
+    private double[][] sigmaInversaGrupo8;
+    private double[][] sigmaInversaGrupo9;
+    private double determinanteGrupo0;
+    private double determinanteGrupo1;
+    private double determinanteGrupo2;
+    private double determinanteGrupo3;
+    private double determinanteGrupo4;
+    private double determinanteGrupo5;
+    private double determinanteGrupo6;
+    private double determinanteGrupo7;
+    private double determinanteGrupo8;
+    private double determinanteGrupo9;
     private Helpers helper;
     ArrayList<ArrayList<Double>> matrizValoresGrupoSetosa;
     ArrayList<ArrayList<Double>> matrizValoresGrupoVersicolor;
     ArrayList<ArrayList<Double>> matrizValoresGrupoVirginica;
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="CONSTRUCTOR">
 
     public AlgoritmoBayesiano() {
         helper = new Helpers();
@@ -183,51 +204,11 @@ public class AlgoritmoBayesiano {
             }
             matrizValoresGrupo9.add(lista);
         }
-
-
-
-//        for (int i = 0; i < 6000; i++) {
-//            matrizValoresGrupo0.get(i);
-//        }
     }
+    // </editor-fold>
 
-    public void ExtraerMatricesCovarianzas() {
-        try {
-            covMatrix0 = MatrizCovarianza(matrizValoresGrupo0);
-            helper.ImprimirMatriz(covMatrix0, "Grupo 0");
-
-            covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
-            helper.ImprimirMatriz(covMatrix1, "Grupo 1");
-
-            covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
-            helper.ImprimirMatriz(covMatrix2, "Grupo 2");
-
-            covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
-            helper.ImprimirMatriz(covMatrix3, "Grupo 3");
-
-            covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
-            helper.ImprimirMatriz(covMatrix4, "Grupo 4");
-
-            covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
-            helper.ImprimirMatriz(covMatrix5, "Grupo 5");
-
-            covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
-            helper.ImprimirMatriz(covMatrix6, "Grupo 6");
-
-            covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
-            helper.ImprimirMatriz(covMatrix7, "Grupo 7");
-
-            covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
-            helper.ImprimirMatriz(covMatrix8, "Grupo 8");
-
-            covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
-            helper.ImprimirMatriz(covMatrix9, "Grupo 9");
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-    }
-
-    public void ProcesarDatos(int nroImagenes, ArrayList<byte[]> imagenesArray, ArrayList<Integer> labelsArray) {
+    // <editor-fold defaultstate="collapsed" desc="ENTRENAMIENTO DEL MODELO">
+    public void Entrenar_Modelo(int nroImagenes, ArrayList<byte[]> imagenesArray, ArrayList<Integer> labelsArray) {
         //try {
         //ArrayList<String> output = new ArrayList<>(50);
 
@@ -257,7 +238,6 @@ public class AlgoritmoBayesiano {
                 }
                 //int[][] pixelesTrimeados = helper.RemoverPadding4(pixeles);
 
-
                 // <editor-fold defaultstate="collapsed" desc="EXTRAEMOS LAS CARACTERÍSTICAS DE LA IMÁGEN">
 //                listaCaracteristicas.clear();
 //                int car1 = CalcularCaracteristica1(pixelesTrimeados);
@@ -268,13 +248,12 @@ public class AlgoritmoBayesiano {
 //                listaCaracteristicas.add((double) car3);
                 // </editor-fold>
 
-
                 //if (i < 50) {
                 //output.add("Label: " + num + " - 1s: " + car1 + " - SimV: " + car2 + " - SimH: " + car3);
                 //output.add(num + "\t" + car1 + "\t" + car2 + "\t" + car3);
                 //}
 
-                // <editor-fold defaultstate="collapsed" desc="ALMACENAMIENTO DE LAS MEDIAS">
+                // <editor-fold defaultstate="collapsed" desc="ALMACENAMIENTO DE LAS MEDIAS y VALORES">
                 switch (num) {
                     case 0:
                         //matrizValoresGrupo0.add(null);
@@ -423,8 +402,18 @@ public class AlgoritmoBayesiano {
             }
         }
         System.out.println("Label\t1's\tSimV\tSimH");
-        //ExtraerMatricesCovarianzas();
+
+        //Para aplicar PCA - reducir dimensionalidad
         GenerarMatrizCorrelacionyAutovalores();
+
+        //Para los valores que se usan en FuncionDiscriminante_Precalculada
+        //GenerarMatricesCovarianzas();
+        //GenerarSigmasInversas();
+        //GenerarDeterminantes();
+
+        //otra es generar sigmas y det. e inmediatamente liberar la mem. usada por las covarianzas para no ocupar tanta memoria
+        //GenerarCovarianzas_SigmasInversas_Determinantes();
+
 //            Collections.sort(output);
 //            System.out.println("Label\t1's\tSimV\tSimH");
 //            for (String s : output) {
@@ -435,377 +424,154 @@ public class AlgoritmoBayesiano {
 //        }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="IRIS FLOWERS DATA SET">
-    /*public void ProcesarIrisFlowersDataSet() {
-     //Son 3 especies de flores
-     ArrayList<Double> mediasEspecie1 = new ArrayList<>(4);
-     ArrayList<Double> mediasEspecie2 = new ArrayList<>(4);
-     ArrayList<Double> mediasEspecie3 = new ArrayList<>(4);
-     ArrayList<Double> listaCaracteristicas = new ArrayList<>(4);
-     ArrayList<Double> valoresGrupoSetosa;
-     ArrayList<Double> valoresGrupoVersicolor;
-     ArrayList<Double> valoresGrupoVirginica;
-     matrizValoresGrupoSetosa = new ArrayList<>(50);
-     matrizValoresGrupoVersicolor = new ArrayList<>(50);
-     matrizValoresGrupoVirginica = new ArrayList<>(50);
-     double[][] matrizCovGrupoSetosa;
-     double[][] matrizCovGrupoVersicolor;
-     double[][] matrizCovGrupoVirginica;
+    public void GenerarMatricesCovarianzas() {
+        try {
+            covMatrix0 = MatrizCovarianza(matrizValoresGrupo0);
+            helper.ImprimirMatriz(covMatrix0, "Grupo 0");
 
-     int nroCaracteristicas = 4;
-     for (int i = 0; i < nroCaracteristicas; i++) {
-     mediasEspecie1.add(0.0);
-     mediasEspecie2.add(0.0);
-     mediasEspecie3.add(0.0);
-     listaCaracteristicas.add(0.0);
-     }
-     ArrayList<Integer> cantidadFloresXTipo = new ArrayList<>();
-     for (int i = 1; i <= 3; i++) {
-     cantidadFloresXTipo.add(0);
-     }
+            covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
+            helper.ImprimirMatriz(covMatrix1, "Grupo 1");
 
-     try {
-     BufferedReader reader = new BufferedReader(new FileReader("C:/Users/Christian/Documents/PUCP/2013-2/APLICACIONES DE CIENCIAS DE LA COMPUTACIÓN/Tarea Académica 2/iris flower data set.txt"));
-     String line = null;
-     while ((line = reader.readLine()) != null) {
-     String[] parts = line.split("\t");
-     for (int i = 0; i < nroCaracteristicas; i++) {
-     listaCaracteristicas.set(i, Double.valueOf(parts[i]));
-     }
-     String especie = parts[4];
+            covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
+            helper.ImprimirMatriz(covMatrix2, "Grupo 2");
 
-     switch (especie) {
-     case "I. setosa":
-     cantidadFloresXTipo.set(0, cantidadFloresXTipo.get(0) + 1);
-     valoresGrupoSetosa = new ArrayList<>(4);
-     // PARA N-CARACTERÍSTICAS
-     for (int i = 0; i < nroCaracteristicas; i++) {
-     int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
-     mediasEspecie1.set(i, (mediasEspecie1.get(i) * (cantidadFloresXTipo.get(0) - 1) + valorCar) / cantidadFloresXTipo.get(0));
-     valoresGrupoSetosa.add((double) valorCar);
-     }
-     matrizValoresGrupoSetosa.add(valoresGrupoSetosa);
-     break;
-     case "I. versicolor":
-     cantidadFloresXTipo.set(1, cantidadFloresXTipo.get(1) + 1);
-     valoresGrupoVersicolor = new ArrayList<>(4);
-     // PARA N-CARACTERÍSTICAS
-     for (int i = 0; i < nroCaracteristicas; i++) {
-     int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
-     mediasEspecie2.set(i, (mediasEspecie2.get(i) * (cantidadFloresXTipo.get(1) - 1) + valorCar) / cantidadFloresXTipo.get(1));
-     valoresGrupoVersicolor.add((double) valorCar);
-     }
-     matrizValoresGrupoVersicolor.add(valoresGrupoVersicolor);
-     break;
-     case "I. virginica":
-     cantidadFloresXTipo.set(2, cantidadFloresXTipo.get(2) + 1);
-     valoresGrupoVirginica = new ArrayList<>(4);
-     // PARA N-CARACTERÍSTICAS
-     for (int i = 0; i < nroCaracteristicas; i++) {
-     int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
-     mediasEspecie3.set(i, (mediasEspecie3.get(i) * (cantidadFloresXTipo.get(2) - 1) + valorCar) / cantidadFloresXTipo.get(2));
-     valoresGrupoVirginica.add((double) valorCar);
-     }
-     matrizValoresGrupoVirginica.add(valoresGrupoVirginica);
-     break;
-     default:
-     break;
-     }
-     }
-     //            System.out.print("Medias Especie 1");
-     //            for (Double media : mediasEspecie1) {
-     //                System.out.print(media + " ");
-     //            }
-     //            System.out.println();
-     //            System.out.print("Medias Especie 2");
-     //            for (Double media : mediasEspecie2) {
-     //                System.out.print(media + " ");
-     //            }
-     //            System.out.println();
-     //            System.out.print("Medias Especie 3");
-     //            for (Double media : mediasEspecie3) {
-     //                System.out.print(media + " ");
-     //            }
-     //            System.out.println();
+            covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
+            helper.ImprimirMatriz(covMatrix3, "Grupo 3");
 
-     matrizCovGrupoSetosa = MatrizCovarianza(matrizValoresGrupoSetosa);
-     matrizCovGrupoVersicolor = MatrizCovarianza(matrizValoresGrupoVersicolor);
-     matrizCovGrupoVirginica = MatrizCovarianza(matrizValoresGrupoVirginica);
+            covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
+            helper.ImprimirMatriz(covMatrix4, "Grupo 4");
 
-     double g3 = FuncionDiscriminante(matrizValoresGrupoVirginica, mediasEspecie3, matrizCovGrupoVirginica, listaCaracteristicas);
+            covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
+            helper.ImprimirMatriz(covMatrix5, "Grupo 5");
 
-     } catch (IOException | NumberFormatException e) {
-     System.out.println(e.toString());
-     }
-     }
+            covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
+            helper.ImprimirMatriz(covMatrix6, "Grupo 6");
 
-     public void Entrenamiento_IrisDataSet() {
-     ProcesarIrisFlowersDataSet();
+            covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
+            helper.ImprimirMatriz(covMatrix7, "Grupo 7");
 
-     //Son 3 especies de flores
-     ArrayList<Double> mediasEspecie1 = new ArrayList<>(4);
-     ArrayList<Double> mediasEspecie2 = new ArrayList<>(4);
-     ArrayList<Double> mediasEspecie3 = new ArrayList<>(4);
-     ArrayList<Double> listaCaracteristicas = new ArrayList<>(4);
-     ArrayList<ArrayList<Double>> valoresGrupoSetosa = new ArrayList<>(45);
-     ArrayList<ArrayList<Double>> valoresGrupoVersicolor = new ArrayList<>(45);
-     ArrayList<ArrayList<Double>> valoresGrupoVirginica = new ArrayList<>(45);
-     ArrayList<ArrayList<Double>> matrizValoresRandomSetosa;
-     ArrayList<ArrayList<Double>> matrizValoresRandomVersicolor;
-     ArrayList<ArrayList<Double>> matrizValoresRandomVirginica;
-     double[][] matrizCovGrupoSetosa;
-     double[][] matrizCovGrupoVersicolor;
-     double[][] matrizCovGrupoVirginica;
-     int kfolder = 0;
-     int kfolderMax = 10;
-     for (int i = 0; i < 4; i++) {
-     mediasEspecie1.add(0.0);
-     mediasEspecie2.add(0.0);
-     mediasEspecie3.add(0.0);
-     }
-     try {
-     while (kfolder < kfolderMax) {
-     System.out.println("******************************* K-FOLDER NRO: " + kfolder + "*****************************");
-     matrizValoresRandomSetosa = ObtenerMatrizValoresRandom(matrizValoresGrupoSetosa);
-     matrizValoresRandomVersicolor = ObtenerMatrizValoresRandom(matrizValoresGrupoVersicolor);
-     matrizValoresRandomVirginica = ObtenerMatrizValoresRandom(matrizValoresGrupoVirginica);
+            covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
+            helper.ImprimirMatriz(covMatrix8, "Grupo 8");
 
-     //PARA GRUPO SETOSA
-     //Llenamos el modelo 
-     for (int i = 0; i < matrizValoresRandomSetosa.size() - 5; i++) {
-     //Los primeros 45 son los de entrenamiento
-     ArrayList<Double> valoresIteracion = new ArrayList<>(4);
-     for (int j = 0; j < matrizValoresRandomSetosa.get(i).size(); j++) {
-     double valor = matrizValoresRandomSetosa.get(i).get(j);
-     valoresIteracion.add(valor);
-     mediasEspecie1.set(j, (mediasEspecie1.get(j) * i + valor) / (i + 1));
-     }
-     valoresGrupoSetosa.add(valoresIteracion);
-     }
-     matrizCovGrupoSetosa = MatrizCovarianza(valoresGrupoSetosa);
-     //                helper.ImprimirMatriz_ArrayList(valoresGrupoSetosa, "valoresGrupoSetosa");
-     //                //helper.ImprimirVector_ArrayList(mediasEspecie1, "mediasEspecie1");
-     //                helper.ImprimirMatriz(matrizCovGrupoSetosa, "matrizCovGrupoSetosa");
-
-
-     //PARA GRUPO Versicolor
-     //Llenamos el modelo 
-     for (int i = 0; i < matrizValoresRandomVersicolor.size() - 5; i++) {
-     //Los primeros 45 son los de entrenamiento
-     ArrayList<Double> valoresIteracion = new ArrayList<>(4);
-     for (int j = 0; j < matrizValoresRandomVersicolor.get(i).size(); j++) {
-     double valor = matrizValoresRandomVersicolor.get(i).get(j);
-     valoresIteracion.add(valor);
-     mediasEspecie2.set(j, (mediasEspecie2.get(j) * i + valor) / (i + 1));
-     }
-     valoresGrupoVersicolor.add(valoresIteracion);
-     }
-     matrizCovGrupoVersicolor = MatrizCovarianza(valoresGrupoVersicolor);
-
-     //PARA GRUPO Virginica
-     //Llenamos el modelo 
-     for (int i = 0; i < matrizValoresRandomVirginica.size() - 5; i++) {
-     //Los primeros 45 son los de entrenamiento
-     ArrayList<Double> valoresIteracion = new ArrayList<>(4);
-     for (int j = 0; j < matrizValoresRandomVirginica.get(i).size(); j++) {
-     double valor = matrizValoresRandomVirginica.get(i).get(j);
-     valoresIteracion.add(valor);
-     mediasEspecie3.set(j, (mediasEspecie3.get(j) * i + valor) / (i + 1));
-     }
-     valoresGrupoVirginica.add(valoresIteracion);
-     }
-     matrizCovGrupoVirginica = MatrizCovarianza(valoresGrupoVirginica);
-
-
-     //Ahora llamamos a la funcion discriminante para las pruebas
-     //Grupo Setosa
-     for (int i = 45; i < 50; i++) {
-     ArrayList<Double> arregloIncognita = matrizValoresRandomSetosa.get(i);
-     double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
-     matrizCovGrupoSetosa, arregloIncognita);
-     double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
-     matrizCovGrupoVersicolor, arregloIncognita);
-     double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
-     matrizCovGrupoVirginica, arregloIncognita);
-     System.out.println("Setosa g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
-     }
-     System.out.println();
-     //Grupo Versicolor
-     for (int i = 45; i < 50; i++) {
-     ArrayList<Double> arregloIncognita = matrizValoresRandomVersicolor.get(i);
-     double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
-     matrizCovGrupoSetosa, arregloIncognita);
-     double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
-     matrizCovGrupoVersicolor, arregloIncognita);
-     double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
-     matrizCovGrupoVirginica, arregloIncognita);
-     System.out.println("Versicolor g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
-     }
-     System.out.println();
-     //Grupo Virginica
-     for (int i = 45; i < 50; i++) {
-     ArrayList<Double> arregloIncognita = matrizValoresRandomVirginica.get(i);
-     double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
-     matrizCovGrupoSetosa, arregloIncognita);
-     double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
-     matrizCovGrupoVersicolor, arregloIncognita);
-     double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
-     matrizCovGrupoVirginica, arregloIncognita);
-     System.out.println("Virginica g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
-     }
-
-     kfolder++;
-     }
-
-     } catch (Exception e) {
-     System.out.println(e.toString());
-     }
-     }
-     public void Random(ArrayList<ArrayList<Double>> matriz) {
-
-     ArrayList<ArrayList<Double>> matrizCombinada = new ArrayList<>(50);
-
-     ArrayList<Integer> auxiliar = new ArrayList<>(50);
-
-     int DESDE = 1;
-     int HASTA = 50;
-
-     //int finicial=(int)(Math.random()*(HASTA-DESDE+1)+DESDE); 
-     //int ffinal=(int)(Math.random()*(HASTA-DESDE+1)+DESDE); 
-
-     do {
-     int finicial = (int) (Math.random() * (HASTA - DESDE + 1) + DESDE);
-
-     if (!auxiliar.contains(finicial)) {
-     auxiliar.add(finicial);
-     matrizCombinada.add(auxiliar.size(), matriz.get(finicial));//=matriz.get(finicial);
-     }
-
-     } while (auxiliar.size() < 50);
-
-     }
-     * 
-     */
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="CARACTERISTICAS">
-    //NUMERO DE 1's EN LA MATRIZ
-    private int CalcularCaracteristica1(int[][] pixeles) {
-        int height = pixeles.length;
-        int width = pixeles[0].length;
-        int total = 0;
-        for (int fila = 0; fila < height; fila++) {
-            for (int col = 0; col < width; col++) {
-                if (pixeles[fila][col] != 0) {
-                    total++;
-                }
-            }
+            covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
+            helper.ImprimirMatriz(covMatrix9, "Grupo 9");
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
-        return total;
     }
 
-    //SIMETRÍA HORIZONTAL
-    private int CalcularCaracteristica2(int[][] pixeles) {
-        int height = pixeles.length;
-        int width = pixeles[0].length;
-        int[][] primeramatriz = new int[10][20];
-        int[][] segundamatriz = new int[10][20];
-        int coincidencias = 0;
-
-        for (int fila = 0; fila <= 9; fila++) {
-            for (int col = 0; col < width; col++) {
-                primeramatriz[fila][col] = pixeles[fila][col];
-            }
+    public void GenerarSigmasInversas() {
+        try {
+            sigmaInversaGrupo0 = Inversa(covMatrix0);
+            sigmaInversaGrupo1 = Inversa(covMatrix1);
+            sigmaInversaGrupo2 = Inversa(covMatrix2);
+            sigmaInversaGrupo3 = Inversa(covMatrix3);
+            sigmaInversaGrupo4 = Inversa(covMatrix4);
+            sigmaInversaGrupo5 = Inversa(covMatrix5);
+            sigmaInversaGrupo6 = Inversa(covMatrix6);
+            sigmaInversaGrupo7 = Inversa(covMatrix7);
+            sigmaInversaGrupo8 = Inversa(covMatrix8);
+            sigmaInversaGrupo9 = Inversa(covMatrix9);
+        } catch (Exception e) {
         }
-
-        for (int fila = 19; fila >= 10; fila--) {
-            for (int col = 0; col < width; col++) {
-                segundamatriz[19 - fila][col] = pixeles[fila][col];
-            }
-        }
-
-        for (int fila = 0; fila < 11; fila++) {
-            for (int col = 0; col < width; col++) {
-                if (primeramatriz[fila][col] == segundamatriz[fila][col]) {
-                    coincidencias++;
-                }
-            }
-        }
-        return coincidencias;
-        //si tiene valor de coincidencia de 200 entonces es identido es simetricamente horizontal               
     }
 
-    //SIMETRÍA VERTICAL
-    private int CalcularCaracteristica3(int[][] pixeles) {
-        int height = pixeles.length;
-        int width = pixeles[0].length;
-        int[][] primeramatriz = new int[20][10];
-        int[][] segundamatriz = new int[20][10];
-
-        int coincidencias = 0;
-        for (int fila = 0; fila < height; fila++) {
-            for (int col = 0; col < 11; col++) {
-                primeramatriz[fila][col] = pixeles[fila][col];
-            }
+    public void GenerarDeterminantes() {
+        try {
+            determinanteGrupo0 = Determinante(covMatrix0);
+            determinanteGrupo1 = Determinante(covMatrix1);
+            determinanteGrupo2 = Determinante(covMatrix2);
+            determinanteGrupo3 = Determinante(covMatrix3);
+            determinanteGrupo4 = Determinante(covMatrix4);
+            determinanteGrupo5 = Determinante(covMatrix5);
+            determinanteGrupo6 = Determinante(covMatrix6);
+            determinanteGrupo7 = Determinante(covMatrix7);
+            determinanteGrupo8 = Determinante(covMatrix8);
+            determinanteGrupo9 = Determinante(covMatrix9);
+        } catch (Exception e) {
         }
-
-        for (int fila = 0; fila < height; fila++) {
-            for (int col = 20; col > 11; col--) {
-                segundamatriz[fila][col] = pixeles[fila][col];
-            }
-        }
-
-        for (int fila = 0; fila < height; fila++) {
-            for (int col = 0; col < 11; col++) {
-                if (primeramatriz[fila][col] == segundamatriz[fila][col]) {
-                    coincidencias++;
-                }
-            }
-        }
-        return coincidencias;
-        //si tiene valor de coincidencia de 200 entonces es identido es simetricamente horizontal
     }
 
-    //SIMETRÍA HORIZONTAL v2
-    private int SimetriaHorizontal(int[][] pixeles) {
-        int nfilas = pixeles.length;
-        int ncolumnas = pixeles[0].length;
-        int nro1sArriba = 0, nro1sAbajo = 0;
+    public void GenerarCovarianzas_SigmasInversas_Determinantes() {
+        try {
+            covMatrix0 = MatrizCovarianza(matrizValoresGrupo0);
+            matrizValoresGrupo0 = null;
+            //helper.ImprimirMatriz(covMatrix0, "Grupo 0");
+            sigmaInversaGrupo0 = Inversa(covMatrix0);
+            determinanteGrupo0 = Determinante(covMatrix0);
+            covMatrix0 = null; // para liberar la mem usada
 
-        for (int fila = 0; fila < (nfilas - 10); fila++) { //[0..9]
-            for (int col = 0; col < ncolumnas; col++) { //[0..19]
-                if (pixeles[fila][col] != 0) {
-                    nro1sArriba++;
-                }
-                if (pixeles[nfilas - fila - 1][col] != 0) { //[19..10]
-                    nro1sAbajo++;
-                }
-            }
+            covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
+            matrizValoresGrupo1 = null;
+            //helper.ImprimirMatriz(covMatrix1, "Grupo 1");
+            sigmaInversaGrupo1 = Inversa(covMatrix1);
+            determinanteGrupo1 = Determinante(covMatrix1);
+            covMatrix1 = null; // para liberar la mem usada
+
+            covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
+            matrizValoresGrupo2 = null;
+            //helper.ImprimirMatriz(covMatrix2, "Grupo 2");
+            sigmaInversaGrupo2 = Inversa(covMatrix2);
+            determinanteGrupo2 = Determinante(covMatrix2);
+            covMatrix2 = null; // para liberar la mem usada
+
+            covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
+            matrizValoresGrupo3 = null;
+            //helper.ImprimirMatriz(covMatrix3, "Grupo 3");
+            sigmaInversaGrupo3 = Inversa(covMatrix3);
+            determinanteGrupo3 = Determinante(covMatrix3);
+            covMatrix3 = null; // para liberar la mem usada
+
+            covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
+            matrizValoresGrupo4 = null;
+            //helper.ImprimirMatriz(covMatrix4, "Grupo 4");
+            sigmaInversaGrupo4 = Inversa(covMatrix4);
+            determinanteGrupo4 = Determinante(covMatrix4);
+            covMatrix4 = null; // para liberar la mem usada
+
+            covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
+            matrizValoresGrupo5 = null;
+            //helper.ImprimirMatriz(covMatrix5, "Grupo 5");
+            sigmaInversaGrupo5 = Inversa(covMatrix5);
+            determinanteGrupo5 = Determinante(covMatrix5);
+            covMatrix5 = null; // para liberar la mem usada
+
+            covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
+            matrizValoresGrupo6 = null;
+            //helper.ImprimirMatriz(covMatrix6, "Grupo 6");
+            sigmaInversaGrupo6 = Inversa(covMatrix6);
+            determinanteGrupo6 = Determinante(covMatrix6);
+            covMatrix6 = null; // para liberar la mem usada
+
+            covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
+            matrizValoresGrupo7 = null;
+            //helper.ImprimirMatriz(covMatrix7, "Grupo 7");
+            sigmaInversaGrupo7 = Inversa(covMatrix7);
+            determinanteGrupo7 = Determinante(covMatrix7);
+            covMatrix7 = null; // para liberar la mem usada
+
+            covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
+            matrizValoresGrupo8 = null;
+            //helper.ImprimirMatriz(covMatrix8, "Grupo 8");
+            sigmaInversaGrupo8 = Inversa(covMatrix8);
+            determinanteGrupo8 = Determinante(covMatrix8);
+            covMatrix8 = null; // para liberar la mem usada
+
+            covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
+            matrizValoresGrupo9 = null;
+            //helper.ImprimirMatriz(covMatrix9, "Grupo 9");
+            sigmaInversaGrupo9 = Inversa(covMatrix9);
+            determinanteGrupo9 = Determinante(covMatrix9);
+            covMatrix9 = null; // para liberar la mem usada
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
-        return Math.abs(nro1sArriba - nro1sAbajo);
+
     }
 
-    //SIMETRÍA VERTICAL v2
-    private int SimetriaVertical(int[][] pixeles) {
-        int nfilas = pixeles.length;
-        int ncolumnas = pixeles[0].length;
-        int nro1sIzquierda = 0, nro1sDerecha = 0;
-
-        for (int col = 0; col < (ncolumnas - 10); col++) { //[0..9]
-            for (int fila = 0; fila < nfilas; fila++) { //[0..19]
-                if (pixeles[fila][col] != 0) {
-                    nro1sIzquierda++;
-                }
-                if (pixeles[fila][ncolumnas - col - 1] != 0) { //[19..10]
-                    nro1sDerecha++;
-                }
-            }
-        }
-        return Math.abs(nro1sIzquierda - nro1sDerecha);
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="FUNCION DISCRIMINANTE g(x)">
-    public double FuncionDiscriminante(ArrayList<ArrayList<Double>> matrizValores,
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="FUNCIONES DISCRIMINANTES g(x)">
+    public double FuncionDiscriminante_CalculaAlEjecutar(ArrayList<ArrayList<Double>> matrizValores,
             ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
             ArrayList<Double> arregloIncognita) {
         double g = -1;
@@ -831,8 +597,45 @@ public class AlgoritmoBayesiano {
         }
         return g;
     }
-    // </editor-fold>    
 
+    //Cada clase tendrá una función discriminante con los valores de
+    //sigmasinversas y determinantes ya calculadas, lista para recibir valores
+    public double FuncionDiscriminante_Precalculada(ArrayList<Double> arregloMedias,
+            ArrayList<Double> arregloIncognita, double[][] sigmaInversa, double determinante) {
+        double g = -1; //un valor cualquiera
+        try {
+            double[][] XmenosU = RestarMatrices(arregloIncognita, arregloMedias);
+
+            //podriamos guardar las sigmasInversas en atributos de la clase
+            //y asi hacemos que el proceso de testing sea mas rapido
+            //double[][] sigmaInversa = Inversa(matrizCovarianzas); 
+
+            double[][] XmenosUtraspuesto = Traspuesta(XmenosU);
+
+            //podriamos guardar las determinantes en atributos de la clase
+            //y asi hacemos que el proceso de testing sea mas rapido
+            //double determinante = Determinante(matrizCovarianzas);
+
+            double d = arregloMedias.size();
+//            helper.ImprimirVector_ArrayList(arregloIncognita, "arregloIncognita");
+//            helper.ImprimirVector_ArrayList(arregloMedias, "arregloMedias");
+//            helper.ImprimirMatriz(matrizCovarianzas, "matrizCovarianzas");
+//            helper.ImprimirMatriz(sigmaInversa, "sigmaInversa");
+//            helper.ImprimirMatriz(XmenosU, "XmenosU");
+//            helper.ImprimirMatriz(XmenosUtraspuesto, "XmenosUtraspuesto");
+//            System.out.println("Determinante: " + determinante);
+
+            double[][] producto = CalcularProducto(XmenosU, sigmaInversa, XmenosUtraspuesto);
+            double prod = producto[0][0];
+            g = (-0.5 * prod) - (d * 0.5 * Math.log(2 * Math.PI)) - (0.5 * Math.log(determinante));
+            //System.out.println("g(x): " + g);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return g;
+    }
+
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="FUNCIONES AUXILIARES DE MATRICES">
     public double[][] Cofactor(double[][] A) throws Exception {
         int m = A.length;
@@ -1094,28 +897,55 @@ public class AlgoritmoBayesiano {
     }
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="PCA - REDUCCIÓN DE DIMENSIONALIDAD">
     public void GenerarMatrizCorrelacionyAutovalores() {
-        PearsonsCorrelation p = new PearsonsCorrelation();
-        double[][] todosValores = CombinarMatricesValores();
-        matrizValoresGrupo0 = matrizValoresGrupo1 = matrizValoresGrupo2 = matrizValoresGrupo3 = matrizValoresGrupo4 = matrizValoresGrupo5 = matrizValoresGrupo6 = matrizValoresGrupo7 = matrizValoresGrupo8 = matrizValoresGrupo9 = null;
+        GenerarMatrizCorrelacionyAutovalores_Grupo0();
 
-        //helper.ImprimirMatriz(todosValores, "todosValores");
-        double[][] R = p.computeCorrelationMatrix(todosValores).getData();
+//        PearsonsCorrelation p = new PearsonsCorrelation();
+//        double[][] todosValores = CombinarMatricesValores();
+//        matrizValoresGrupo0 = matrizValoresGrupo1 = matrizValoresGrupo2 = matrizValoresGrupo3 = matrizValoresGrupo4 = matrizValoresGrupo5 = matrizValoresGrupo6 = matrizValoresGrupo7 = matrizValoresGrupo8 = matrizValoresGrupo9 = null;
+//
+//        //helper.ImprimirMatriz(todosValores, "todosValores");
+//        RealMatrix RM = p.computeCorrelationMatrix(todosValores);
+//        double[][] R = RM.getData();
+//        //helper.ImprimirMatriz(R, "R");
+//        Matrix A = new Matrix(R);
+//        R = null;
+////        A.print(5, 5);
+//
+////        int N = 400;
+////        // create a symmetric positive definite matrix
+////        A = Matrix.random(N, N);
+////        A = A.transpose().times(A);
+////        //A.print(N, N);
+//        EigenvalueDecomposition e = A.eig(); //para 10k, con 400 caract. pasaron 25 min y no terminaba!!
+//        A = null;
+////////        //Matrix V = e.getV();
+//        Matrix D = e.getD();
+        //D.print(nroCaracteristicas, nroCaracteristicas);
+    }
+
+    public void GenerarMatrizCorrelacionyAutovalores_Grupo0() {
+        PearsonsCorrelation p = new PearsonsCorrelation();
+        int nroFilas = matrizValoresGrupo0.size() - 5000;
+        double[][] matrizValores = new double[nroFilas][nroCaracteristicas]; //cada matriz es de 20x14 -> 280
+        for (int i = 0; i < nroFilas; i++) {
+            for (int j = 0; j < matrizValoresGrupo0.get(i).size(); j++) {
+                matrizValores[i][j] = matrizValoresGrupo0.get(i).get(j);
+            }
+        }
+        matrizValoresGrupo0 = null;
+        //helper.ImprimirMatriz(todosValores, "matrizValores");
+        RealMatrix RM = p.computeCorrelationMatrix(matrizValores);        
+        double[][] R = RM.getData();
         //helper.ImprimirMatriz(R, "R");
         Matrix A = new Matrix(R);
         R = null;
-//        A.print(5, 5);
-
-//        int N = 400;
-//        // create a symmetric positive definite matrix
-//        A = Matrix.random(N, N);
-//        A = A.transpose().times(A);
-//        //A.print(N, N);
-        EigenvalueDecomposition e = A.eig(); //para 10k, con 400 caract. pasaron 25 min y no terminaba!!
+        EigenvalueDecomposition E = A.eig();
         A = null;
-//////        //Matrix V = e.getV();
-        Matrix D = e.getD();
-        //D.print(nroCaracteristicas, nroCaracteristicas);
+        //Matrix V = e.getV();
+        Matrix D = E.getD();
+        D.print(nroCaracteristicas, nroCaracteristicas);
     }
 
     public double[][] CombinarMatricesValores() {
@@ -1185,4 +1015,374 @@ public class AlgoritmoBayesiano {
 
         return Matriz2;
     }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="IRIS FLOWERS DATA SET">
+    /*public void ProcesarIrisFlowersDataSet() {
+     //Son 3 especies de flores
+     ArrayList<Double> mediasEspecie1 = new ArrayList<>(4);
+     ArrayList<Double> mediasEspecie2 = new ArrayList<>(4);
+     ArrayList<Double> mediasEspecie3 = new ArrayList<>(4);
+     ArrayList<Double> listaCaracteristicas = new ArrayList<>(4);
+     ArrayList<Double> valoresGrupoSetosa;
+     ArrayList<Double> valoresGrupoVersicolor;
+     ArrayList<Double> valoresGrupoVirginica;
+     matrizValoresGrupoSetosa = new ArrayList<>(50);
+     matrizValoresGrupoVersicolor = new ArrayList<>(50);
+     matrizValoresGrupoVirginica = new ArrayList<>(50);
+     double[][] matrizCovGrupoSetosa;
+     double[][] matrizCovGrupoVersicolor;
+     double[][] matrizCovGrupoVirginica;
+
+     int nroCaracteristicas = 4;
+     for (int i = 0; i < nroCaracteristicas; i++) {
+     mediasEspecie1.add(0.0);
+     mediasEspecie2.add(0.0);
+     mediasEspecie3.add(0.0);
+     listaCaracteristicas.add(0.0);
+     }
+     ArrayList<Integer> cantidadFloresXTipo = new ArrayList<>();
+     for (int i = 1; i <= 3; i++) {
+     cantidadFloresXTipo.add(0);
+     }
+
+     try {
+     BufferedReader reader = new BufferedReader(new FileReader("C:/Users/Christian/Documents/PUCP/2013-2/APLICACIONES DE CIENCIAS DE LA COMPUTACIÓN/Tarea Académica 2/iris flower data set.txt"));
+     String line = null;
+     while ((line = reader.readLine()) != null) {
+     String[] parts = line.split("\t");
+     for (int i = 0; i < nroCaracteristicas; i++) {
+     listaCaracteristicas.set(i, Double.valueOf(parts[i]));
+     }
+     String especie = parts[4];
+
+     switch (especie) {
+     case "I. setosa":
+     cantidadFloresXTipo.set(0, cantidadFloresXTipo.get(0) + 1);
+     valoresGrupoSetosa = new ArrayList<>(4);
+     // PARA N-CARACTERÍSTICAS
+     for (int i = 0; i < nroCaracteristicas; i++) {
+     int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+     mediasEspecie1.set(i, (mediasEspecie1.get(i) * (cantidadFloresXTipo.get(0) - 1) + valorCar) / cantidadFloresXTipo.get(0));
+     valoresGrupoSetosa.add((double) valorCar);
+     }
+     matrizValoresGrupoSetosa.add(valoresGrupoSetosa);
+     break;
+     case "I. versicolor":
+     cantidadFloresXTipo.set(1, cantidadFloresXTipo.get(1) + 1);
+     valoresGrupoVersicolor = new ArrayList<>(4);
+     // PARA N-CARACTERÍSTICAS
+     for (int i = 0; i < nroCaracteristicas; i++) {
+     int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+     mediasEspecie2.set(i, (mediasEspecie2.get(i) * (cantidadFloresXTipo.get(1) - 1) + valorCar) / cantidadFloresXTipo.get(1));
+     valoresGrupoVersicolor.add((double) valorCar);
+     }
+     matrizValoresGrupoVersicolor.add(valoresGrupoVersicolor);
+     break;
+     case "I. virginica":
+     cantidadFloresXTipo.set(2, cantidadFloresXTipo.get(2) + 1);
+     valoresGrupoVirginica = new ArrayList<>(4);
+     // PARA N-CARACTERÍSTICAS
+     for (int i = 0; i < nroCaracteristicas; i++) {
+     int valorCar= listaCaracteristicas.get(i); //obtener el valor de la i-ésima característica
+     mediasEspecie3.set(i, (mediasEspecie3.get(i) * (cantidadFloresXTipo.get(2) - 1) + valorCar) / cantidadFloresXTipo.get(2));
+     valoresGrupoVirginica.add((double) valorCar);
+     }
+     matrizValoresGrupoVirginica.add(valoresGrupoVirginica);
+     break;
+     default:
+     break;
+     }
+     }
+     //            System.out.print("Medias Especie 1");
+     //            for (Double media : mediasEspecie1) {
+     //                System.out.print(media + " ");
+     //            }
+     //            System.out.println();
+     //            System.out.print("Medias Especie 2");
+     //            for (Double media : mediasEspecie2) {
+     //                System.out.print(media + " ");
+     //            }
+     //            System.out.println();
+     //            System.out.print("Medias Especie 3");
+     //            for (Double media : mediasEspecie3) {
+     //                System.out.print(media + " ");
+     //            }
+     //            System.out.println();
+
+     matrizCovGrupoSetosa = MatrizCovarianza(matrizValoresGrupoSetosa);
+     matrizCovGrupoVersicolor = MatrizCovarianza(matrizValoresGrupoVersicolor);
+     matrizCovGrupoVirginica = MatrizCovarianza(matrizValoresGrupoVirginica);
+
+     double g3 = FuncionDiscriminante(matrizValoresGrupoVirginica, mediasEspecie3, matrizCovGrupoVirginica, listaCaracteristicas);
+
+     } catch (IOException | NumberFormatException e) {
+     System.out.println(e.toString());
+     }
+     }
+
+     public void Entrenamiento_IrisDataSet() {
+     ProcesarIrisFlowersDataSet();
+
+     //Son 3 especies de flores
+     ArrayList<Double> mediasEspecie1 = new ArrayList<>(4);
+     ArrayList<Double> mediasEspecie2 = new ArrayList<>(4);
+     ArrayList<Double> mediasEspecie3 = new ArrayList<>(4);
+     ArrayList<Double> listaCaracteristicas = new ArrayList<>(4);
+     ArrayList<ArrayList<Double>> valoresGrupoSetosa = new ArrayList<>(45);
+     ArrayList<ArrayList<Double>> valoresGrupoVersicolor = new ArrayList<>(45);
+     ArrayList<ArrayList<Double>> valoresGrupoVirginica = new ArrayList<>(45);
+     ArrayList<ArrayList<Double>> matrizValoresRandomSetosa;
+     ArrayList<ArrayList<Double>> matrizValoresRandomVersicolor;
+     ArrayList<ArrayList<Double>> matrizValoresRandomVirginica;
+     double[][] matrizCovGrupoSetosa;
+     double[][] matrizCovGrupoVersicolor;
+     double[][] matrizCovGrupoVirginica;
+     int kfolder = 0;
+     int kfolderMax = 10;
+     for (int i = 0; i < 4; i++) {
+     mediasEspecie1.add(0.0);
+     mediasEspecie2.add(0.0);
+     mediasEspecie3.add(0.0);
+     }
+     try {
+     while (kfolder < kfolderMax) {
+     System.out.println("******************************* K-FOLDER NRO: " + kfolder + "*****************************");
+     matrizValoresRandomSetosa = ObtenerMatrizValoresRandom(matrizValoresGrupoSetosa);
+     matrizValoresRandomVersicolor = ObtenerMatrizValoresRandom(matrizValoresGrupoVersicolor);
+     matrizValoresRandomVirginica = ObtenerMatrizValoresRandom(matrizValoresGrupoVirginica);
+
+     //PARA GRUPO SETOSA
+     //Llenamos el modelo 
+     for (int i = 0; i < matrizValoresRandomSetosa.size() - 5; i++) {
+     //Los primeros 45 son los de entrenamiento
+     ArrayList<Double> valoresIteracion = new ArrayList<>(4);
+     for (int j = 0; j < matrizValoresRandomSetosa.get(i).size(); j++) {
+     double valor = matrizValoresRandomSetosa.get(i).get(j);
+     valoresIteracion.add(valor);
+     mediasEspecie1.set(j, (mediasEspecie1.get(j) * i + valor) / (i + 1));
+     }
+     valoresGrupoSetosa.add(valoresIteracion);
+     }
+     matrizCovGrupoSetosa = MatrizCovarianza(valoresGrupoSetosa);
+     //                helper.ImprimirMatriz_ArrayList(valoresGrupoSetosa, "valoresGrupoSetosa");
+     //                //helper.ImprimirVector_ArrayList(mediasEspecie1, "mediasEspecie1");
+     //                helper.ImprimirMatriz(matrizCovGrupoSetosa, "matrizCovGrupoSetosa");
+
+
+     //PARA GRUPO Versicolor
+     //Llenamos el modelo 
+     for (int i = 0; i < matrizValoresRandomVersicolor.size() - 5; i++) {
+     //Los primeros 45 son los de entrenamiento
+     ArrayList<Double> valoresIteracion = new ArrayList<>(4);
+     for (int j = 0; j < matrizValoresRandomVersicolor.get(i).size(); j++) {
+     double valor = matrizValoresRandomVersicolor.get(i).get(j);
+     valoresIteracion.add(valor);
+     mediasEspecie2.set(j, (mediasEspecie2.get(j) * i + valor) / (i + 1));
+     }
+     valoresGrupoVersicolor.add(valoresIteracion);
+     }
+     matrizCovGrupoVersicolor = MatrizCovarianza(valoresGrupoVersicolor);
+
+     //PARA GRUPO Virginica
+     //Llenamos el modelo 
+     for (int i = 0; i < matrizValoresRandomVirginica.size() - 5; i++) {
+     //Los primeros 45 son los de entrenamiento
+     ArrayList<Double> valoresIteracion = new ArrayList<>(4);
+     for (int j = 0; j < matrizValoresRandomVirginica.get(i).size(); j++) {
+     double valor = matrizValoresRandomVirginica.get(i).get(j);
+     valoresIteracion.add(valor);
+     mediasEspecie3.set(j, (mediasEspecie3.get(j) * i + valor) / (i + 1));
+     }
+     valoresGrupoVirginica.add(valoresIteracion);
+     }
+     matrizCovGrupoVirginica = MatrizCovarianza(valoresGrupoVirginica);
+
+
+     //Ahora llamamos a la funcion discriminante para las pruebas
+     //Grupo Setosa
+     for (int i = 45; i < 50; i++) {
+     ArrayList<Double> arregloIncognita = matrizValoresRandomSetosa.get(i);
+     double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
+     matrizCovGrupoSetosa, arregloIncognita);
+     double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
+     matrizCovGrupoVersicolor, arregloIncognita);
+     double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
+     matrizCovGrupoVirginica, arregloIncognita);
+     System.out.println("Setosa g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
+     }
+     System.out.println();
+     //Grupo Versicolor
+     for (int i = 45; i < 50; i++) {
+     ArrayList<Double> arregloIncognita = matrizValoresRandomVersicolor.get(i);
+     double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
+     matrizCovGrupoSetosa, arregloIncognita);
+     double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
+     matrizCovGrupoVersicolor, arregloIncognita);
+     double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
+     matrizCovGrupoVirginica, arregloIncognita);
+     System.out.println("Versicolor g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
+     }
+     System.out.println();
+     //Grupo Virginica
+     for (int i = 45; i < 50; i++) {
+     ArrayList<Double> arregloIncognita = matrizValoresRandomVirginica.get(i);
+     double g1 = FuncionDiscriminante(valoresGrupoSetosa, mediasEspecie1,
+     matrizCovGrupoSetosa, arregloIncognita);
+     double g2 = FuncionDiscriminante(valoresGrupoVersicolor, mediasEspecie2,
+     matrizCovGrupoVersicolor, arregloIncognita);
+     double g3 = FuncionDiscriminante(valoresGrupoVirginica, mediasEspecie3,
+     matrizCovGrupoVirginica, arregloIncognita);
+     System.out.println("Virginica g1: " + g1 + "\t\t" + "g2: " + g2 + "\t\t" + "g3: " + g3);
+     }
+
+     kfolder++;
+     }
+
+     } catch (Exception e) {
+     System.out.println(e.toString());
+     }
+     }
+     public void Random(ArrayList<ArrayList<Double>> matriz) {
+
+     ArrayList<ArrayList<Double>> matrizCombinada = new ArrayList<>(50);
+
+     ArrayList<Integer> auxiliar = new ArrayList<>(50);
+
+     int DESDE = 1;
+     int HASTA = 50;
+
+     //int finicial=(int)(Math.random()*(HASTA-DESDE+1)+DESDE); 
+     //int ffinal=(int)(Math.random()*(HASTA-DESDE+1)+DESDE); 
+
+     do {
+     int finicial = (int) (Math.random() * (HASTA - DESDE + 1) + DESDE);
+
+     if (!auxiliar.contains(finicial)) {
+     auxiliar.add(finicial);
+     matrizCombinada.add(auxiliar.size(), matriz.get(finicial));//=matriz.get(finicial);
+     }
+
+     } while (auxiliar.size() < 50);
+
+     }
+     * 
+     */
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="CARACTERISTICAS PROPUESTAS PARA LOS DIGITOS">
+    //NUMERO DE 1's EN LA MATRIZ
+    private int CalcularCaracteristica1(int[][] pixeles) {
+        int height = pixeles.length;
+        int width = pixeles[0].length;
+        int total = 0;
+        for (int fila = 0; fila < height; fila++) {
+            for (int col = 0; col < width; col++) {
+                if (pixeles[fila][col] != 0) {
+                    total++;
+                }
+            }
+        }
+        return total;
+    }
+
+    //SIMETRÍA HORIZONTAL
+    private int CalcularCaracteristica2(int[][] pixeles) {
+        int height = pixeles.length;
+        int width = pixeles[0].length;
+        int[][] primeramatriz = new int[10][20];
+        int[][] segundamatriz = new int[10][20];
+        int coincidencias = 0;
+
+        for (int fila = 0; fila <= 9; fila++) {
+            for (int col = 0; col < width; col++) {
+                primeramatriz[fila][col] = pixeles[fila][col];
+            }
+        }
+
+        for (int fila = 19; fila >= 10; fila--) {
+            for (int col = 0; col < width; col++) {
+                segundamatriz[19 - fila][col] = pixeles[fila][col];
+            }
+        }
+
+        for (int fila = 0; fila < 11; fila++) {
+            for (int col = 0; col < width; col++) {
+                if (primeramatriz[fila][col] == segundamatriz[fila][col]) {
+                    coincidencias++;
+                }
+            }
+        }
+        return coincidencias;
+        //si tiene valor de coincidencia de 200 entonces es identido es simetricamente horizontal               
+    }
+
+    //SIMETRÍA VERTICAL
+    private int CalcularCaracteristica3(int[][] pixeles) {
+        int height = pixeles.length;
+        int width = pixeles[0].length;
+        int[][] primeramatriz = new int[20][10];
+        int[][] segundamatriz = new int[20][10];
+
+        int coincidencias = 0;
+        for (int fila = 0; fila < height; fila++) {
+            for (int col = 0; col < 11; col++) {
+                primeramatriz[fila][col] = pixeles[fila][col];
+            }
+        }
+
+        for (int fila = 0; fila < height; fila++) {
+            for (int col = 20; col > 11; col--) {
+                segundamatriz[fila][col] = pixeles[fila][col];
+            }
+        }
+
+        for (int fila = 0; fila < height; fila++) {
+            for (int col = 0; col < 11; col++) {
+                if (primeramatriz[fila][col] == segundamatriz[fila][col]) {
+                    coincidencias++;
+                }
+            }
+        }
+        return coincidencias;
+        //si tiene valor de coincidencia de 200 entonces es identido es simetricamente horizontal
+    }
+
+    //SIMETRÍA HORIZONTAL v2
+    private int SimetriaHorizontal(int[][] pixeles) {
+        int nfilas = pixeles.length;
+        int ncolumnas = pixeles[0].length;
+        int nro1sArriba = 0, nro1sAbajo = 0;
+
+        for (int fila = 0; fila < (nfilas - 10); fila++) { //[0..9]
+            for (int col = 0; col < ncolumnas; col++) { //[0..19]
+                if (pixeles[fila][col] != 0) {
+                    nro1sArriba++;
+                }
+                if (pixeles[nfilas - fila - 1][col] != 0) { //[19..10]
+                    nro1sAbajo++;
+                }
+            }
+        }
+        return Math.abs(nro1sArriba - nro1sAbajo);
+    }
+
+    //SIMETRÍA VERTICAL v2
+    private int SimetriaVertical(int[][] pixeles) {
+        int nfilas = pixeles.length;
+        int ncolumnas = pixeles[0].length;
+        int nro1sIzquierda = 0, nro1sDerecha = 0;
+
+        for (int col = 0; col < (ncolumnas - 10); col++) { //[0..9]
+            for (int fila = 0; fila < nfilas; fila++) { //[0..19]
+                if (pixeles[fila][col] != 0) {
+                    nro1sIzquierda++;
+                }
+                if (pixeles[fila][ncolumnas - col - 1] != 0) { //[19..10]
+                    nro1sDerecha++;
+                }
+            }
+        }
+        return Math.abs(nro1sIzquierda - nro1sDerecha);
+    }
+    // </editor-fold>
 }
