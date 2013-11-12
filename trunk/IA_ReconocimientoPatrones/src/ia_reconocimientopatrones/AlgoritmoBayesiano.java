@@ -2,10 +2,14 @@ package ia_reconocimientopatrones;
 //import org.apache.commons.math3.stat.correlation.Covariance;
 import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 
 public class AlgoritmoBayesiano {
 
@@ -82,7 +86,7 @@ public class AlgoritmoBayesiano {
 
     public AlgoritmoBayesiano() {
         helper = new Helpers();
-        nroCaracteristicas = 280; //20x14
+        nroCaracteristicas = 280; //20x14 --> 280 | 20x20 --> 400
         listaCaracteristicas = new ArrayList<>(nroCaracteristicas);
 
         mediasGrupoNumero0 = new ArrayList<>(nroCaracteristicas);
@@ -222,13 +226,13 @@ public class AlgoritmoBayesiano {
                 int num = labelsArray.get(i);
 
                 for (int u = 0; u < 28; u++) {
-                    if ((u > 3) && (u < 24)) { //ignorar 4 filas arriba y abajo. Total 20 filas
+                    if ((u > 3) && (u < 24)) { //3,4: ignorar 4 filas arriba y abajo. Total 20 filas
                         for (int v = 0; v < 28; v++) {
-                            if ((v > 6) && (v < 21)) { //ignorar 7 columnas izq y der. Total 14 columnas
+                            if ((v > 6) && (v < 21)) { //6,21: ignorar 7 columnas izq y der. Total 14 columnas
                                 int p = helper.UnsignedToBytes(imagen[t]);
-                                if (p == 0) {
-                                    p = 1;
-                                }
+//                                if (p == 0) {
+//                                    p = 1;
+//                                }
                                 //pixeles[u - 4][v - 4] = p;
                                 listaCaracteristicas.set(t, p);
                                 t++;
@@ -400,8 +404,7 @@ public class AlgoritmoBayesiano {
                 }
                 // </editor-fold>
             }
-        }
-        System.out.println("Label\t1's\tSimV\tSimH");
+        }       
 
         //Para aplicar PCA - reducir dimensionalidad
         GenerarMatrizCorrelacionyAutovalores();
@@ -414,6 +417,7 @@ public class AlgoritmoBayesiano {
         //otra es generar sigmas y det. e inmediatamente liberar la mem. usada por las covarianzas para no ocupar tanta memoria
         //GenerarCovarianzas_SigmasInversas_Determinantes();
 
+//            System.out.println("Label\t1's\tSimV\tSimH");        
 //            Collections.sort(output);
 //            System.out.println("Label\t1's\tSimV\tSimH");
 //            for (String s : output) {
@@ -899,121 +903,195 @@ public class AlgoritmoBayesiano {
 
     // <editor-fold defaultstate="collapsed" desc="PCA - REDUCCIÓN DE DIMENSIONALIDAD">
     public void GenerarMatrizCorrelacionyAutovalores() {
-        GenerarMatrizCorrelacionyAutovalores_Grupo0();
+        //GenerarMatrizCorrelacionyAutovalores_Grupo0();
 
-//        PearsonsCorrelation p = new PearsonsCorrelation();
-//        double[][] todosValores = CombinarMatricesValores();
-//        matrizValoresGrupo0 = matrizValoresGrupo1 = matrizValoresGrupo2 = matrizValoresGrupo3 = matrizValoresGrupo4 = matrizValoresGrupo5 = matrizValoresGrupo6 = matrizValoresGrupo7 = matrizValoresGrupo8 = matrizValoresGrupo9 = null;
-//
-//        //helper.ImprimirMatriz(todosValores, "todosValores");
-//        RealMatrix RM = p.computeCorrelationMatrix(todosValores);
-//        double[][] R = RM.getData();
-//        //helper.ImprimirMatriz(R, "R");
-//        Matrix A = new Matrix(R);
-//        R = null;
-////        A.print(5, 5);
-//
-////        int N = 400;
-////        // create a symmetric positive definite matrix
-////        A = Matrix.random(N, N);
-////        A = A.transpose().times(A);
-////        //A.print(N, N);
-//        EigenvalueDecomposition e = A.eig(); //para 10k, con 400 caract. pasaron 25 min y no terminaba!!
-//        A = null;
-////////        //Matrix V = e.getV();
-//        Matrix D = e.getD();
-        //D.print(nroCaracteristicas, nroCaracteristicas);
-    }
-
-    public void GenerarMatrizCorrelacionyAutovalores_Grupo0() {
         PearsonsCorrelation p = new PearsonsCorrelation();
-        int nroFilas = matrizValoresGrupo0.size() - 5000;
-        double[][] matrizValores = new double[nroFilas][nroCaracteristicas]; //cada matriz es de 20x14 -> 280
-        for (int i = 0; i < nroFilas; i++) {
-            for (int j = 0; j < matrizValoresGrupo0.get(i).size(); j++) {
-                matrizValores[i][j] = matrizValoresGrupo0.get(i).get(j);
-            }
-        }
-        matrizValoresGrupo0 = null;
-        //helper.ImprimirMatriz(todosValores, "matrizValores");
-        RealMatrix RM = p.computeCorrelationMatrix(matrizValores);        
+        double[][] todosValores = CombinarMatricesValores();
+        matrizValoresGrupo0 = matrizValoresGrupo1 = matrizValoresGrupo2 =
+                matrizValoresGrupo3 = matrizValoresGrupo4 = matrizValoresGrupo5 =
+                matrizValoresGrupo6 = matrizValoresGrupo7 = matrizValoresGrupo8 = matrizValoresGrupo9 = null;
+
+        //helper.ImprimirMatriz(todosValores, "todosValores");
+        RealMatrix RM = p.computeCorrelationMatrix(todosValores);
         double[][] R = RM.getData();
         //helper.ImprimirMatriz(R, "R");
         Matrix A = new Matrix(R);
         R = null;
         EigenvalueDecomposition E = A.eig();
         A = null;
-        //Matrix V = e.getV();
+        //Matrix V = E.getV();
         Matrix D = E.getD();
-        D.print(nroCaracteristicas, nroCaracteristicas);
+        Autovalores_Mayores(D.getArray());
+        helper.ImprimirMatriz(D.getArray(), "AUTOVALORES");        
+    }
+
+    public void GenerarMatrizCorrelacionyAutovalores_Grupo0() {
+        SpearmansCorrelation s = new SpearmansCorrelation();
+        PearsonsCorrelation p = new PearsonsCorrelation();
+        int nroFilas = matrizValoresGrupo0.size();
+        double[][] matrizValores = new double[nroFilas][nroCaracteristicas]; //cada matriz es de 20x14 -> 280
+        for (int i = 0; i < nroFilas; i++) {
+            for (int j = 0; j < matrizValoresGrupo0.get(i).size(); j++) {
+                int x = matrizValoresGrupo0.get(i).get(j);
+                double d = (double) matrizValoresGrupo0.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());//*(HASTA-DESDE+1)+DESDE);
+                }
+                matrizValores[i][j] = d;
+            }
+        }
+        matrizValoresGrupo0 = null;
+        //helper.ImprimirMatriz(matrizValores, "matrizValores"); 
+        RealMatrix RM = p.computeCorrelationMatrix(matrizValores);
+        double[][] R = RM.getData();
+        //helper.ImprimirMatriz(R, "R");
+        Matrix A = new Matrix(R);
+        R = null;
+        EigenvalueDecomposition E = A.eig();
+        A = null;
+        Matrix D = E.getD();
+        helper.ImprimirMatriz(D.getArray(), "AUTOVALORES GRUPO 0");
     }
 
     public double[][] CombinarMatricesValores() {
         int t = 0;
-        double[][] Matriz2 = new double[10000][280]; //cada matriz es de 20x14
-        for (int i = 0; i < matrizValoresGrupo0.size() - 5000; i++) {
+        int n = 0;//5000;
+        double[][] Matriz2 = new double[60000 - n * 10][nroCaracteristicas]; //cada matriz es de 20x14
+        for (int i = 0; i < matrizValoresGrupo0.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo0.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo0.get(i).get(j);
+                int x = matrizValoresGrupo0.get(i).get(j);
+                double d = (double) matrizValoresGrupo0.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
 
-        for (int i = 0; i < matrizValoresGrupo1.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo1.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo1.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo1.get(i).get(j);
+                int x = matrizValoresGrupo1.get(i).get(j);
+                double d = (double) matrizValoresGrupo1.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
-        for (int i = 0; i < matrizValoresGrupo2.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo2.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo2.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo2.get(i).get(j);
+                int x = matrizValoresGrupo2.get(i).get(j);
+                double d = (double) matrizValoresGrupo2.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
-        for (int i = 0; i < matrizValoresGrupo3.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo3.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo3.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo3.get(i).get(j);
+                int x = matrizValoresGrupo3.get(i).get(j);
+                double d = (double) matrizValoresGrupo3.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
-        for (int i = 0; i < matrizValoresGrupo4.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo4.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo4.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo4.get(i).get(j);
+                int x = matrizValoresGrupo4.get(i).get(j);
+                double d = (double) matrizValoresGrupo4.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
-        for (int i = 0; i < matrizValoresGrupo5.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo5.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo5.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo5.get(i).get(j);
+                int x = matrizValoresGrupo5.get(i).get(j);
+                double d = (double) matrizValoresGrupo5.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
-        for (int i = 0; i < matrizValoresGrupo6.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo6.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo6.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo6.get(i).get(j);
+                int x = matrizValoresGrupo6.get(i).get(j);
+                double d = (double) matrizValoresGrupo6.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
-        for (int i = 0; i < matrizValoresGrupo7.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo7.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo7.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo7.get(i).get(j);
+                int x = matrizValoresGrupo7.get(i).get(j);
+                double d = (double) matrizValoresGrupo7.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
-        for (int i = 0; i < matrizValoresGrupo8.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo8.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo8.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo8.get(i).get(j);
+                int x = matrizValoresGrupo8.get(i).get(j);
+                double d = (double) matrizValoresGrupo8.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
-        for (int i = 0; i < matrizValoresGrupo9.size() - 5000; i++) {
+        for (int i = 0; i < matrizValoresGrupo9.size() - n; i++) {
             for (int j = 0; j < matrizValoresGrupo9.get(i).size(); j++) {
-                Matriz2[t][j] = matrizValoresGrupo9.get(i).get(j);
+                int x = matrizValoresGrupo9.get(i).get(j);
+                double d = (double) matrizValoresGrupo9.get(i).get(j);
+                if (x == 0) {
+                    d = (double) (Math.random());
+                }
+                Matriz2[t][j] = d;
             }
             t++;
         }
 
         return Matriz2;
+    }
+
+    public void Autovalores_Mayores(double[][] matriz) {
+        Double[] lista = new Double[nroCaracteristicas];
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(4);
+        int t = 0;
+        for (int i = 0; i < matriz.length; i++) {
+            for (int k = 0; k < matriz[0].length; k++) {
+                if (i == k) {
+                    lista[t] = matriz[i][k];
+                    t++;
+                    //System.out.print(nf.format(matriz[i][k]) + "\t");
+                }
+            }
+        }
+        //Collections.sort(lista);
+        Arrays.sort(lista, Collections.reverseOrder());
+        for (Double d : lista) {
+            System.out.println(d);
+        }
+        System.out.println();
     }
     // </editor-fold>
 
