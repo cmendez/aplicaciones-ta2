@@ -47,6 +47,8 @@ public class AlgoritmoBayesiano {
     private ArrayList<Integer> cantidadNumeros;
     private int nroCaracteristicas;
     private ArrayList<Integer> listaCaracteristicas;
+    private ArrayList<Double> listaCaracteristicas2;
+    
     private double[][] covMatrix0;
     private double[][] covMatrix1;
     private double[][] covMatrix2;
@@ -88,6 +90,7 @@ public class AlgoritmoBayesiano {
         helper = new Helpers();
         nroCaracteristicas = 280; //20x14 --> 280 | 20x20 --> 400
         listaCaracteristicas = new ArrayList<>(nroCaracteristicas);
+        listaCaracteristicas2 = new ArrayList<>(nroCaracteristicas);
 
         mediasGrupoNumero0 = new ArrayList<>(nroCaracteristicas);
         mediasGrupoNumero1 = new ArrayList<>(nroCaracteristicas);
@@ -111,6 +114,7 @@ public class AlgoritmoBayesiano {
             mediasGrupoNumero8.add(0.0);
             mediasGrupoNumero9.add(0.0);
             listaCaracteristicas.add(0);
+            listaCaracteristicas2.add(0.0);
         }
 
         cantidadNumeros = new ArrayList<>(10);
@@ -407,7 +411,7 @@ public class AlgoritmoBayesiano {
         }       
 
         //Para aplicar PCA - reducir dimensionalidad
-        GenerarMatrizCorrelacionyAutovalores();
+        //GenerarMatrizCorrelacionyAutovalores();
 
         //Para los valores que se usan en FuncionDiscriminante_Precalculada
         //GenerarMatricesCovarianzas();
@@ -415,7 +419,7 @@ public class AlgoritmoBayesiano {
         //GenerarDeterminantes();
 
         //otra es generar sigmas y det. e inmediatamente liberar la mem. usada por las covarianzas para no ocupar tanta memoria
-        //GenerarCovarianzas_SigmasInversas_Determinantes();
+        GenerarCovarianzas_SigmasInversas_Determinantes();
 
 //            System.out.println("Label\t1's\tSimV\tSimH");        
 //            Collections.sort(output);
@@ -1463,4 +1467,89 @@ public class AlgoritmoBayesiano {
         return Math.abs(nro1sIzquierda - nro1sDerecha);
     }
     // </editor-fold>
+
+
+    public void lecturaDatos(ArrayList<byte[]> imagenesArray,int nroimagenes,ArrayList<Integer> labelsArray){
+    
+        double g_grupo0=0.00;        
+        double g_grupo1=0.00;        
+        double g_grupo2=0.00;        
+        double g_grupo3=0.00;        
+        double g_grupo4=0.00;        
+        double g_grupo5=0.00;        
+        double g_grupo6=0.00;        
+        double g_grupo7=0.00;        
+        double g_grupo8=0.00;        
+        double g_grupo9=0.00;  
+        
+        ArrayList<String> mensaje = new ArrayList<>(50);
+        
+       for (int i = 0; i <= nroimagenes; i++) { 
+                byte[] imagen = imagenesArray.get(i);                
+                int t = 0;
+                int num = labelsArray.get(i);
+
+                for (int u = 0; u < 28; u++) {
+                    if ((u > 3) && (u < 24)) { //3,4: ignorar 4 filas arriba y abajo. Total 20 filas
+                        for (int v = 0; v < 28; v++) {
+                            if ((v > 6) && (v < 21)) { //6,21: ignorar 7 columnas izq y der. Total 14 columnas
+                                int p = helper.UnsignedToBytes(imagen[t]);
+                                listaCaracteristicas2.set(t, (double)p);
+                                t++;
+                            }
+                        }
+                    }
+                }
+                
+                g_grupo0=FuncionDiscriminante_Precalculada(mediasGrupoNumero0,listaCaracteristicas2,sigmaInversaGrupo0,determinanteGrupo0);              
+                g_grupo1=FuncionDiscriminante_Precalculada(mediasGrupoNumero1,listaCaracteristicas2,sigmaInversaGrupo1,determinanteGrupo1);              
+                g_grupo2=FuncionDiscriminante_Precalculada(mediasGrupoNumero2,listaCaracteristicas2,sigmaInversaGrupo2,determinanteGrupo2);              
+                g_grupo3=FuncionDiscriminante_Precalculada(mediasGrupoNumero3,listaCaracteristicas2,sigmaInversaGrupo3,determinanteGrupo3);              
+                g_grupo4=FuncionDiscriminante_Precalculada(mediasGrupoNumero4,listaCaracteristicas2,sigmaInversaGrupo4,determinanteGrupo4);              
+                g_grupo5=FuncionDiscriminante_Precalculada(mediasGrupoNumero5,listaCaracteristicas2,sigmaInversaGrupo5,determinanteGrupo5);              
+                g_grupo6=FuncionDiscriminante_Precalculada(mediasGrupoNumero6,listaCaracteristicas2,sigmaInversaGrupo6,determinanteGrupo6);              
+                g_grupo7=FuncionDiscriminante_Precalculada(mediasGrupoNumero7,listaCaracteristicas2,sigmaInversaGrupo7,determinanteGrupo7);              
+                g_grupo8=FuncionDiscriminante_Precalculada(mediasGrupoNumero8,listaCaracteristicas2,sigmaInversaGrupo8,determinanteGrupo8);              
+                g_grupo9=FuncionDiscriminante_Precalculada(mediasGrupoNumero9,listaCaracteristicas2,sigmaInversaGrupo9,determinanteGrupo9);              
+                
+                System.out.println(g_grupo0+"\n");
+                System.out.println(g_grupo1+"\n");
+                System.out.println(g_grupo2+"\n");
+                System.out.println(g_grupo3+"\n");
+                System.out.println(g_grupo4+"\n");
+                System.out.println(g_grupo5+"\n");
+                System.out.println(g_grupo6+"\n");
+                System.out.println(g_grupo7+"\n");
+                System.out.println(g_grupo8+"\n");
+                System.out.println(g_grupo9+"\n");                                
+                 
+                ArrayList<Double> listaux;
+                listaux = new ArrayList<>(10);
+                
+                listaux.add(g_grupo0);
+                listaux.add(g_grupo1);
+                listaux.add(g_grupo2);
+                listaux.add(g_grupo3);
+                listaux.add(g_grupo4);
+                listaux.add(g_grupo5);
+                listaux.add(g_grupo6);
+                listaux.add(g_grupo7);
+                listaux.add(g_grupo8);
+                listaux.add(g_grupo9);                                                
+                
+                double valaux=0.00;
+                int flag=0;                
+                
+                for (int z = 0; z < 10; z++) {                                                       
+                    if (valaux<listaux.get(z)) {valaux=listaux.get(z); flag=z;}                                        
+                }            
+                
+                if (num==flag) {mensaje.add("Correcto");}
+                else {mensaje.add("Incorrecto");}
+                
+                System.out.println("Numero"+" "+num+" grupo segun formula: "+flag+"  "+"Estado:"+mensaje+"\n");       
+                mensaje.clear();
+            }
+    }
+            
 }
