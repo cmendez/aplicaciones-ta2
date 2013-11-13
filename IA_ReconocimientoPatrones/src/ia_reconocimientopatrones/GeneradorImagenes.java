@@ -77,8 +77,8 @@ public class GeneradorImagenes {
         return bufferedImage;
     }
 
-    public void GenerarImagenes(int nroImagenes) {
-        try {
+    public void GenerarImagenes(int nroImagenes) throws IOException {
+        //try {
             for (int i = 0; i < nroImagenes; i++) {
                 byte[] imagen = imagenesArray.get(i);
                 int[][] pixeles0y1 = new int[28][28];
@@ -103,11 +103,11 @@ public class GeneradorImagenes {
                 String nombreArchivo = labelsArray.get(i) + "_img" + i;
                 BufferedImage image = this.ConvertRGBImage(pixelesImagen);
                 this.ExportImageToFile(this.ruta_guardado + nombreArchivo + ".jpg", image);
-                this.GenerarArchivo(pixelesTrimeados255, labelsArray.get(i), nombreArchivo);
+                this.GenerarArchivo(pixelesTrimeados0y1, labelsArray.get(i), nombreArchivo);
             }
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
+//        } catch (Exception e) {
+//            System.out.println("GenerarImagenes "+e.toString());
+//        }
     }
 
     private void GenerarArchivo(int[][] pixelesTrimeados, int label, String nombreArchivo) {
@@ -134,21 +134,21 @@ public class GeneradorImagenes {
                 // Close the writer regardless of what happens...
                 writer.close();
             } catch (Exception e) {
-                System.out.println(e.toString());
+                System.out.println("GenerarArchivo"+e.toString());
             }
         }
 
     }
 
-    private int[][] RemoverPadding4(int[][] pixeles) {
-        int[][] pixelesTrimeados = new int[20][20];
+    private int[][] RemoverPadding4(int[][] pixeles) { //28 x 28
+        int[][] pixelesTrimeados = new int[14][14];
         int height = pixeles.length;
         int width = pixeles[0].length;
         for (int fila = 0; fila < height; fila++) {
-            if ((fila > 3) && (fila < 24)) {
+            if ((fila > 7) && (fila < 22)) {
                 for (int col = 0; col < width; col++) {
-                    if ((col > 3) && (col < 24)) {
-                        pixelesTrimeados[fila - 4][col - 4] = pixeles[fila][col];
+                    if ((col > 7) && (col < 22)) {
+                        pixelesTrimeados[fila - 8][col - 8] = pixeles[fila][col];
                     }
                 }
             }
