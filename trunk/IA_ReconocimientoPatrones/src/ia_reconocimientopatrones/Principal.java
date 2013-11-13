@@ -21,11 +21,12 @@ public class Principal {
             ArrayList<Integer> labelsArray = lector.getLabelsArray();
 
             GeneradorImagenes generador = new GeneradorImagenes(imagenesArray, labelsArray, RUTA_DE_GUARDADO);
-            int nroImagenes = 60000; //limite: 26000
+            int nroImagenes = 30; //limite: 26000
             //generador.GenerarImagenes(50);
-
+            
             AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
             algoritmo.Entrenar_Modelo(nroImagenes, imagenesArray, labelsArray);
+            //algoritmo.Testear_Modelo(imagenesArray, 10, labelsArray);
             //algoritmo.ExtraerMatricesCovarianzas();
             //algoritmo.ProcesarIrisFlowersDataSet();
             //algoritmo.Entrenamiento_IrisDataSet();            
