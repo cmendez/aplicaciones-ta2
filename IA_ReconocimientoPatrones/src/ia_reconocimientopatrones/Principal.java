@@ -22,7 +22,7 @@ public class Principal {
 
             GeneradorImagenes generador = new GeneradorImagenes(imagenesArray, labelsArray, RUTA_DE_GUARDADO);
             int nroImagenes = 30; //limite: 26000
-            //generador.GenerarImagenes(50);
+            //generador.GenerarImagenes(10);
             
             AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
             algoritmo.Entrenar_Modelo(nroImagenes, imagenesArray, labelsArray);

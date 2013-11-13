@@ -96,7 +96,7 @@ public class AlgoritmoBayesiano {
 
     public AlgoritmoBayesiano() {
         helper = new Helpers();
-        nroCaracteristicas = 196; //20x14 --> 280 | 20x20 --> 400
+        nroCaracteristicas = 8 * 8; //20x14 --> 280 | 20x20 --> 400
         listaCaracteristicas = new ArrayList<>(nroCaracteristicas);
         listaCaracteristicas2 = new ArrayList<>(nroCaracteristicas);
 
@@ -227,31 +227,41 @@ public class AlgoritmoBayesiano {
     public void Entrenar_Modelo(int nroImagenes, ArrayList<byte[]> imagenesArray, ArrayList<Integer> labelsArray) {
         //try {
         //ArrayList<String> output = new ArrayList<>(50);
+        HaarFilter haar = new HaarFilter(16);
+        haar.setFractionalBits(0);
+        haar.setIterations(1);
 
         for (int M = 0; M < 3; M++) {
             int INICIO = nroImagenes / 3 * M;
             int FIN = INICIO + ((nroImagenes / 3) - 1);
             for (int i = INICIO; i <= FIN; i++) { //0..19999 - 20k..39999 - 40k..59999
-                byte[] imagen = imagenesArray.get(i);
-                //int[][] pixeles = new int[20][20];
+                byte[] imagen = imagenesArray.get(i); // original: 28x28
+                byte[] imagen16x16 = GeneradorImagenes.Convertir_A_Imagen16x16(imagen); //nueva: 16x16 --> 256
+                int[] filter = haar.filter(imagen16x16, null); //size: 256; 1er cuadrante img reducida; los otros tienen las formas
+                //int[] imgReducida = this.ObtenerPrimerCuadrante(filter);
+                int[] promediosTresCuadrantes = this.PromedioOtrosTresCuadrantes(filter); //16x16
                 int t = 0;
                 int num = labelsArray.get(i);
 
-                for (int u = 0; u < 28; u++) {
-                    if ((u > 7) && (u < 22)) { //3,4: ignorar 4 filas arriba y abajo. Total 20 filas
-                        for (int v = 0; v < 28; v++) {
-                            if ((v > 7) && (v < 22)) { //6,21: ignorar 7 columnas izq y der. Total 14 columnas
-                                int p = helper.UnsignedToBytes(imagen[t]);
-//                                if (p == 0) {
-//                                    p = 1;
-//                                }
-                                //pixeles[u - 4][v - 4] = p;
-                                listaCaracteristicas.set(t, p);
-                                t++;
-                            }
-                        }
-                    }
+                for (int k = 0; k < 10; k++) {
+                    listaCaracteristicas.set(k, promediosTresCuadrantes[k]);
                 }
+
+//                for (int u = 0; u < 28; u++) {
+//                    if ((u > 5) && (u < 22)) { //5,22: ignorar 6 filas arriba y abajo. Total 16 filas
+//                        for (int v = 0; v < 28; v++) {
+//                            if ((v > 5) && (v < 22)) { //6,21: ignorar 7 columnas izq y der. Total 14 columnas
+//                                int p = helper.UnsignedToBytes(imagen[t]);
+////                                if (p == 0) {
+////                                    p = 1;
+////                                }
+//                                //pixeles[u - 4][v - 4] = p;
+//                                listaCaracteristicas.set(t, p);
+//                                t++;
+//                            }
+//                        }
+//                    }
+//               }
                 //int[][] pixelesTrimeados = helper.RemoverPadding4(pixeles);
 
                 // <editor-fold defaultstate="collapsed" desc="EXTRAEMOS LAS CARACTERÍSTICAS DE LA IMÁGEN">
@@ -517,73 +527,127 @@ public class AlgoritmoBayesiano {
             determinanteGrupo0 = Determinante(covMatrix0);
             covMatrix0 = null; // para liberar la mem usada
 /*
-            covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
-            matrizValoresGrupo1 = null;
-            //helper.ImprimirMatriz(covMatrix1, "Grupo 1");
-            sigmaInversaGrupo1 = Inversa(covMatrix1);
-            determinanteGrupo1 = Determinante(covMatrix1);
-            covMatrix1 = null; // para liberar la mem usada
+             covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
+             matrizValoresGrupo1 = null;
+             //helper.ImprimirMatriz(covMatrix1, "Grupo 1");
+             sigmaInversaGrupo1 = Inversa(covMatrix1);
+             determinanteGrupo1 = Determinante(covMatrix1);
+             covMatrix1 = null; // para liberar la mem usada
 
-            covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
-            matrizValoresGrupo2 = null;
-            //helper.ImprimirMatriz(covMatrix2, "Grupo 2");
-            sigmaInversaGrupo2 = Inversa(covMatrix2);
-            determinanteGrupo2 = Determinante(covMatrix2);
-            covMatrix2 = null; // para liberar la mem usada
+             covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
+             matrizValoresGrupo2 = null;
+             //helper.ImprimirMatriz(covMatrix2, "Grupo 2");
+             sigmaInversaGrupo2 = Inversa(covMatrix2);
+             determinanteGrupo2 = Determinante(covMatrix2);
+             covMatrix2 = null; // para liberar la mem usada
 
-            covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
-            matrizValoresGrupo3 = null;
-            //helper.ImprimirMatriz(covMatrix3, "Grupo 3");
-            sigmaInversaGrupo3 = Inversa(covMatrix3);
-            determinanteGrupo3 = Determinante(covMatrix3);
-            covMatrix3 = null; // para liberar la mem usada
+             covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
+             matrizValoresGrupo3 = null;
+             //helper.ImprimirMatriz(covMatrix3, "Grupo 3");
+             sigmaInversaGrupo3 = Inversa(covMatrix3);
+             determinanteGrupo3 = Determinante(covMatrix3);
+             covMatrix3 = null; // para liberar la mem usada
 
-            covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
-            matrizValoresGrupo4 = null;
-            //helper.ImprimirMatriz(covMatrix4, "Grupo 4");
-            sigmaInversaGrupo4 = Inversa(covMatrix4);
-            determinanteGrupo4 = Determinante(covMatrix4);
-            covMatrix4 = null; // para liberar la mem usada
+             covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
+             matrizValoresGrupo4 = null;
+             //helper.ImprimirMatriz(covMatrix4, "Grupo 4");
+             sigmaInversaGrupo4 = Inversa(covMatrix4);
+             determinanteGrupo4 = Determinante(covMatrix4);
+             covMatrix4 = null; // para liberar la mem usada
 
-            covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
-            matrizValoresGrupo5 = null;
-            //helper.ImprimirMatriz(covMatrix5, "Grupo 5");
-            sigmaInversaGrupo5 = Inversa(covMatrix5);
-            determinanteGrupo5 = Determinante(covMatrix5);
-            covMatrix5 = null; // para liberar la mem usada
+             covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
+             matrizValoresGrupo5 = null;
+             //helper.ImprimirMatriz(covMatrix5, "Grupo 5");
+             sigmaInversaGrupo5 = Inversa(covMatrix5);
+             determinanteGrupo5 = Determinante(covMatrix5);
+             covMatrix5 = null; // para liberar la mem usada
 
-            covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
-            matrizValoresGrupo6 = null;
-            //helper.ImprimirMatriz(covMatrix6, "Grupo 6");
-            sigmaInversaGrupo6 = Inversa(covMatrix6);
-            determinanteGrupo6 = Determinante(covMatrix6);
-            covMatrix6 = null; // para liberar la mem usada
+             covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
+             matrizValoresGrupo6 = null;
+             //helper.ImprimirMatriz(covMatrix6, "Grupo 6");
+             sigmaInversaGrupo6 = Inversa(covMatrix6);
+             determinanteGrupo6 = Determinante(covMatrix6);
+             covMatrix6 = null; // para liberar la mem usada
 
-            covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
-            matrizValoresGrupo7 = null;
-            //helper.ImprimirMatriz(covMatrix7, "Grupo 7");
-            sigmaInversaGrupo7 = Inversa(covMatrix7);
-            determinanteGrupo7 = Determinante(covMatrix7);
-            covMatrix7 = null; // para liberar la mem usada
+             covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
+             matrizValoresGrupo7 = null;
+             //helper.ImprimirMatriz(covMatrix7, "Grupo 7");
+             sigmaInversaGrupo7 = Inversa(covMatrix7);
+             determinanteGrupo7 = Determinante(covMatrix7);
+             covMatrix7 = null; // para liberar la mem usada
 
-            covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
-            matrizValoresGrupo8 = null;
-            //helper.ImprimirMatriz(covMatrix8, "Grupo 8");
-            sigmaInversaGrupo8 = Inversa(covMatrix8);
-            determinanteGrupo8 = Determinante(covMatrix8);
-            covMatrix8 = null; // para liberar la mem usada
+             covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
+             matrizValoresGrupo8 = null;
+             //helper.ImprimirMatriz(covMatrix8, "Grupo 8");
+             sigmaInversaGrupo8 = Inversa(covMatrix8);
+             determinanteGrupo8 = Determinante(covMatrix8);
+             covMatrix8 = null; // para liberar la mem usada
 
-            covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
-            matrizValoresGrupo9 = null;
-            //helper.ImprimirMatriz(covMatrix9, "Grupo 9");
-            sigmaInversaGrupo9 = Inversa(covMatrix9);
-            determinanteGrupo9 = Determinante(covMatrix9);
-            covMatrix9 = null; // para liberar la mem usada
-*/            
+             covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
+             matrizValoresGrupo9 = null;
+             //helper.ImprimirMatriz(covMatrix9, "Grupo 9");
+             sigmaInversaGrupo9 = Inversa(covMatrix9);
+             determinanteGrupo9 = Determinante(covMatrix9);
+             covMatrix9 = null; // para liberar la mem usada
+             */
         } catch (Exception e) {
             System.out.println(e.toString());
         }
 
+    }
+
+    public int[] PromedioOtrosTresCuadrantes(int[] filter) { //16x16
+        int[] promedios = new int[nroCaracteristicas]; //8x8 -> 64
+        int t = 0;
+        /*
+         __________
+         |    |    |
+         | A  | B  |
+         -----------
+         | C  | D  |
+         |____|____|
+         */
+
+        //cuadrante B
+        for (int fil = 0; fil < 16; fil++) {
+            if ((fil >= 0) && (fil <= 7)) {
+                for (int col = 0; col < 16; col++) {
+                    if ((col >= 8) && (col <= 15)) {
+                        //m[i][j] = imagen[k];
+                        promedios[t] = filter[fil * 16 + col];
+                        t++;
+                    }
+                }
+            }
+        }
+        t = 0;
+        //cuadrante C
+        for (int fil = 0; fil < 16; fil++) {
+            if ((fil >= 8) && (fil <= 15)) {
+                for (int col = 0; col < 16; col++) {
+                    if ((col >= 0) && (col <= 7)) {
+                        //m[i][j] = imagen[k];
+                        promedios[t] = (promedios[t] + filter[fil * 16 + col]) / 2;
+                        t++;
+                    }
+                }
+            }
+        }
+        t = 0;
+        //cuadrante D
+        for (int fil = 0; fil < 16; fil++) {
+            if ((fil >= 8) && (fil <= 15)) {
+                for (int col = 0; col < 16; col++) {
+                    if ((col >= 8) && (col <= 15)) {
+                        //m[i][j] = imagen[k];
+                        promedios[t] = (promedios[t] * 2 + filter[fil * 16 + col]) / 3;
+                        t++;
+                    }
+                }
+            }
+        }
+
+        return promedios;
     }
 
 // </editor-fold>
@@ -1496,6 +1560,7 @@ public class AlgoritmoBayesiano {
     }
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="TESTEAR MODELO">
     public void Testear_Modelo(ArrayList<byte[]> imagenesArray, int nroimagenes, ArrayList<Integer> labelsArray) {
 
         double g_grupo0 = 0.00;
@@ -1584,4 +1649,5 @@ public class AlgoritmoBayesiano {
             mensaje.clear();
         }
     }
+    // </editor-fold>    
 }
