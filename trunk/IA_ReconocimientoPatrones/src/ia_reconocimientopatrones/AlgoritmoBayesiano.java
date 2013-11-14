@@ -139,9 +139,9 @@ public class AlgoritmoBayesiano {
         matrizValoresGrupo3 = new ArrayList<>(6131);
         matrizValoresGrupo2 = new ArrayList<>(5958);
         matrizValoresGrupo1 = new ArrayList<>(6742);
-        matrizValoresGrupo0 = new ArrayList<>(30); //5923
+        matrizValoresGrupo0 = new ArrayList<>(5923); //5923
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 5923; i++) {
             ArrayList<Integer> lista = new ArrayList<>(nroCaracteristicas);
             for (int j = 0; j < nroCaracteristicas; j++) {
                 lista.add(0);
@@ -239,11 +239,12 @@ public class AlgoritmoBayesiano {
                 byte[] imagen16x16 = GeneradorImagenes.Convertir_A_Imagen16x16(imagen); //nueva: 16x16 --> 256
                 int[] filter = haar.filter(imagen16x16, null); //size: 256; 1er cuadrante img reducida; los otros tienen las formas
                 //int[] imgReducida = this.ObtenerPrimerCuadrante(filter);
-                int[] promediosTresCuadrantes = this.PromedioOtrosTresCuadrantes(filter); //16x16
+                int[] promediosTresCuadrantes = this.PromedioOtrosTresCuadrantes(filter); //8x8
                 int t = 0;
                 int num = labelsArray.get(i);
 
-                for (int k = 0; k < 10; k++) {
+                //helper.ImprimirVectorEnFormaMatriz(promediosTresCuadrantes, 8);
+                for (int k = 0; k < nroCaracteristicas; k++) {
                     listaCaracteristicas.set(k, promediosTresCuadrantes[k]);
                 }
 
@@ -360,10 +361,12 @@ public class AlgoritmoBayesiano {
                         // PARA N-CARACTERÍSTICAS
                         for (int k = 0; k < nroCaracteristicas; k++) {
                             int valorCar = listaCaracteristicas.get(k); //obtener el valor de la k-ésima característica
+                            //System.out.print(valorCar+ " ");
                             mediasGrupoNumero5.set(k, (mediasGrupoNumero5.get(k) * (cantidadNumeros.get(num) - 1) + valorCar) / cantidadNumeros.get(num));
                             //valoresGrupoNumero5.add((double) valorCar);
                             matrizValoresGrupo5.get(n).set(k, valorCar);
                         }
+                        //System.out.println("");
                         //matrizValoresGrupo5.add(valoresGrupoNumero5);
                         //valoresGrupoNumero5.clear();
                         break;
@@ -520,76 +523,112 @@ public class AlgoritmoBayesiano {
 
     public void GenerarCovarianzas_SigmasInversas_Determinantes() {
         try {
+
             covMatrix0 = MatrizCovarianza(matrizValoresGrupo0);
             matrizValoresGrupo0 = null;
             //helper.ImprimirMatriz(covMatrix0, "Grupo 0");
-            sigmaInversaGrupo0 = Inversa(covMatrix0);
-            determinanteGrupo0 = Determinante(covMatrix0);
+            Matrix m = new Matrix(covMatrix0);
+            //sigmaInversaGrupo0 = Inversa(covMatrix0);
+            determinanteGrupo0 = m.det();
+            //System.out.println(determinanteGrupo0);
+            sigmaInversaGrupo0 = m.inverse().getArray();
+            //determinanteGrupo0 = Determinante(covMatrix0);
+            //determinanteGrupo0 = Determinant.det(covMatrix0);
+            //determinanteGrupo0 = Determinant.getDecDet(covMatrix0);
+            //determinanteGrupo0 = Determinant.determinant(covMatrix0); 
             covMatrix0 = null; // para liberar la mem usada
-/*
-             covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
-             matrizValoresGrupo1 = null;
-             //helper.ImprimirMatriz(covMatrix1, "Grupo 1");
-             sigmaInversaGrupo1 = Inversa(covMatrix1);
-             determinanteGrupo1 = Determinante(covMatrix1);
-             covMatrix1 = null; // para liberar la mem usada
 
-             covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
-             matrizValoresGrupo2 = null;
-             //helper.ImprimirMatriz(covMatrix2, "Grupo 2");
-             sigmaInversaGrupo2 = Inversa(covMatrix2);
-             determinanteGrupo2 = Determinante(covMatrix2);
-             covMatrix2 = null; // para liberar la mem usada
+            covMatrix1 = MatrizCovarianza(matrizValoresGrupo1);
+            matrizValoresGrupo1 = null;
+            //helper.ImprimirMatriz(covMatrix1, "Grupo 1");
+            m = new Matrix(covMatrix1);
+            //sigmaInversaGrupo1 = Inversa(covMatrix1);
+            sigmaInversaGrupo1 = m.inverse().getArray();
+            //determinanteGrupo1 = Determinante(covMatrix1);
+            determinanteGrupo1 = m.det();
+            covMatrix1 = null; // para liberar la mem usada
 
-             covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
-             matrizValoresGrupo3 = null;
-             //helper.ImprimirMatriz(covMatrix3, "Grupo 3");
-             sigmaInversaGrupo3 = Inversa(covMatrix3);
-             determinanteGrupo3 = Determinante(covMatrix3);
-             covMatrix3 = null; // para liberar la mem usada
+            covMatrix2 = MatrizCovarianza(matrizValoresGrupo2);
+            matrizValoresGrupo2 = null;
+            //helper.ImprimirMatriz(covMatrix2, "Grupo 2");
+            m = new Matrix(covMatrix2);
+            //sigmaInversaGrupo2 = Inversa(covMatrix2);
+            sigmaInversaGrupo2 = m.inverse().getArray();
+            //determinanteGrupo2 = Determinante(covMatrix2);
+            determinanteGrupo2 = m.det();
+            covMatrix2 = null; // para liberar la mem usada
 
-             covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
-             matrizValoresGrupo4 = null;
-             //helper.ImprimirMatriz(covMatrix4, "Grupo 4");
-             sigmaInversaGrupo4 = Inversa(covMatrix4);
-             determinanteGrupo4 = Determinante(covMatrix4);
-             covMatrix4 = null; // para liberar la mem usada
+            covMatrix3 = MatrizCovarianza(matrizValoresGrupo3);
+            matrizValoresGrupo3 = null;
+            //helper.ImprimirMatriz(covMatrix3, "Grupo 3");
+            m = new Matrix(covMatrix3);
+            //sigmaInversaGrupo3 = Inversa(covMatrix3);
+            sigmaInversaGrupo3 = m.inverse().getArray();
+            //determinanteGrupo3 = Determinante(covMatrix3);
+            determinanteGrupo3 = m.det();
+            covMatrix3 = null; // para liberar la mem usada
 
-             covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
-             matrizValoresGrupo5 = null;
-             //helper.ImprimirMatriz(covMatrix5, "Grupo 5");
-             sigmaInversaGrupo5 = Inversa(covMatrix5);
-             determinanteGrupo5 = Determinante(covMatrix5);
-             covMatrix5 = null; // para liberar la mem usada
+            covMatrix4 = MatrizCovarianza(matrizValoresGrupo4);
+            matrizValoresGrupo4 = null;
+            //helper.ImprimirMatriz(covMatrix4, "Grupo 4");
+            m = new Matrix(covMatrix4);
+            //sigmaInversaGrupo4 = Inversa(covMatrix4);
+            sigmaInversaGrupo4 = m.inverse().getArray();
+            //determinanteGrupo4 = Determinante(covMatrix4);
+            determinanteGrupo4 = m.det();
+            covMatrix4 = null; // para liberar la mem usada
 
-             covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
-             matrizValoresGrupo6 = null;
-             //helper.ImprimirMatriz(covMatrix6, "Grupo 6");
-             sigmaInversaGrupo6 = Inversa(covMatrix6);
-             determinanteGrupo6 = Determinante(covMatrix6);
-             covMatrix6 = null; // para liberar la mem usada
+            //helper.ImprimirValores(matrizValoresGrupo5, -1, "matrizValoresGrupo5");
+            covMatrix5 = MatrizCovarianza(matrizValoresGrupo5);
+            matrizValoresGrupo5 = null;
+            //helper.ImprimirMatriz(covMatrix5, "Grupo 5");
+            m = new Matrix(covMatrix5);
+            //sigmaInversaGrupo0 = Inversa(covMatrix0);
+            sigmaInversaGrupo5 = m.inverse().getArray();
+            //determinanteGrupo5 = Determinante(covMatrix5);
+            determinanteGrupo5 = m.det();
+            covMatrix5 = null; // para liberar la mem usada
 
-             covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
-             matrizValoresGrupo7 = null;
-             //helper.ImprimirMatriz(covMatrix7, "Grupo 7");
-             sigmaInversaGrupo7 = Inversa(covMatrix7);
-             determinanteGrupo7 = Determinante(covMatrix7);
-             covMatrix7 = null; // para liberar la mem usada
+            covMatrix6 = MatrizCovarianza(matrizValoresGrupo6);
+            matrizValoresGrupo6 = null;
+            //helper.ImprimirMatriz(covMatrix6, "Grupo 6");
+            m = new Matrix(covMatrix6);
+            //sigmaInversaGrupo6 = Inversa(covMatrix6);
+            sigmaInversaGrupo6 = m.inverse().getArray();
+            //determinanteGrupo6 = Determinante(covMatrix6);
+            determinanteGrupo6 = m.det();
+            covMatrix6 = null; // para liberar la mem usada
 
-             covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
-             matrizValoresGrupo8 = null;
-             //helper.ImprimirMatriz(covMatrix8, "Grupo 8");
-             sigmaInversaGrupo8 = Inversa(covMatrix8);
-             determinanteGrupo8 = Determinante(covMatrix8);
-             covMatrix8 = null; // para liberar la mem usada
+            covMatrix7 = MatrizCovarianza(matrizValoresGrupo7);
+            matrizValoresGrupo7 = null;
+            //helper.ImprimirMatriz(covMatrix7, "Grupo 7");
+            m = new Matrix(covMatrix7);
+            //sigmaInversaGrupo7 = Inversa(covMatrix7);
+            sigmaInversaGrupo7 = m.inverse().getArray();
+            //determinanteGrupo7 = Determinante(covMatrix7);
+            determinanteGrupo7 = m.det();
+            covMatrix7 = null; // para liberar la mem usada
 
-             covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
-             matrizValoresGrupo9 = null;
-             //helper.ImprimirMatriz(covMatrix9, "Grupo 9");
-             sigmaInversaGrupo9 = Inversa(covMatrix9);
-             determinanteGrupo9 = Determinante(covMatrix9);
-             covMatrix9 = null; // para liberar la mem usada
-             */
+            covMatrix8 = MatrizCovarianza(matrizValoresGrupo8);
+            matrizValoresGrupo8 = null;
+            //helper.ImprimirMatriz(covMatrix8, "Grupo 8");
+            m = new Matrix(covMatrix8);
+            //sigmaInversaGrupo8 = Inversa(covMatrix8);
+            sigmaInversaGrupo8 = m.inverse().getArray();
+            //determinanteGrupo8 = Determinante(covMatrix8);
+            determinanteGrupo8 = m.det();
+            covMatrix8 = null; // para liberar la mem usada
+
+            covMatrix9 = MatrizCovarianza(matrizValoresGrupo9);
+            matrizValoresGrupo9 = null;
+            //helper.ImprimirMatriz(covMatrix9, "Grupo 9");
+            m = new Matrix(covMatrix9);
+            //sigmaInversaGrupo9 = Inversa(covMatrix9);
+            sigmaInversaGrupo9 = m.inverse().getArray();
+            //determinanteGrupo9 = Determinante(covMatrix9);
+            determinanteGrupo9 = m.det();
+            covMatrix9 = null; // para liberar la mem usada
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }
