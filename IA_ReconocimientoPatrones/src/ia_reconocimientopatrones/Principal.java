@@ -26,7 +26,8 @@ public class Principal {
             
             AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
             algoritmo.Entrenar_Modelo(nroImagenes, imagenesArray, labelsArray);
-            //algoritmo.Testear_Modelo(imagenesArray, 10, labelsArray);
+            algoritmo.Testear_Modelo(imagenesArray, 10000, labelsArray);
+            
             //algoritmo.ExtraerMatricesCovarianzas();
             //algoritmo.ProcesarIrisFlowersDataSet();
             //algoritmo.Entrenamiento_IrisDataSet();            
