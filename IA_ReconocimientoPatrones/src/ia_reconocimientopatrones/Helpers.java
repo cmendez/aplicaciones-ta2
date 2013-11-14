@@ -41,7 +41,7 @@ public class Helpers {
         nf.setMaximumFractionDigits(4);
         for (int i = 0; i < matriz.length; i++) {
             for (int k = 0; k < matriz[0].length; k++) {
-                System.out.print(nf.format(matriz[i][k]) + "\t\t");
+                System.out.print(nf.format(matriz[i][k]) + "\t");
             }
             System.out.println();
         }
@@ -73,6 +73,32 @@ public class Helpers {
             System.out.print(nf.format(vector.get(u)) + "\t\t");
         }
         System.out.println();
+        System.out.println();
+    }
+
+    public void ImprimirVectorEnFormaMatriz(int[] promediosTresCuadrantes, int n) {
+        int t = 0;
+        for (int u = 0; u < n; u++) {
+            for (int v = 0; v < n; v++) {
+                System.out.print(promediosTresCuadrantes[t] + "\t");
+                t++;
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public void ImprimirValores(ArrayList<ArrayList<Integer>> matrizValoresGrupo5, int n, String titulo) {
+        if ((titulo != null) && (!titulo.equals(""))) {
+            System.out.println("*************************" + titulo + "*************************");
+        }
+        
+        for (int u = 0; u < matrizValoresGrupo5.size(); u++) {
+            for (int v = 0; v < matrizValoresGrupo5.get(u).size(); v++) {
+                System.out.print(matrizValoresGrupo5.get(u).get(v) + " ");
+            }
+            System.out.println();
+        }
         System.out.println();
     }
 }

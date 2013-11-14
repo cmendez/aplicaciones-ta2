@@ -21,7 +21,7 @@ public class Principal {
             ArrayList<Integer> labelsArray = lector.getLabelsArray();
 
             GeneradorImagenes generador = new GeneradorImagenes(imagenesArray, labelsArray, RUTA_DE_GUARDADO);
-            int nroImagenes = 30; //limite: 26000
+            int nroImagenes = 60000; //limite: 26000
             //generador.GenerarImagenes(10);
             
             AlgoritmoBayesiano algoritmo = new AlgoritmoBayesiano();
