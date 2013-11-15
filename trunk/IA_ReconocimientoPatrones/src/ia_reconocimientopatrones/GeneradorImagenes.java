@@ -262,4 +262,25 @@ public class GeneradorImagenes {
 
         return b;
     }
+
+    public void CrearArchivoTextoLabels() {
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(this.ruta_guardado + "Labels.txt"));
+            for (int i = 0; i < 10000; i++) {
+                int label = labelsArray.get(i);
+                writer.write("Label: "+ label);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                // Close the writer regardless of what happens...
+                writer.close();
+            } catch (Exception e) {
+                System.out.println("GenerarArchivo" + e.toString());
+            }
+        }
+    }
 }
