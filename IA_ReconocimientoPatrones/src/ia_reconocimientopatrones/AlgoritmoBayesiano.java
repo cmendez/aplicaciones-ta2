@@ -635,6 +635,33 @@ public class AlgoritmoBayesiano {
 
     }
 
+    public int[] ObtenerPrimerCuadrante(int[] filter) {
+        int[] cuadrante = new int[nroCaracteristicas]; //8x8 -> 64
+        int t = 0;
+        /*
+         __________
+         |    |    |
+         | A  | B  |
+         -----------
+         | C  | D  |
+         |____|____|
+         */
+
+        //cuadrante A
+        for (int fil = 0; fil < 16; fil++) {
+            if ((fil >= 0) && (fil <= 7)) {
+                for (int col = 0; col < 16; col++) {
+                    if ((col >= 0) && (col <= 7)) {
+                        //m[i][j] = imagen[k];
+                        cuadrante[t] = filter[fil * 16 + col];
+                        t++;
+                    }
+                }
+            }
+        }
+        return cuadrante;
+    }
+
     public int[] PromedioOtrosTresCuadrantes(int[] filter) { //16x16
         int[] promedios = new int[nroCaracteristicas]; //8x8 -> 64
         int t = 0;
@@ -688,9 +715,9 @@ public class AlgoritmoBayesiano {
 
         return promedios;
     }
-
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="FUNCIONES DISCRIMINANTES g(x)">
+
     public double FuncionDiscriminante_CalculaAlEjecutar(ArrayList<ArrayList<Double>> matrizValores,
             ArrayList<Double> arregloMedias, double[][] matrizCovarianzas,
             ArrayList<Double> arregloIncognita) {
@@ -1612,23 +1639,29 @@ public class AlgoritmoBayesiano {
         double g_grupo7 = 0.00;
         double g_grupo8 = 0.00;
         double g_grupo9 = 0.00;
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(2);
         HaarFilter haar = new HaarFilter(16);
         haar.setFractionalBits(0);
         haar.setIterations(1);
+
         ArrayList<String> mensaje = new ArrayList<>(50);
         ArrayList<Double> valoresGX = new ArrayList<>(10);
         for (int i = 0; i < 10; i++) {
             valoresGX.add(0.0);
         }
         int contCorrectos = 0, contIncorrectos = 0;
+        int i;
 
-        for (int i = 1; i <= nroimagenes; i++) {
-            int num = labelsArray.get(i);
+        int[][] matrizResultados = new int[10][10]; //la diagonal guardará los aciertos        
+
+        for (i = 0; i < nroimagenes; i++) {
+            int label = labelsArray.get(i);
             //System.out.println(">>>>>>>>>>>>> LABEL: " + num);
             byte[] imagen = imagenesArray.get(i); // original: 28x28
             byte[] imagen16x16 = GeneradorImagenes.Convertir_A_Imagen16x16(imagen); //nueva: 16x16 --> 256
             int[] filter = haar.filter(imagen16x16, null); //size: 256; 1er cuadrante img reducida; los otros tienen las formas
-            //int[] imgReducida = this.ObtenerPrimerCuadrante(filter);
+            //int[] imgReducida = this.ObtenerPrimerCuadrante(filter); //con el 1er cuadrante sale 56.87% correctos
             int[] promediosTresCuadrantes = this.PromedioOtrosTresCuadrantes(filter); //8x8
 
             //helper.ImprimirVectorEnFormaMatriz(promediosTresCuadrantes, 8);
@@ -1680,19 +1713,28 @@ public class AlgoritmoBayesiano {
             //Collections.sort(valoresGX);
             //System.out.println(valoresGX.get(0));
 
-            if (num == grupoAsignado) {
+            if (label == grupoAsignado) {
                 mensaje.add("Correcto");
                 contCorrectos++;
+                matrizResultados[label][label]++;
             } else {
                 mensaje.add("Incorrecto");
                 contIncorrectos++;
+                matrizResultados[grupoAsignado][label]++;
             }
             //System.out.println();
-            //System.out.println("Numero: " + num + " - Grupo según formula: " + grupoAsignado + "  " + " - Estado:" + mensaje + "\n");
+            //System.out.println("Label: " + label + " - Grupo según formula: " + grupoAsignado + " " + " - Estado:" + mensaje);
             mensaje.clear();
         }
+        double tasaAciertos = ((double) contCorrectos / i) * 100.0;
+        double tasaErrores = ((double) contIncorrectos / i) * 100.0;
+
+        System.out.println("Total Leídos: " + i);
         System.out.println("Correctos: " + contCorrectos);
         System.out.println("Incorrectos: " + contIncorrectos);
+        System.out.println("Tasa Aciertos: " + nf.format(tasaAciertos) + "%");
+        System.out.println("Tasa Errores: " + nf.format(tasaErrores) + "%" + "\n");
+        helper.ImprimirMatrizEnteros(matrizResultados, "matrizResultados");
     }
     // </editor-fold>    
 }

@@ -92,10 +92,29 @@ public class Helpers {
         if ((titulo != null) && (!titulo.equals(""))) {
             System.out.println("*************************" + titulo + "*************************");
         }
-        
+
         for (int u = 0; u < matrizValoresGrupo5.size(); u++) {
             for (int v = 0; v < matrizValoresGrupo5.get(u).size(); v++) {
                 System.out.print(matrizValoresGrupo5.get(u).get(v) + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public void ImprimirMatrizEnteros(int[][] matriz, String titulo) {
+        if ((titulo != null) && (!titulo.equals(""))) {
+            System.out.println("*************************" + titulo + "*************************");
+        }
+        System.out.print(" \t");
+        for (int i = 0; i < 10; i++) {
+            System.out.print("[" + i + "]" + "\t");
+        }
+        System.out.println();
+        for (int i = 0; i < matriz.length; i++) {
+            System.out.print("[" + i + "]" + "\t");
+            for (int k = 0; k < matriz[0].length; k++) {                
+                System.out.print(matriz[i][k] + "\t");
             }
             System.out.println();
         }
